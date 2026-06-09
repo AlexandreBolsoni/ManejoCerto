@@ -1,0 +1,20 @@
+{
+  "name": "NibusES",
+  "short_name": "NibusES",
+  "description": "Inteligencia climatica para proteger a safra capixaba.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#fbfcf6",
+  "theme_color": "#25361b",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/assets/nimbo-mark.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ],
+  "categories": ["productivity", "weather", "business"],
+  "lang": "pt-BR"
+}
