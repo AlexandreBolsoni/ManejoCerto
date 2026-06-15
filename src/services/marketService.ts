@@ -1,6 +1,7 @@
 import { demoQuotes } from '../lib/mockData'
+import { marketGateway } from '../modules/market/services/marketGateway'
 import type { MarketFallbackLevel, MarketQuote, MarketSourceType, StateMarketProduct, StateMarketProfile } from '../types'
-import { marketPriceService } from './marketPriceService'
+import { localStorageAdapter } from './storage'
 
 const STORAGE_PREFIX = 'nimbo:market-quotes:v2'
 const MUNICIPALITY_STATE_CACHE_KEY = 'nimbo:municipality-state:v1'
@@ -135,6 +136,14 @@ type OfficialMarketSource = {
 }
 
 const officialMarketSources: OfficialMarketSource[] = [
+  {
+    id: 'ceasa_es_market',
+    label: 'CEASA-ES',
+    type: 'wholesale_price',
+    coverage: 'atacado ES · Grande Vitória e unidades capixabas',
+    priority: 'base',
+    sourceUrl: 'https://ceasa.es.gov.br/bancodedados',
+  },
   {
     id: 'ibge_pam',
     label: 'IBGE PAM',
@@ -283,9 +292,9 @@ const brazilProfile: StateMarketProfile = {
   state: 'BR',
   stateName: 'Brasil',
   title: 'Produtos agrícolas de referência nacional',
-  summary: 'Sem uma fazenda cadastrada, o NibusES mostra uma cesta nacional básica. Ao cadastrar uma localidade capixaba, o painel passa a priorizar produtos regionais.',
+    summary: 'Sem uma fazenda cadastrada, o NimbuES mostra uma cesta nacional básica. Ao cadastrar uma localidade capixaba, o painel passa a priorizar produtos regionais.',
   highlights: ['Grãos', 'Café', 'Algodão', 'Cana-de-açúcar'],
-  sources: ['Base NibusES inicial, IBGE PAM e indicadores de mercado públicos'],
+    sources: ['Base NimbuES inicial, IBGE PAM e indicadores de mercado públicos'],
   products: [
     {
       crop: 'Soja',
@@ -320,7 +329,7 @@ const stateProfiles: Record<string, StateMarketProfile> = {
     stateName: 'Espírito Santo',
     title: 'Produtos agrícolas do Espírito Santo',
     summary:
-      'O agro capixaba combina cafeicultura forte, fruticultura exportadora, especiarias, raízes e olericultura. O NibusES prioriza produtos que fazem sentido para clima, risco operacional e decisão comercial local.',
+      'O agro capixaba combina cafeicultura forte, fruticultura exportadora, especiarias, raízes e olericultura. O NimbuES prioriza produtos que fazem sentido para clima, risco operacional e decisão comercial local.',
     highlights: ['Café Conilon', 'Mamão', 'Pimenta-do-reino', 'Gengibre'],
     sources: ['Incaper: cafeicultura conilon e arábica', 'SEAG/Plano ABC ES com base IBGE-PAM', 'Embrapa/Revista de Política Agrícola'],
     products: [
@@ -433,7 +442,7 @@ const stateProfiles: Record<string, StateMarketProfile> = {
     title: 'Produtos agrícolas de Mato Grosso',
     summary: 'Perfil concentrado em grãos, algodão, pecuária integrada e culturas de segunda safra.',
     highlights: ['Soja', 'Milho', 'Algodão', 'Sorgo'],
-    sources: ['Base NibusES inicial, IBGE PAM e boletins estaduais'],
+    sources: ['Base NimbuES inicial, IBGE PAM e boletins estaduais'],
     products: [
       {
         crop: 'Soja',
@@ -690,9 +699,9 @@ async function loadMunicipalityStateMap() {
   if (municipalityStateCache) return municipalityStateCache
 
   try {
-    const stored = localStorage.getItem(MUNICIPALITY_STATE_CACHE_KEY)
+    const stored = localStorageAdapter.getJson<Record<string, string>>(MUNICIPALITY_STATE_CACHE_KEY)
     if (stored) {
-      municipalityStateCache = JSON.parse(stored) as Record<string, string>
+      municipalityStateCache = stored
       return municipalityStateCache
     }
   } catch {
@@ -710,7 +719,7 @@ async function loadMunicipalityStateMap() {
   }, {})
 
   try {
-    localStorage.setItem(MUNICIPALITY_STATE_CACHE_KEY, JSON.stringify(municipalityStateCache))
+    localStorageAdapter.setJson(MUNICIPALITY_STATE_CACHE_KEY, municipalityStateCache)
   } catch {
     // Cache best-effort only.
   }
@@ -769,26 +778,6 @@ function referencePriceForCrop(product: StateMarketProduct, stateName: string) {
   const value = Number((template.base * regionalFactor).toFixed(2))
   const variationPct = Number((((stableHash(`${product.crop}:${stateName}:variation`) % 81) - 40) / 10).toFixed(1))
   return { template, value, variationPct }
-}
-
-function referenceHistory(value: number, variationPct: number) {
-  const today = new Date()
-  today.setHours(12, 0, 0, 0)
-  const startValue = value / (1 + variationPct / 100 || 1)
-
-  return Array.from({ length: 7 }, (_, index) => {
-    const date = new Date(today)
-    date.setDate(today.getDate() - (6 - index))
-    const progress = index / 6
-    const wave = Math.sin(index * 1.7) * 0.006
-    const pointValue = Number((startValue + (value - startValue) * progress + value * wave).toFixed(2))
-
-    return {
-      date: date.toISOString(),
-      label: date.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' }),
-      value: pointValue,
-    }
-  })
 }
 
 function productFromCrop(crop: string, priority: number): StateMarketProduct {
@@ -852,7 +841,13 @@ function selectFeaturedQuote(quotes: MarketQuote[], userCrops: string[] = []) {
 
 function createReferenceQuote(product: StateMarketProduct, region: string, stateName: string): MarketQuote {
   const { template, value, variationPct } = referencePriceForCrop(product, stateName)
-  const historyPoints = referenceHistory(value, variationPct)
+  const today = new Date()
+  today.setHours(12, 0, 0, 0)
+  const currentPoint = {
+    date: today.toISOString(),
+    label: today.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' }),
+    value,
+  }
   const quotedAt = new Date()
   quotedAt.setMinutes(0, 0, 0)
 
@@ -865,13 +860,13 @@ function createReferenceQuote(product: StateMarketProduct, region: string, state
     unit: template.unit,
     variationPct,
     trend: variationPct > 0.01 ? 'up' : variationPct < -0.01 ? 'down' : 'flat',
-    history: historyPoints.map((point) => point.value),
+    history: [value],
     historyByPeriod: {
-      annual: historyPoints,
-      monthly: historyPoints,
-      weekly: historyPoints,
+      annual: [currentPoint],
+      monthly: [currentPoint],
+      weekly: [currentPoint],
     },
-    source: `Referência NibusES v0 · ${stateName}`,
+    source: `Referência NimbuES v0 · ${stateName}`,
     sourceType: 'reference_price',
     fallbackLevel: stateName === 'Brasil' ? 'brasil' : 'uf',
     officialSource: false,
@@ -881,7 +876,7 @@ function createReferenceQuote(product: StateMarketProduct, region: string, state
     quoteStatus: 'reference',
     quoteType: 'Preço indicativo por cultura e UF',
     dataQualityLabel:
-      'Referência inicial do NibusES para não deixar a cultura sem preço enquanto o conector público ou regional é validado. Não substitui cotação oficial, contrato ou balcão local.',
+      'Referência inicial do NimbuES para não deixar a cultura sem preço enquanto o conector público ou regional é validado. O gráfico só é exibido quando houver série real publicada pela fonte.',
     variations: [
       {
         detail: 'referência inicial por cultura/UF',
@@ -890,7 +885,7 @@ function createReferenceQuote(product: StateMarketProduct, region: string, state
       },
     ],
     volumeLabel: product.category,
-    basisLabel: product.stateShareLabel ?? 'referência NibusES',
+    basisLabel: product.stateShareLabel ?? 'referência NimbuES',
     category: product.category,
     priority: product.priority,
     relevanceLabel: product.relevanceLabel,
@@ -901,7 +896,7 @@ function createReferenceQuote(product: StateMarketProduct, region: string, state
 
 async function createQuote(product: StateMarketProduct, region: string, stateName: string): Promise<MarketQuote> {
   const template = cropTemplates[product.crop] ?? { unit: '/unidade', base: 100 }
-  const providerQuote = await marketPriceService.getQuote(product.crop)
+  const providerQuote = await marketGateway.getQuote(product.crop)
   const baseQuote = createReferenceQuote(product, region, stateName)
 
   if (!providerQuote) return baseQuote
@@ -941,12 +936,11 @@ function mergeProducts(profileProducts: StateMarketProduct[], userCrops: string[
 }
 
 function readUserQuotes(state: string) {
-  const stored = localStorage.getItem(storageKey(state))
-  return stored ? (JSON.parse(stored) as MarketQuote[]) : []
+  return localStorageAdapter.getJson<MarketQuote[]>(storageKey(state)) ?? []
 }
 
 function writeUserQuotes(state: string, quotes: MarketQuote[]) {
-  localStorage.setItem(storageKey(state), JSON.stringify(quotes))
+  localStorageAdapter.setJson(storageKey(state), quotes)
 }
 
 export const marketService = {

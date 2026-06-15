@@ -53,7 +53,7 @@ async function getCemadenPayload() {
   const response = await fetch(sourceUrl, {
     headers: {
       Accept: 'application/json, application/javascript;q=0.9',
-      'User-Agent': 'NibusES/1.0 (+https://nimboradar.web.app)',
+      'User-Agent': 'NimbuES/1.0 (+https://nimboradar.web.app)',
     },
     signal: AbortSignal.timeout(15000),
   })

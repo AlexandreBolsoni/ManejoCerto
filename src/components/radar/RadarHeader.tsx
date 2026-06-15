@@ -1,5 +1,5 @@
 import { Radar, RefreshCw } from 'lucide-react'
-import { Button } from '../Button'
+import { Button } from '../ui'
 import { APP_STATE } from '../../config/brand'
 import type { Field } from '../../types'
 import type { RadarWeatherData } from '../../types/weather'

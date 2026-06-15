@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="400" height="300" viewBox="-40 -30 400 300" role="img" aria-labelledby="title desc">
-  <title id="title">Símbolo NibusES</title>
+  <title id="title">Símbolo NimbuES</title>
   <desc id="desc">Nuvem verde com gota em formato de folha.</desc>
   <defs>
     <linearGradient id="cloud" x1="70" x2="230" y1="34" y2="168" gradientUnits="userSpaceOnUse">

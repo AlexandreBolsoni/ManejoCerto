@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState, type ReactNode } from 'react'
 import { demoSettings } from '../lib/mockData'
+import { createAppError } from '../lib/errors'
 import { useOnlineStatus } from '../hooks/useOnlineStatus'
 import { usePersistentState } from '../hooks/usePersistentState'
 import { climateService, type ClimateDashboard } from '../services/climateService'
@@ -27,7 +28,7 @@ function locationErrorMessage(status: LocationStatus, error?: unknown) {
     return 'Tempo esgotado ao buscar GPS. Use a localizacao por rede, informe a localidade capixaba ou ajuste o pino da fazenda no mapa.'
   }
 
-  return `Nao foi possivel obter localizacao agora. O NibusES continuara usando a localizacao cadastrada da fazenda quando ela existir.${details}`
+  return `Nao foi possivel obter localizacao agora. O NimbuES continuara usando a localizacao cadastrada da fazenda quando ela existir.${details}`
 }
 
 export function AppDataProvider({ children }: { children: ReactNode }) {
@@ -177,7 +178,7 @@ export function AppDataProvider({ children }: { children: ReactNode }) {
       },
       async addField(field) {
         if (!farm) {
-          throw new Error('Cadastre uma fazenda antes de criar uma area de cultivo.')
+          throw createAppError('VALIDATION_ERROR', 'Cadastre uma fazenda antes de criar uma area de cultivo.')
         }
 
         const saved = await fieldService.saveField(userId, farm.id, field)

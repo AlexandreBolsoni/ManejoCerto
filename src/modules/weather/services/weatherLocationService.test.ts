@@ -4,7 +4,7 @@ import { resolveWeatherLocation } from './weatherLocationService'
 
 const farm: Farm = {
   id: 'farm-1',
-  name: 'Fazenda NibusES',
+  name: 'Fazenda NimbuES',
   municipality: 'Vitória',
   state: 'ES',
   locationLabel: 'Vitória, ES',

@@ -1,0 +1,5 @@
+export { isFallbackMarketQuote, hasRealMarketSeries } from './marketFallback'
+export { marketGateway } from './marketGateway'
+export { normalizeMarketKey } from './marketNormalizer'
+export { coffeeQuoteProvider } from './providers/coffeeQuoteProvider'
+export { redacaoAgroProvider } from './providers/redacaoAgroProvider'

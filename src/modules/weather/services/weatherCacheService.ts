@@ -1,5 +1,5 @@
-import { doc, getDoc, setDoc } from 'firebase/firestore'
-import { firestoreDb } from '../../../lib/firebase'
+import { weatherCacheRepository } from '../../../services/firebase'
+import { localStorageAdapter } from '../../../services/storage'
 import type { Coordinates } from '../../../types'
 import type { WeatherProvider } from '../types'
 
@@ -60,32 +60,16 @@ function stripUndefined<T>(value: T): T {
 }
 
 function loadLocal<T>(userId: string | undefined, key: string) {
-  if (typeof window === 'undefined') return null
-
-  try {
-    const stored = window.localStorage.getItem(localKey(userId, key))
-    return stored ? (JSON.parse(stored) as CacheDocument<T>) : null
-  } catch {
-    return null
-  }
+  return localStorageAdapter.getJson<CacheDocument<T>>(localKey(userId, key))
 }
 
 function saveLocal<T>(userId: string | undefined, document: CacheDocument<T>) {
-  if (typeof window === 'undefined') return
-
-  try {
-    window.localStorage.setItem(localKey(userId, document.key), JSON.stringify(document))
-  } catch {
-    // Cache local is best-effort.
-  }
+  localStorageAdapter.setJson(localKey(userId, document.key), document)
 }
 
 async function loadFirestore<T>(userId: string | undefined, key: string) {
-  if (!firestoreDb || !userId || userId === 'demo-user') return null
-
   try {
-    const snapshot = await getDoc(doc(firestoreDb, 'users', userId, 'weather_cache', safeKey(key)))
-    return snapshot.exists() ? (snapshot.data() as CacheDocument<T>) : null
+    return weatherCacheRepository.get<CacheDocument<T>>(userId, key)
   } catch (error) {
     console.warn('Nao foi possivel ler o cache meteorologico do Firestore.', error)
     return null
@@ -93,9 +77,7 @@ async function loadFirestore<T>(userId: string | undefined, key: string) {
 }
 
 async function saveFirestore<T>(userId: string | undefined, document: CacheDocument<T>) {
-  if (!firestoreDb || !userId || userId === 'demo-user') return
-
-  await setDoc(doc(firestoreDb, 'users', userId, 'weather_cache', safeKey(document.key)), stripUndefined(document)).catch((error: unknown) => {
+  await weatherCacheRepository.save(userId, document.key, stripUndefined(document)).catch((error: unknown) => {
     console.warn('Nao foi possivel salvar o cache meteorologico no Firestore.', error)
   })
 }

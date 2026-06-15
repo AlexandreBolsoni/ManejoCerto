@@ -1,6 +1,7 @@
 import { ArrowRight, Bell, CheckCircle2, CloudRain, Crosshair, Droplets, Gauge, Leaf, Map, Sprout, Wifi } from 'lucide-react'
-import { Badge } from '../components/Badge'
-import { LinkButton } from '../components/Button'
+import { Badge } from '../components/ui'
+import { LinkButton } from '../components/ui'
+import { NimboFooter } from '../components/footer/NimboFooter'
 import { PublicHeader } from '../components/PublicHeader'
 
 const features = [
@@ -43,10 +44,10 @@ export function LandingPage() {
       <main>
         <section className="hero-section">
           <div className="hero-copy">
-            <Badge tone="green">• PWA · Funciona offline no campo</Badge>
+            <Badge tone="green">• Funciona offline no campo</Badge>
             <h1>Inteligência climática para proteger sua safra</h1>
             <p>
-              O NibusES traduz dados de previsão em decisões práticas para propriedades capixabas. Responde ao que importa:
+              O NimbuES traduz dados de previsão em decisões práticas para propriedades capixabas. Responde ao que importa:
               <em> irrigar agora ou adiar?, qual a melhor janela para aplicar defensivos?</em>
             </p>
             <div className="hero-actions">
@@ -105,7 +106,7 @@ export function LandingPage() {
 
         <section className="landing-band" id="recursos">
           <div className="section-intro">
-            <span>O que o NibusES entrega</span>
+            <span>O que o NimbuES entrega</span>
             <h2>Decisões operacionais, não números soltos</h2>
             <p>Cada card responde a uma pergunta da rotina no campo, com justificativa textual simples e nível de confiança.</p>
           </div>
@@ -125,7 +126,7 @@ export function LandingPage() {
             <Badge tone="soft">WCAG 2.2 AA · contraste 4.5:1 garantido</Badge>
             <h2>Do dado bruto à ação explicável</h2>
             <p>
-              Em vez de tabelas de meteorologia, o NibusES entrega uma recomendação por área — com o porquê,
+              Em vez de tabelas de meteorologia, o NimbuES entrega uma recomendação por área — com o porquê,
               a confiança e as fontes que sustentam a decisão.
             </p>
           </div>
@@ -164,7 +165,7 @@ export function LandingPage() {
             <span>Calibração com humano no loop</span>
             <h2>Sua observação melhora a previsão da sua fazenda</h2>
             <p>
-              A cada confirmação ou correção, o NibusES limpa falsos positivos de radares e satélites e refina
+              A cada confirmação ou correção, o NimbuES limpa falsos positivos de radares e satélites e refina
               o modelo localmente — para o seu solo, sua microrregião e sua cultura.
             </p>
             <ul>
@@ -190,7 +191,7 @@ export function LandingPage() {
           </div>
         </section>
       </main>
-      <footer className="public-footer">© 2026 NibusES · Inteligência climática para proteger sua safra</footer>
+      <NimboFooter variant="public" />
     </div>
   )
 }

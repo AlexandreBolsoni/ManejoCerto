@@ -1,7 +1,6 @@
-import { collection, deleteDoc, doc, getDocs, serverTimestamp, setDoc } from 'firebase/firestore'
-import { firestoreDb } from '../lib/firebase'
 import type { Field } from '../types'
-import { withoutUndefined } from '../utils/firestoreData'
+import { fieldRepository } from './firebase'
+import { localStorageAdapter } from './storage'
 
 function storageKey(userId: string, farmId: string) {
   return `nimbo:${userId}:${farmId}:fields`
@@ -14,14 +13,13 @@ function isSeedField(field: Field) {
 async function listFields(userId?: string, farmId?: string) {
   if (!userId || !farmId) return []
 
-  const stored = localStorage.getItem(storageKey(userId, farmId))
-  const localFields = stored ? (JSON.parse(stored) as Field[]).filter((field) => !isSeedField(field)) : []
+  const stored = localStorageAdapter.getJson<Field[]>(storageKey(userId, farmId))
+  const localFields = stored ? stored.filter((field) => !isSeedField(field)) : []
 
-  if (!firestoreDb || userId === 'demo-user') return localFields
-
-  return getDocs(collection(firestoreDb, 'users', userId, 'farms', farmId, 'fields'))
+  return fieldRepository
+    .listByFarm(userId, farmId)
     .then((snapshot) => {
-      const fields = snapshot.docs.map((item) => ({ id: item.id, ...item.data() }) as Field).filter((field) => !isSeedField(field))
+      const fields = snapshot.filter((field) => !isSeedField(field))
       return fields.length > 0 ? fields : localFields
     })
     .catch((error: unknown) => {
@@ -36,32 +34,25 @@ export const fieldService = {
   async saveField(userId: string, farmId: string, field: Field) {
     const fields = await listFields(userId, farmId)
     const nextFields = [...fields.filter((item) => item.id !== field.id), field]
-    localStorage.setItem(storageKey(userId, farmId), JSON.stringify(nextFields))
+    localStorageAdapter.setJson(storageKey(userId, farmId), nextFields)
 
-    if (firestoreDb && userId !== 'demo-user') {
-      await setDoc(doc(firestoreDb, 'users', userId, 'farms', farmId, 'fields', field.id), {
-        ...withoutUndefined(field),
-        updatedAt: serverTimestamp(),
-      }, { merge: true }).catch((error: unknown) => {
-        console.warn('Nao foi possivel salvar a area no Firestore. Mantendo copia local.', error)
-      })
-    }
+    await fieldRepository.save(userId, farmId, field).catch((error: unknown) => {
+      console.warn('Nao foi possivel salvar a area no Firestore. Mantendo copia local.', error)
+    })
 
     return field
   },
 
   async deleteField(userId: string, farmId: string, fieldId: string) {
     const fields = await listFields(userId, farmId)
-    localStorage.setItem(storageKey(userId, farmId), JSON.stringify(fields.filter((item) => item.id !== fieldId)))
+    localStorageAdapter.setJson(storageKey(userId, farmId), fields.filter((item) => item.id !== fieldId))
 
-    if (firestoreDb && userId !== 'demo-user') {
-      await deleteDoc(doc(firestoreDb, 'users', userId, 'farms', farmId, 'fields', fieldId)).catch((error: unknown) => {
-        console.warn('Nao foi possivel apagar a area no Firestore. Removendo copia local.', error)
-      })
-    }
+    await fieldRepository.delete(userId, farmId, fieldId).catch((error: unknown) => {
+      console.warn('Nao foi possivel apagar a area no Firestore. Removendo copia local.', error)
+    })
   },
 
   clearFarmFields(userId: string, farmId: string) {
-    localStorage.removeItem(storageKey(userId, farmId))
+    localStorageAdapter.removeItem(storageKey(userId, farmId))
   },
 }

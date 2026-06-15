@@ -1,4 +1,5 @@
 import type { Coordinates } from '../types'
+import { localStorageAdapter } from './storage'
 
 export type BrazilState = {
   id: number
@@ -97,10 +98,6 @@ export const brazilStates: BrazilState[] = [
   { id: 17, uf: 'TO', name: 'Tocantins' },
 ]
 
-function storageAvailable() {
-  return typeof window !== 'undefined' && typeof window.localStorage !== 'undefined'
-}
-
 function stateNameFromUf(uf: string) {
   return brazilStates.find((state) => state.uf === uf)?.name ?? uf
 }
@@ -136,47 +133,19 @@ function coordinatesCacheKey(municipalityId: number) {
 }
 
 function loadPlacesFromCache(uf: string) {
-  if (!storageAvailable()) return null
-
-  try {
-    const stored = window.localStorage.getItem(cacheKey(uf))
-    if (!stored) return null
-    return JSON.parse(stored) as PlaceSearchResult[]
-  } catch {
-    return null
-  }
+  return localStorageAdapter.getJson<PlaceSearchResult[]>(cacheKey(uf))
 }
 
 function savePlacesToCache(uf: string, places: PlaceSearchResult[]) {
-  if (!storageAvailable()) return
-
-  try {
-    window.localStorage.setItem(cacheKey(uf), JSON.stringify(places))
-  } catch {
-    // Cache best-effort only.
-  }
+  localStorageAdapter.setJson(cacheKey(uf), places)
 }
 
 function loadCoordinatesFromCache(municipalityId: number) {
-  if (!storageAvailable()) return null
-
-  try {
-    const stored = window.localStorage.getItem(coordinatesCacheKey(municipalityId))
-    if (!stored) return null
-    return JSON.parse(stored) as Coordinates
-  } catch {
-    return null
-  }
+  return localStorageAdapter.getJson<Coordinates>(coordinatesCacheKey(municipalityId))
 }
 
 function saveCoordinatesToCache(municipalityId: number, coordinates: Coordinates) {
-  if (!storageAvailable()) return
-
-  try {
-    window.localStorage.setItem(coordinatesCacheKey(municipalityId), JSON.stringify(coordinates))
-  } catch {
-    // Cache best-effort only.
-  }
+  localStorageAdapter.setJson(coordinatesCacheKey(municipalityId), coordinates)
 }
 
 function mapMunicipality(item: IbgeMunicipality, uf: string): PlaceSearchResult {

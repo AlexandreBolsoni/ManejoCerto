@@ -1,7 +1,13 @@
-# NimbusES
+# NimbuES
 
 PWA React/TypeScript de inteligência climática focada em propriedades rurais do Espírito Santo, inspirada diretamente no protótipo visual do Lovable:
 https://nimbo-farm-weather.lovable.app
+
+## Documentação completa
+
+A documentação técnica detalhada do projeto está em:
+
+- [docs/DOCUMENTACAO_NIMBUES.md](docs/DOCUMENTACAO_NIMBUES.md)
 
 ## Rotas
 

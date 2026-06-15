@@ -1,19 +1,13 @@
 import { useEffect, useState } from 'react'
+import { localStorageAdapter } from '../services/storage'
 
 export function usePersistentState<T>(key: string, initialValue: T) {
   const [value, setValue] = useState<T>(() => {
-    const stored = localStorage.getItem(key)
-    if (!stored) return initialValue
-
-    try {
-      return JSON.parse(stored) as T
-    } catch {
-      return initialValue
-    }
+    return localStorageAdapter.getJson<T>(key) ?? initialValue
   })
 
   useEffect(() => {
-    localStorage.setItem(key, JSON.stringify(value))
+    localStorageAdapter.setJson(key, value)
   }, [key, value])
 
   return [value, setValue] as const

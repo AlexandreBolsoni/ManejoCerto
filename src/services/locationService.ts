@@ -1,4 +1,5 @@
 import type { Coordinates } from '../types'
+import { localStorageAdapter } from './storage'
 
 export type LocationStatus = 'idle' | 'requesting' | 'tracking' | 'denied' | 'unavailable' | 'timeout' | 'error'
 
@@ -48,33 +49,14 @@ function numberValue(value: unknown) {
   return Number.isFinite(parsed) ? parsed : null
 }
 
-function storageAvailable() {
-  return typeof window !== 'undefined' && typeof window.localStorage !== 'undefined'
-}
-
 function cacheNetworkPosition(coordinates: Coordinates) {
-  if (!storageAvailable()) return
-
-  try {
-    window.localStorage.setItem(networkCacheKey, JSON.stringify(coordinates))
-  } catch {
-    // Cache best-effort only.
-  }
+  localStorageAdapter.setJson(networkCacheKey, coordinates)
 }
 
 function loadCachedNetworkPosition() {
-  if (!storageAvailable()) return null
-
-  try {
-    const stored = window.localStorage.getItem(networkCacheKey)
-    if (!stored) return null
-
-    const coordinates = JSON.parse(stored) as Coordinates
-    if (!coordinates.updatedAt || Date.now() - new Date(coordinates.updatedAt).getTime() > networkCacheMaxAgeMs) return null
-    return coordinates
-  } catch {
-    return null
-  }
+  const coordinates = localStorageAdapter.getJson<Coordinates>(networkCacheKey)
+  if (!coordinates?.updatedAt || Date.now() - new Date(coordinates.updatedAt).getTime() > networkCacheMaxAgeMs) return null
+  return coordinates
 }
 
 function networkCoordinates(latitude: unknown, longitude: unknown, accuracyM = 50_000): Coordinates | null {

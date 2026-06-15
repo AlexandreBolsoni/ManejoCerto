@@ -11,10 +11,11 @@ import {
   updateProfile,
   type User,
 } from 'firebase/auth'
-import { doc, serverTimestamp, setDoc } from 'firebase/firestore'
 import { demoUser } from '../lib/mockData'
-import { firebaseAuth, firestoreDb } from '../lib/firebase'
+import { firebaseAuth } from '../lib/firebase'
 import type { UserProfile } from '../types'
+import { userRepository } from './firebase'
+import { localStorageAdapter } from './storage'
 
 const provider = new GoogleAuthProvider()
 const emailLinkStorageKey = 'nimbo:emailForSignIn'
@@ -22,7 +23,7 @@ const emailLinkStorageKey = 'nimbo:emailForSignIn'
 function mapFirebaseUser(user: User): UserProfile {
   return {
     id: user.uid,
-    name: user.displayName ?? 'Produtor NibusES',
+    name: user.displayName ?? 'Produtor NimbuES',
     email: user.email ?? 'produtor@nimbo.local',
     initials: (user.displayName ?? user.email ?? 'PN')
       .split(/\s|@/)
@@ -37,24 +38,14 @@ function mapFirebaseUser(user: User): UserProfile {
 async function saveUserProfile(user: User) {
   const profile = mapFirebaseUser(user)
 
-  if (firestoreDb) {
-    void setDoc(
-      doc(firestoreDb, 'users', profile.id),
-      {
-        id: profile.id,
-        name: profile.name,
-        email: profile.email,
-        initials: profile.initials,
-        farmName: profile.farmName,
-        authCreatedAt: user.metadata.creationTime ?? null,
-        lastLoginAt: user.metadata.lastSignInTime ?? null,
-        updatedAt: serverTimestamp(),
-      },
-      { merge: true },
-    ).catch((error: unknown) => {
+  void userRepository
+    .saveProfile(profile, {
+      authCreatedAt: user.metadata.creationTime ?? null,
+      lastLoginAt: user.metadata.lastSignInTime ?? null,
+    })
+    .catch((error: unknown) => {
       console.warn('Nao foi possivel salvar o perfil no Firestore. O login continuara com cache local.', error)
     })
-  }
 
   return profile
 }
@@ -106,7 +97,7 @@ export const authService = {
       handleCodeInApp: true,
     })
 
-    window.localStorage.setItem(emailLinkStorageKey, normalizedEmail)
+    localStorageAdapter.setItem(emailLinkStorageKey, normalizedEmail)
     return null
   },
 
@@ -117,15 +108,15 @@ export const authService = {
   async completeEmailLink(url: string) {
     if (!firebaseAuth || !isSignInWithEmailLink(firebaseAuth, url)) return null
 
-    const storedEmail = window.localStorage.getItem(emailLinkStorageKey)
-    const email = storedEmail ?? window.prompt('Confirme o e-mail usado para entrar no NibusES')
+    const storedEmail = localStorageAdapter.getItem(emailLinkStorageKey)
+    const email = storedEmail ?? window.prompt('Confirme o e-mail usado para entrar no NimbuES')
 
     if (!email) {
       throw new Error('E-mail necessario para concluir o login por link.')
     }
 
     const result = await completeSignInWithEmailLink(firebaseAuth, email, url)
-    window.localStorage.removeItem(emailLinkStorageKey)
+    localStorageAdapter.removeItem(emailLinkStorageKey)
 
     return saveUserProfile(result.user)
   },

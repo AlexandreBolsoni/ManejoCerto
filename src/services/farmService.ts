@@ -1,7 +1,6 @@
-import { collection, deleteDoc, doc, getDocs, serverTimestamp, setDoc } from 'firebase/firestore'
-import { firestoreDb } from '../lib/firebase'
 import type { Farm } from '../types'
-import { withoutUndefined } from '../utils/firestoreData'
+import { farmRepository } from './firebase'
+import { localStorageAdapter } from './storage'
 
 function storageKey(userId: string) {
   return `nimbo:${userId}:farm`
@@ -38,14 +37,13 @@ function sortFarms(farms: Farm[]) {
 
 export const farmService = {
   async listFarms(userId: string) {
-    const stored = localStorage.getItem(storageKey(userId))
-    const localFarms = stored ? sortFarms([JSON.parse(stored) as Farm].filter((farm) => !isSeedFarm(farm))) : []
+    const stored = localStorageAdapter.getJson<Farm>(storageKey(userId))
+    const localFarms = stored ? sortFarms([stored].filter((farm) => !isSeedFarm(farm))) : []
 
-    if (!firestoreDb || userId === 'demo-user') return localFarms
-
-    return getDocs(collection(firestoreDb, 'users', userId, 'farms'))
+    return farmRepository
+      .listByUser(userId)
       .then((snapshot) => {
-        const farms = sortFarms(snapshot.docs.map((item) => ({ id: item.id, ...item.data() }) as Farm).filter((farm) => !isSeedFarm(farm)))
+        const farms = sortFarms(snapshot.filter((farm) => !isSeedFarm(farm)))
         return farms.length > 0 ? farms : localFarms
       })
       .catch((error: unknown) => {
@@ -55,29 +53,20 @@ export const farmService = {
   },
 
   async saveFarm(userId: string, farm: Farm) {
-    localStorage.setItem(storageKey(userId), JSON.stringify(farm))
-
-    if (firestoreDb && userId !== 'demo-user') {
-      await setDoc(doc(firestoreDb, 'users', userId, 'farms', farm.id), {
-        ...withoutUndefined(farm),
-        updatedAt: serverTimestamp(),
-      }, { merge: true }).catch((error: unknown) => {
-        console.warn('Nao foi possivel salvar a fazenda no Firestore. Mantendo copia local.', error)
-      })
-    }
+    localStorageAdapter.setJson(storageKey(userId), farm)
+    await farmRepository.save(userId, farm).catch((error: unknown) => {
+      console.warn('Nao foi possivel salvar a fazenda no Firestore. Mantendo copia local.', error)
+    })
 
     return farm
   },
 
   async deleteFarm(userId: string, farmId: string) {
-    const stored = localStorage.getItem(storageKey(userId))
-    const localFarm = stored ? (JSON.parse(stored) as Farm) : null
-    if (localFarm?.id === farmId) localStorage.removeItem(storageKey(userId))
+    const localFarm = localStorageAdapter.getJson<Farm>(storageKey(userId))
+    if (localFarm?.id === farmId) localStorageAdapter.removeItem(storageKey(userId))
 
-    if (firestoreDb && userId !== 'demo-user') {
-      await deleteDoc(doc(firestoreDb, 'users', userId, 'farms', farmId)).catch((error: unknown) => {
-        console.warn('Nao foi possivel apagar a fazenda no Firestore. Removendo copia local.', error)
-      })
-    }
+    await farmRepository.delete(userId, farmId).catch((error: unknown) => {
+      console.warn('Nao foi possivel apagar a fazenda no Firestore. Removendo copia local.', error)
+    })
   },
 }

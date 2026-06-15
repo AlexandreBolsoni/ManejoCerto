@@ -1,4 +1,5 @@
 import type { RadarWeatherData } from '../../types/weather'
+import { localStorageAdapter } from '../storage'
 
 const CACHE_PREFIX = 'nimbo:radar-weather:v1'
 
@@ -13,23 +14,10 @@ function key(farmId: string) {
 
 export const radarWeatherCache = {
   load(farmId: string): CachedRadarWeather | null {
-    if (typeof window === 'undefined') return null
-
-    try {
-      const stored = window.localStorage.getItem(key(farmId))
-      return stored ? (JSON.parse(stored) as CachedRadarWeather) : null
-    } catch {
-      return null
-    }
+    return localStorageAdapter.getJson<CachedRadarWeather>(key(farmId))
   },
 
   save(data: RadarWeatherData) {
-    if (typeof window === 'undefined') return
-
-    try {
-      window.localStorage.setItem(key(data.farm.id), JSON.stringify({ data, savedAt: new Date().toISOString() }))
-    } catch {
-      // Offline cache is best-effort.
-    }
+    localStorageAdapter.setJson(key(data.farm.id), { data, savedAt: new Date().toISOString() })
   },
 }

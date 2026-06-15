@@ -1,4 +1,4 @@
-const CACHE_NAME = 'nibuses-prototype-v6'
+const CACHE_NAME = 'nimbues-prototype-v6'
 const APP_SHELL = [
   '/',
   '/index.html',

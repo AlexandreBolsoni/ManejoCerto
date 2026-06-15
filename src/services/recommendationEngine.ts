@@ -55,7 +55,7 @@ export function generateRecommendations(fields: Field[], weather: WeatherSnapsho
       title: shouldDelayIrrigation ? 'Adiar irrigação e reavaliar após a chuva' : 'Irrigar na melhor janela disponível',
       description: shouldDelayIrrigation
         ? `${weather.current.rainNext6h} de chuva nas próximas 6h e ET₀ de ${weather.et0.valueMm.toFixed(1)} mm. Evite lâmina desnecessária.`
-        : `Chuva baixa nas próximas 24h e ET₀ de ${weather.et0.valueMm.toFixed(1)} mm. Use a janela indicada pelo NibusES.`,
+        : `Chuva baixa nas próximas 24h e ET₀ de ${weather.et0.valueMm.toFixed(1)} mm. Use a janela indicada pelo NimbuES.`,
       action: shouldDelayIrrigation ? 'Adiar irrigação' : 'Programar irrigação',
       justification: `Chuva 6h: ${weather.current.rainNext6h}. Chuva 24h estimada: ${rain24h.toFixed(1)} mm. ET₀: ${weather.et0.valueMm.toFixed(1)} mm.`,
       confidence: irrigationConfidence,

@@ -1,5 +1,6 @@
 import type { Farm } from '../types'
 import { placeSearchService } from './placeSearchService'
+import { localStorageAdapter } from './storage'
 
 const INMET_NEAREST_STATION_URL = 'https://apiprevmet3.inmet.gov.br/estacao/proxima'
 const CACHE_PREFIX = 'nimbo:inmet-observation:v1'
@@ -62,10 +63,6 @@ export type InmetStationObservation = {
   solarRadiationKjM2?: number
   sourceUrl: string
   dataQualityLabel: string
-}
-
-function storageAvailable() {
-  return typeof window !== 'undefined' && typeof window.localStorage !== 'undefined'
 }
 
 function normalizeText(value: string) {
@@ -139,28 +136,16 @@ function cacheKey(municipalityId: number) {
 }
 
 function loadCachedObservation(municipalityId: number) {
-  if (!storageAvailable()) return null
+  const observation = localStorageAdapter.getJson<InmetStationObservation>(cacheKey(municipalityId))
+  if (!observation) return null
 
-  try {
-    const stored = window.localStorage.getItem(cacheKey(municipalityId))
-    if (!stored) return null
-    const observation = JSON.parse(stored) as InmetStationObservation
-    const capturedAt = new Date(observation.observedAt).getTime()
-    if (!Number.isFinite(capturedAt) || Date.now() - capturedAt > 48 * 60 * 60 * 1000) return null
-    return observation
-  } catch {
-    return null
-  }
+  const capturedAt = new Date(observation.observedAt).getTime()
+  if (!Number.isFinite(capturedAt) || Date.now() - capturedAt > 48 * 60 * 60 * 1000) return null
+  return observation
 }
 
 function saveCachedObservation(municipalityId: number, observation: InmetStationObservation) {
-  if (!storageAvailable()) return
-
-  try {
-    window.localStorage.setItem(cacheKey(municipalityId), JSON.stringify(observation))
-  } catch {
-    // Cache best-effort only.
-  }
+  localStorageAdapter.setJson(cacheKey(municipalityId), observation)
 }
 
 async function resolveMunicipalityId(farm: Farm) {

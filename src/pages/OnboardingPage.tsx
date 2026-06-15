@@ -1,6 +1,7 @@
 import { ArrowRight, Bell, CheckCircle2, CloudRain, LineChart, LocateFixed, MapPinned, Radar, ShieldCheck, Sprout } from 'lucide-react'
 import { FullLogo } from '../components/Brand'
-import { LinkButton } from '../components/Button'
+import { LinkButton } from '../components/ui'
+import { NimboFooter } from '../components/footer/NimboFooter'
 
 const items = [
   {
@@ -50,7 +51,7 @@ const setupSteps = [
 
 export function OnboardingPage() {
   return (
-    <main className="onboarding-page">
+    <main className="onboarding-page onboarding-page-with-footer">
       <section className="onboarding-card">
         <header className="onboarding-header">
           <FullLogo className="onboarding-logo" />
@@ -62,7 +63,7 @@ export function OnboardingPage() {
             <span className="onboarding-kicker">PWA · funciona offline no campo</span>
             <h1>Configure sua fazenda antes de confiar nos alertas</h1>
             <p>
-              O NibusES transforma previsão, radar e observações locais em decisões por área de cultivo. Para isso,
+              O NimbuES transforma previsão, radar e observações locais em decisões por área de cultivo. Para isso,
               começamos pela cidade, município, distrito, vila ou povoado e pelo ponto aproximado no mapa.
             </p>
 
@@ -137,6 +138,7 @@ export function OnboardingPage() {
           </small>
         </footer>
       </section>
+      <NimboFooter variant="public" />
     </main>
   )
 }

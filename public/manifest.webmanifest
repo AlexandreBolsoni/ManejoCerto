@@ -1,6 +1,6 @@
 {
-  "name": "NibusES",
-  "short_name": "NibusES",
+  "name": "NimbuES",
+  "short_name": "NimbuES",
   "description": "Inteligencia climatica para proteger a safra capixaba.",
   "start_url": "/",
   "display": "standalone",
