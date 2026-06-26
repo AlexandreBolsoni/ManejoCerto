@@ -1,0 +1,240 @@
+/* ==========================================================================
+   TELA DE ALERTAS (.alerts-page)
+   ========================================================================== */
+
+.alerts-page {
+    display: grid;
+    gap: 32px;
+    /* Espaço entre o cabeçalho e a lista de alertas */
+}
+
+/* ==========================================================================
+   GRUPOS DE SEVERIDADE
+   ========================================================================== */
+
+.alert-groups {
+    display: grid;
+    gap: 40px;
+    /* Grande respiro entre blocos Crítico, Alto, Moderado, etc. */
+}
+
+.alert-group {
+    display: grid;
+    gap: 16px;
+}
+
+.alert-group-title {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border);
+}
+
+.alert-group-title h2 {
+    font-size: 1.15rem;
+    color: var(--green-950);
+    margin: 0;
+}
+
+.group-empty {
+    color: var(--muted);
+    font-size: 0.95rem;
+    font-style: italic;
+    padding: 12px 0;
+}
+
+/* ==========================================================================
+   CARDS DE ALERTA (.alert-card)
+   ========================================================================== */
+
+.alert-card {
+    display: grid;
+    /* Layout Desktop: [Ícone] [Conteúdo] [Sininho da direita] */
+    grid-template-columns: 48px minmax(0, 1fr) 24px;
+    gap: 18px;
+    padding: 22px;
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    background: var(--card);
+    box-shadow: var(--shadow-sm);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.alert-card:hover {
+    box-shadow: var(--shadow);
+    transform: translateY(-2px);
+}
+
+/* O ícone decorativo no final do card */
+.alert-card>svg:last-child {
+    color: var(--muted);
+    opacity: 0.4;
+    align-self: center;
+}
+
+/* ==========================================================================
+   CORES POR SEVERIDADE (Indicadores Visuais Claros)
+   ========================================================================== */
+
+/* Linha lateral grossa para rápida identificação visual */
+.alert-card.severity-critico {
+    border-left: 5px solid #dc2626;
+}
+
+.alert-card.severity-alto {
+    border-left: 5px solid #ea580c;
+}
+
+.alert-card.severity-moderado {
+    border-left: 5px solid #ca8a04;
+}
+
+.alert-card.severity-baixo {
+    border-left: 5px solid #2563eb;
+}
+
+/* Azul para avisos mais leves, como chuva fraca */
+
+/* Container do ícone principal (.alert-symbol) colorizado */
+.alert-symbol {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+}
+
+.severity-critico .alert-symbol {
+    background: #fef2f2;
+    color: #dc2626;
+}
+
+.severity-alto .alert-symbol {
+    background: #fff7ed;
+    color: #ea580c;
+}
+
+.severity-moderado .alert-symbol {
+    background: #fefce8;
+    color: #ca8a04;
+}
+
+.severity-baixo .alert-symbol {
+    background: #eff6ff;
+    color: #2563eb;
+}
+
+/* ==========================================================================
+   CONTEÚDO E TIPOGRAFIA
+   ========================================================================== */
+
+.alert-content {
+    display: grid;
+    gap: 8px;
+}
+
+.alert-meta {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.85rem;
+    color: var(--muted);
+}
+
+.alert-content h3 {
+    font-size: 1.05rem;
+    color: var(--green-950);
+    line-height: 1.35;
+    margin: 0;
+}
+
+.alert-content p {
+    font-size: 0.95rem;
+    color: #4d554c;
+    line-height: 1.5;
+    margin: 0;
+}
+
+.alert-content small {
+    font-size: 0.85rem;
+    color: var(--muted);
+    font-weight: 600;
+    margin-bottom: 8px;
+    /* Afasta o texto dos botões de ação */
+}
+
+/* ==========================================================================
+   AÇÕES / BOTÕES (Aqui morava o problema de quebrar a tela)
+   ========================================================================== */
+
+.alert-actions {
+    display: flex;
+    flex-wrap: wrap;
+    /* CRUCIAL: Faz os botões caírem de linha se faltar espaço */
+    gap: 10px;
+    margin-top: 6px;
+}
+
+.alert-actions .btn,
+.alert-actions button {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.85rem;
+    padding: 6px 14px;
+}
+
+/* ==========================================================================
+   RESPONSIVIDADE (MOBILE & TABLET)
+   ========================================================================== */
+
+/* Telas médias (Tablets/Celulares em Paisagem) */
+@media (max-width: 768px) {
+    .alert-card {
+        /* Remove a coluna do sininho decorativo lateral para ganhar espaço */
+        grid-template-columns: 44px minmax(0, 1fr);
+        gap: 14px;
+        padding: 18px;
+    }
+
+    .alert-card>svg:last-child {
+        display: none;
+        /* Esconde o sino inútil no mobile */
+    }
+}
+
+/* Telas pequenas (Smartphones convencionais) */
+@media (max-width: 520px) {
+    .alert-card {
+        /* Muda o layout: Ícone e Título ficam juntos no topo, resto em baixo */
+        display: flex;
+        flex-direction: column;
+    }
+
+    .alert-symbol {
+        width: 40px;
+        height: 40px;
+        margin-bottom: -6px;
+        /* Aproxima um pouco o ícone do conteúdo no mobile */
+    }
+
+    .alert-actions {
+        flex-direction: column;
+        /* Empilha os botões um em cima do outro */
+        width: 100%;
+        margin-top: 12px;
+    }
+
+    .alert-actions .btn,
+    .alert-actions button {
+        width: 100%;
+        /* Botões ocupam 100% da largura no celular (Alvo de clique maior) */
+        justify-content: center;
+        min-height: 42px;
+        /* Altura ideal para o dedo tocar sem errar */
+    }
+}

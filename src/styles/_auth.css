@@ -1,0 +1,375 @@
+/* ==========================================================================
+   TELA DE LOGIN, CADASTRO E RECUPERAÇÃO DE SENHA
+   ========================================================================== */
+
+.auth-page,
+.not-found-page {
+    display: grid;
+    min-height: 100dvh;
+    /* dvh substitui o svh para lidar melhor com barras de navegação mobile */
+    place-items: center;
+    padding: 28px;
+    background: linear-gradient(180deg, var(--surface), var(--green-50));
+}
+
+.auth-page-with-footer {
+    align-content: start;
+    gap: 24px;
+    place-items: center;
+}
+
+.auth-page-with-footer .nimbo-footer.public {
+    width: min(100%, 430px);
+}
+
+.auth-card {
+    display: grid;
+    gap: 22px;
+    width: min(100%, 430px);
+    padding: 32px;
+    border: 1px solid var(--border);
+    border-radius: 26px;
+    background: var(--card);
+    box-shadow: var(--shadow-lg);
+}
+.logo {
+    width: 140px;
+    height: auto;
+    object-fit: contain;
+    margin: 0 auto;
+    align-self: center;
+}
+
+
+.auth-card-header {
+    display: grid;
+    gap: 6px;
+    text-align: center;
+    justify-items: center;
+}
+
+
+
+.auth-card h1 {
+    color: var(--green-950);
+    font-size: 1.85rem;
+    line-height: 1.12;
+    letter-spacing: -0.02em;
+}
+
+.auth-card p,
+.auth-card small {
+    color: var(--muted);
+    font-size: 0.95rem;
+}
+
+.auth-form {
+    display: grid;
+    gap: 16px;
+}
+
+.auth-form-actions {
+    display: grid;
+    gap: 12px;
+    margin-top: 8px;
+}
+
+.auth-form-actions .btn {
+    min-height: 46px;
+    font-size: 1rem;
+}
+
+.auth-options {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: -4px;
+}
+
+.auth-options label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--muted);
+    font-size: 0.88rem;
+    cursor: pointer;
+}
+
+.auth-options input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    accent-color: var(--green-700);
+    cursor: pointer;
+}
+
+.auth-forgot-password {
+    color: var(--green-700);
+    font-size: 0.88rem;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.auth-forgot-password:hover {
+    text-decoration: underline;
+}
+
+.auth-mode,
+.auth-inline-actions {
+    display: grid;
+    padding: 4px;
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    background: rgba(124, 181, 92, 0.08);
+    gap: 4px;
+}
+
+.auth-mode {
+    grid-template-columns: 1fr 1fr;
+    margin-bottom: 10px;
+}
+
+.auth-inline-actions {
+    grid-template-columns: 1fr 1fr;
+    border-radius: 14px;
+    background: var(--surface);
+}
+
+.auth-mode button,
+.auth-inline-actions button {
+    display: inline-flex;
+    min-height: 40px;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    border: 0;
+    border-radius: 14px;
+    background: transparent;
+    color: var(--muted);
+    cursor: pointer;
+    font: inherit;
+    font-size: 0.88rem;
+    font-weight: 700;
+    transition: all 150ms ease;
+}
+
+.auth-mode button[aria-selected="true"],
+.auth-inline-actions button[aria-pressed="true"] {
+    background: var(--card);
+    color: var(--green-900);
+    box-shadow: var(--shadow-sm);
+}
+
+.auth-message {
+    padding: 12px 14px;
+    border-radius: 12px;
+    font-size: 0.9rem;
+    line-height: 1.45;
+    text-align: center;
+}
+
+.auth-message.success {
+    border: 1px solid rgba(124, 181, 92, 0.34);
+    background: rgba(124, 181, 92, 0.12);
+    color: var(--green-900);
+}
+
+.auth-message.error {
+    border: 1px solid rgba(194, 65, 12, 0.22);
+    background: rgba(255, 247, 237, 0.9);
+    color: #9a3412;
+}
+
+.divider {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 4px 0;
+    color: var(--muted);
+    font-size: 0.86rem;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.divider::before,
+.divider::after {
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+    content: "";
+}
+
+.social-login-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    min-height: 46px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-pill);
+    background: var(--card);
+    color: var(--text);
+    font-weight: 600;
+    transition: background 150ms ease;
+    cursor: pointer;
+    /* Garante que o cursor fique como 'mãozinha' mesmo se não for um <button> */
+}
+
+.social-login-btn:hover {
+    background: var(--surface);
+}
+
+.social-login-btn svg {
+    width: 20px;
+    height: 20px;
+}
+
+.auth-footer-links {
+    text-align: center;
+    margin-top: 10px;
+    color: var(--muted);
+    font-size: 0.9rem;
+}
+
+.auth-footer-links a {
+    color: var(--green-700);
+    font-weight: 700;
+}
+
+.auth-footer-links a:hover {
+    text-decoration: underline;
+}
+
+/* ==========================================================================
+   FORMULÁRIO DE AUTENTICAÇÃO (.auth-form) e CAMPOS
+   ========================================================================== */
+
+.auth-form {
+    display: grid;
+    gap: 20px;
+    /* Espaçamento ideal para respirar entre os blocos de input */
+}
+
+/* Estilização estrutural para os seletores internos do TextField */
+.auth-form .field-wrapper,
+.auth-form>div:not(.auth-inline-actions) {
+    display: grid;
+    gap: 6px;
+}
+
+/* Estilização das Labels (Rótulos) */
+.auth-form label {
+    display: block;
+    color: var(--green-950);
+    font-size: 0.84rem;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+}
+
+/* Estilização Geral dos Inputs (E-mail, Texto e Senha) */
+.auth-form input[type="email"],
+.auth-form input[type="text"],
+.auth-form input[type="password"] {
+    width: 100%;
+    min-height: 46px;
+    padding: 12px 16px;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    /* Combina com o arredondamento suave dos botões */
+    background: var(--card);
+    color: var(--text);
+    font-family: inherit;
+    font-size: 0.95rem;
+    transition: border-color 150ms ease, box-shadow 150ms ease;
+}
+
+/* Efeito Hover nos Inputs */
+.auth-form input[type="email"]:hover,
+.auth-form input[type="text"]:hover,
+.auth-form input[type="password"]:hover {
+    border-color: rgba(124, 181, 92, 0.5);
+    /* Tom suave de verde no contorno */
+}
+
+/* Estado de Foco Ativo (Focus) - Essencial para UX e Acessibilidade */
+.auth-form input[type="email"]:focus,
+.auth-form input[type="text"]:focus,
+.auth-form input[type="password"]:focus {
+    outline: none;
+    border-color: var(--green-600);
+    /* Cria um anel de foco elegante e suave baseado na cor de destaque */
+    box-shadow: 0 0 0 4px rgba(124, 181, 92, 0.18);
+}
+
+/* Estilização dos Placeholders */
+.auth-form input::placeholder {
+    color: var(--muted);
+    opacity: 0.65;
+    font-size: 0.9rem;
+}
+
+/* Ajuste para o botão principal quando inserido no fluxo do form */
+.auth-form .btn.full,
+.auth-form button[type="submit"] {
+    width: 100%;
+    margin-top: 6px;
+}
+
+/* ==========================================================================
+   CLASSES NOVAS (Substituindo CSS inline)
+   ========================================================================== */
+
+.auth-switch-mode {
+    text-align: center;
+    margin-top: 8px;
+}
+
+.auth-switch-mode button {
+    background: transparent;
+    border: none;
+    text-decoration: underline;
+    text-underline-offset: 4px;
+    /* Afasta o sublinhado para leitura mais limpa */
+    cursor: pointer;
+    font-size: 0.875rem;
+    color: var(--muted);
+    transition: color 150ms ease;
+}
+
+.auth-switch-mode button:hover,
+.auth-switch-mode button:focus-visible {
+    color: var(--green-700);
+    outline: none;
+}
+
+.auth-terms {
+    display: block;
+    text-align: center;
+    margin-top: 8px;
+}
+
+/* ==========================================================================
+   RESPONSIVIDADE MOBILE
+   ========================================================================== */
+
+@media (max-width: 520px) {
+
+    .auth-page,
+    .not-found-page {
+        padding: 16px;
+    }
+
+    .auth-card {
+        padding: 24px 22px;
+        border-radius: 22px;
+    }
+
+    .auth-card h1 {
+        font-size: 1.65rem;
+    }
+
+    .auth-options {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+    }
+}

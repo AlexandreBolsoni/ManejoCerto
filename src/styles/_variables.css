@@ -1,0 +1,30 @@
+:root {
+  --green-50: #f2f8ed;
+  --green-100: #e5f0dd;
+  --green-300: #85c262;
+  --green-400: #7cb55c;
+  --green-500: #6b9c4f;
+  --green-700: #50753c;
+  --green-900: #25361b;
+  --green-950: #25361b;
+  --surface: #fbfcf6;
+  --surface-soft: #f4f8ee;
+  --card: #ffffff;
+  --border: #dfe7d8;
+  --text: #25361b;
+  --muted: #5c6458;
+  --danger: #d72f2f;
+  --danger-soft: #fee8e8;
+  --amber: #e69f21;
+  --amber-soft: #fff4d8;
+  --shadow-sm: 0 1px 4px rgba(37, 54, 27, 0.08);
+  --shadow: 0 2px 8px -2px rgba(37, 54, 27, 0.08), 0 1px 3px -1px rgba(37, 54, 27, 0.06);
+  --shadow-lg: 0 20px 55px rgba(37, 54, 27, 0.12);
+  --radius-card: 22px;
+  --radius-pill: 999px;
+  --sidebar-width: 151px;
+  color: var(--text);
+  background: var(--surface);
+  font: 16px/1.5 Inter, ui-sans-serif, system-ui, sans-serif;
+  letter-spacing: 0;
+}

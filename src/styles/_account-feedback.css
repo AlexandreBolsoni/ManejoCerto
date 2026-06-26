@@ -1,0 +1,338 @@
+.feedback-page {
+  max-width: 760px;
+}
+
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  margin-bottom: 12px;
+  color: var(--muted);
+  background: transparent;
+  border: 0;
+  font-weight: 600;
+}
+
+.feedback-header {
+  display: grid;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.feedback-progress {
+  height: 6px;
+  overflow: hidden;
+  border-radius: var(--radius-pill);
+  background: var(--green-50);
+}
+
+.feedback-progress span {
+  display: block;
+  width: 25%;
+  height: 100%;
+  background: var(--green-700);
+}
+
+.feedback-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 250px;
+  gap: 18px;
+  align-items: start;
+}
+
+.feedback-question-card {
+  display: grid;
+  gap: 18px;
+  padding: 32px;
+}
+
+.feedback-question-card h2 {
+  font-size: 1.55rem;
+}
+
+.feedback-question-card p,
+.feedback-side-card p,
+.feedback-side-card small {
+  color: var(--muted);
+}
+
+.choice-row {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.choice-row button,
+.tri-choice button {
+  min-height: 56px;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  background: var(--card);
+  font-weight: 700;
+}
+
+.choice-row button.active,
+.tri-choice button.active {
+  color: var(--surface);
+  background: var(--green-700);
+  border-color: var(--green-700);
+}
+
+.choice-stack {
+  display: grid;
+  gap: 12px;
+}
+
+.toggle-choice,
+.tri-choice {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.tri-choice div {
+  display: flex;
+  gap: 8px;
+}
+
+.tri-choice button {
+  min-height: 34px;
+  padding-inline: 14px;
+}
+
+.toggle-choice input,
+.preference-row input {
+  width: 42px;
+  height: 24px;
+  accent-color: var(--green-700);
+}
+
+.success-note {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--green-700);
+  font-weight: 700;
+}
+
+.feedback-side-card {
+  display: grid;
+  gap: 12px;
+  padding: 22px;
+}
+
+.account-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) 1fr;
+  gap: 18px;
+  margin-top: 22px;
+}
+
+.profile-card,
+.plan-card,
+.farms-card,
+.fields-management-card,
+.team-card,
+.preferences-card {
+  display: grid;
+  gap: 18px;
+  padding: 22px;
+}
+
+.profile-row {
+  display: grid;
+  grid-template-columns: 64px minmax(0, 1fr) auto;
+  gap: 18px;
+  align-items: center;
+}
+
+.avatar-large {
+  width: 64px;
+  height: 64px;
+  font-size: 1.4rem;
+}
+
+.profile-row p,
+.plan-card p {
+  color: var(--muted);
+}
+
+.farms-card,
+.fields-management-card,
+.preferences-card,
+.logout-button {
+  grid-column: 1 / -1;
+}
+
+.farm-list-row {
+  display: grid;
+  grid-template-columns: 36px minmax(0, 1fr);
+  gap: 12px;
+  align-items: center;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.farm-list-row.account-management-row,
+.account-field-row {
+  grid-template-columns: 36px minmax(0, 1fr) auto;
+}
+
+.farm-list-row svg {
+  padding: 9px;
+  width: 36px;
+  height: 36px;
+  border-radius: 13px;
+  color: var(--green-700);
+  background: var(--green-50);
+}
+
+.farm-list-row span {
+  display: block;
+  color: var(--muted);
+}
+
+.account-field-list,
+.account-edit-form,
+.preference-section {
+  display: grid;
+  gap: 12px;
+}
+
+.account-field-row {
+  display: grid;
+  gap: 12px;
+  align-items: center;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.account-field-row > svg {
+  padding: 9px;
+  width: 36px;
+  height: 36px;
+  border-radius: 13px;
+  color: var(--green-700);
+  background: var(--green-50);
+}
+
+.account-field-row span,
+.fields-management-card > p,
+.farms-card > p {
+  color: var(--muted);
+}
+
+.row-actions,
+.inline-form-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: flex-end;
+}
+
+.account-edit-form {
+  padding: 18px;
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  background: var(--surface);
+}
+
+.account-chip-section {
+  display: grid;
+  gap: 8px;
+}
+
+.account-chip-section > span {
+  color: var(--muted);
+  font-size: 0.78rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.team-card p {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.team-card em {
+  border-radius: var(--radius-pill);
+  padding: 2px 10px;
+  color: var(--green-700);
+  background: var(--green-50);
+  font-style: normal;
+  font-weight: 700;
+}
+
+.preference-section {
+  padding-top: 4px;
+}
+
+.preference-section + .preference-section {
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
+}
+
+.preference-section h2 {
+  font-size: 1rem;
+}
+
+.preference-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-height: 48px;
+  border-bottom: 1px solid var(--border);
+}
+
+.preference-row span {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.logout-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 48px;
+  border: 1px solid #f1b8ad;
+  border-radius: var(--radius-card);
+  color: #b42318;
+  background: #fff8f5;
+  font-weight: 700;
+}
+
+@media (max-width: 1120px) {
+  .feedback-grid,
+  .account-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 820px) {
+  .farm-list-row.account-management-row,
+  .account-field-row {
+    grid-template-columns: 36px minmax(0, 1fr);
+  }
+
+  .account-management-row .row-actions,
+  .account-field-row .row-actions {
+    grid-column: 1 / -1;
+    justify-content: stretch;
+  }
+
+  .account-management-row .row-actions .btn,
+  .account-field-row .row-actions .btn {
+    flex: 1;
+  }
+}
+
+@media (max-width: 520px) {
+  .profile-row {
+    grid-template-columns: 1fr;
+  }
+}

@@ -258,24 +258,24 @@ function createAlert(id: string, field: Field, type: Alert['type'], title: strin
   }
 }
 
-function generateObservedAlerts(primary: Field, station: InmetStationObservation | null) {
+function generateObservedAlerts(field: Field, station: InmetStationObservation | null) {
   if (!station?.isFresh) return []
   const alerts: Alert[] = []
   const stationLabel = `${station.station.name} (${station.station.code})`
 
   if ((station.rainMm ?? 0) >= 5) {
-    alerts.push(createAlert('alert-inmet-rain', primary, 'chuva severa', 'Chuva registrada pela estação INMET', `${stationLabel} registrou ${station.rainMm?.toFixed(1)} mm na última observação horária.`, 78, 'agora'))
+    alerts.push(createAlert(`alert-inmet-rain-${field.id}`, field, 'chuva severa', 'Chuva registrada pela estação INMET', `${stationLabel} registrou ${station.rainMm?.toFixed(1)} mm na última observação horária.`, 78, 'agora'))
   }
 
   if ((station.gustKmh ?? 0) >= 35) {
-    alerts.push(createAlert('alert-inmet-wind', primary, 'vento forte', 'Rajada forte registrada pelo INMET', `${stationLabel} registrou rajada de ${Math.round(station.gustKmh ?? 0)} km/h.`, Math.min(96, (station.gustKmh ?? 0) + 30), 'agora'))
+    alerts.push(createAlert(`alert-inmet-wind-${field.id}`, field, 'vento forte', 'Rajada forte registrada pelo INMET', `${stationLabel} registrou rajada de ${Math.round(station.gustKmh ?? 0)} km/h.`, Math.min(96, (station.gustKmh ?? 0) + 30), 'agora'))
   }
 
   if ((station.humidityPct ?? 100) <= 30) {
     alerts.push(
       createAlert(
-        'alert-inmet-humidity',
-        primary,
+        `alert-inmet-humidity-${field.id}`,
+        field,
         (station.humidityPct ?? 100) <= 22 ? 'risco de incendio' : 'baixa umidade',
         'Baixa umidade registrada pelo INMET',
         `${stationLabel} registrou umidade de ${Math.round(station.humidityPct ?? 0)}%.`,
@@ -286,7 +286,7 @@ function generateObservedAlerts(primary: Field, station: InmetStationObservation
   }
 
   if ((station.temperatureC ?? 99) <= 4) {
-    alerts.push(createAlert('alert-inmet-frost', primary, 'geada', 'Frio crítico registrado pelo INMET', `${stationLabel} registrou ${station.temperatureC?.toFixed(1)}°C.`, 90, 'agora'))
+    alerts.push(createAlert(`alert-inmet-frost-${field.id}`, field, 'geada', 'Frio crítico registrado pelo INMET', `${stationLabel} registrou ${station.temperatureC?.toFixed(1)}°C.`, 90, 'agora'))
   }
 
   return alerts
@@ -294,8 +294,7 @@ function generateObservedAlerts(primary: Field, station: InmetStationObservation
 
 function generateForecastAlerts(fields: Field[], weather: WeatherSnapshot, station: InmetStationObservation | null): Alert[] {
   const hours = weather.forecastHours ?? []
-  const primary = fields[0]
-  if (!primary || hours.length === 0) return []
+  if (fields.length === 0 || hours.length === 0) return []
 
   const rain24h = hours.slice(0, 24).reduce((sum, hour) => sum + hour.precipMm, 0)
   const maxProb = Math.max(...hours.slice(0, 24).map((hour) => hour.precipProbabilityPct), 0)
@@ -303,79 +302,88 @@ function generateForecastAlerts(fields: Field[], weather: WeatherSnapshot, stati
   const minHumidity = Math.min(...hours.slice(0, 24).map((hour) => hour.humidityPct), 100)
   const minTemp72h = Math.min(...hours.slice(0, 72).map((hour) => hour.temperatureC), 99)
   const et0Today = hours.slice(0, 24).reduce((sum, hour) => sum + hour.et0Mm, 0)
-  const alerts: Alert[] = generateObservedAlerts(primary, station)
+  
+  const allAlerts: Alert[] = []
 
-  if (rain24h >= 18 || maxProb >= 70) {
-    alerts.push(
-      createAlert(
-        'alert-rain-live',
-        primary,
-        rain24h >= 35 ? 'chuva severa' : 'excesso de chuva',
-        rain24h >= 35 ? 'Chuva forte nas próximas 24h' : 'Chuva provável nas próximas horas',
-        `${formatMmRange(rain24h)} previstos. Reavalie irrigação e tráfego de máquinas.`,
-        Math.max(maxProb, rain24h * 2),
-        'próximas 24h',
-      ),
-    )
+  for (const field of fields) {
+    const alerts: Alert[] = generateObservedAlerts(field, station)
+
+    if (rain24h >= 18 || maxProb >= 70) {
+      alerts.push(
+        createAlert(
+          `alert-rain-live-${field.id}`,
+          field,
+          rain24h >= 35 ? 'chuva severa' : 'excesso de chuva',
+          rain24h >= 35 ? 'Chuva forte nas próximas 24h' : 'Chuva provável nas próximas horas',
+          `${formatMmRange(rain24h)} previstos. Reavalie irrigação e tráfego de máquinas.`,
+          Math.max(maxProb, rain24h * 2),
+          'próximas 24h',
+        ),
+      )
+    }
+
+    if (maxGust >= 35) {
+      alerts.push(
+        createAlert(
+          `alert-wind-live-${field.id}`,
+          field,
+          'vento forte',
+          'Vento acima do ideal para pulverização',
+          `Rajadas de até ${Math.round(maxGust)} km/h. Evite aplicação foliar na janela crítica.`,
+          maxGust + 25,
+          'hoje',
+        ),
+      )
+    }
+
+    if (minHumidity <= 30) {
+      alerts.push(
+        createAlert(
+          `alert-humidity-live-${field.id}`,
+          field,
+          minHumidity <= 22 ? 'risco de incendio' : 'baixa umidade',
+          minHumidity <= 22 ? 'Risco de incêndio em elevação' : 'Baixa umidade operacional',
+          `Umidade pode cair para ${Math.round(minHumidity)}%. Redobre atenção em pulverização e manejo.`,
+          85 - minHumidity,
+          'tarde',
+        ),
+      )
+    }
+
+    if (minTemp72h <= 4) {
+      alerts.push(
+        createAlert(
+          `alert-frost-live-${field.id}`,
+          field,
+          'geada',
+          'Possibilidade de geada',
+          `Temperatura mínima prevista de ${Math.round(minTemp72h)}°C nas próximas 72h.`,
+          90 - minTemp72h * 10,
+          '72h',
+        ),
+      )
+    }
+
+    if (et0Today >= 4.5 && rain24h < 2) {
+      alerts.push(
+        createAlert(
+          `alert-dry-live-${field.id}`,
+          field,
+          'estiagem',
+          'Demanda hídrica sem chuva suficiente',
+          `ET₀ estimada em ${et0Today.toFixed(1)} mm e chuva baixa. Priorize áreas mais sensíveis à seca.`,
+          et0Today * 14,
+          'hoje',
+        ),
+      )
+    }
+
+    // Filtra duplicatas apenas do próprio talhão e adiciona à lista principal
+    const fieldUniqueAlerts = alerts.filter((alert, index, self) => self.findIndex((item) => item.type === alert.type) === index)
+    allAlerts.push(...fieldUniqueAlerts)
   }
 
-  if (maxGust >= 35) {
-    alerts.push(
-      createAlert(
-        'alert-wind-live',
-        primary,
-        'vento forte',
-        'Vento acima do ideal para pulverização',
-        `Rajadas de até ${Math.round(maxGust)} km/h. Evite aplicação foliar na janela crítica.`,
-        maxGust + 25,
-        'hoje',
-      ),
-    )
-  }
-
-  if (minHumidity <= 30) {
-    alerts.push(
-      createAlert(
-        'alert-humidity-live',
-        primary,
-        minHumidity <= 22 ? 'risco de incendio' : 'baixa umidade',
-        minHumidity <= 22 ? 'Risco de incêndio em elevação' : 'Baixa umidade operacional',
-        `Umidade pode cair para ${Math.round(minHumidity)}%. Redobre atenção em pulverização e manejo.`,
-        85 - minHumidity,
-        'tarde',
-      ),
-    )
-  }
-
-  if (minTemp72h <= 4) {
-    alerts.push(
-      createAlert(
-        'alert-frost-live',
-        primary,
-        'geada',
-        'Possibilidade de geada',
-        `Temperatura mínima prevista de ${Math.round(minTemp72h)}°C nas próximas 72h.`,
-        90 - minTemp72h * 10,
-        '72h',
-      ),
-    )
-  }
-
-  if (et0Today >= 4.5 && rain24h < 2) {
-    alerts.push(
-      createAlert(
-        'alert-dry-live',
-        primary,
-        'estiagem',
-        'Demanda hídrica sem chuva suficiente',
-        `ET₀ estimada em ${et0Today.toFixed(1)} mm e chuva baixa. Priorize áreas mais sensíveis à seca.`,
-        et0Today * 14,
-        'hoje',
-      ),
-    )
-  }
-
-  return alerts.filter((alert, index, all) => all.findIndex((item) => item.type === alert.type) === index)
+  return allAlerts
 }
 
 export const climateService = {
@@ -454,23 +462,20 @@ export const climateService = {
         rainGaugePromise.catch(() => null),
       ])
       console.warn('Nao foi possivel buscar previsao em tempo real. Usando fallback local.', error)
+      
+      const fallbackWeather = {
+        ...fallbackClimate.weather,
+        fieldName: workingFields[0]?.name ?? 'Área principal',
+        crop: workingFields[0]?.crop ?? workingFarm.productionType,
+        stage: workingFields[0]?.stage ?? 'cadastro inicial',
+        location: workingFarm.locationLabel,
+      }
+
       return {
         ...fallbackClimate,
-        weather: {
-          ...fallbackClimate.weather,
-          fieldName: workingFields[0]?.name ?? 'Área principal',
-          crop: workingFields[0]?.crop ?? workingFarm.productionType,
-          stage: workingFields[0]?.stage ?? 'cadastro inicial',
-          location: workingFarm.locationLabel,
-        },
-        recommendations: generateRecommendations(workingFields, {
-          ...fallbackClimate.weather,
-          fieldName: workingFields[0]?.name ?? 'Área principal',
-          crop: workingFields[0]?.crop ?? workingFarm.productionType,
-          stage: workingFields[0]?.stage ?? 'cadastro inicial',
-          location: workingFarm.locationLabel,
-        }),
-        alerts: workingFields.length > 0 ? fallbackClimate.alerts : [],
+        weather: fallbackWeather,
+        recommendations: generateRecommendations(workingFields, fallbackWeather),
+        alerts: workingFields.length > 0 ? generateForecastAlerts(workingFields, fallbackWeather, station) : [],
         coordinates,
         generatedAt: new Date().toISOString(),
         station,

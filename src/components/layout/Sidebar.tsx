@@ -13,7 +13,7 @@ export function Sidebar({ farm, user }: SidebarProps) {
   return (
     <aside className="app-sidebar">
       <div className="sidebar-brand">
-      <h1 className="titulo-logo">Manejo Certo</h1>
+        <img src="/assets/logo-branca.png" alt="Logo" className="logo" />
       </div>
       <nav className="sidebar-nav" aria-label="Navegação principal">
         {sideNavItems.map(({ Icon, label, path }) => (

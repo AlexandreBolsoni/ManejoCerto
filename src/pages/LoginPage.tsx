@@ -3,7 +3,6 @@ import type { FormEvent } from 'react'
 import { Lock, Mail, ShieldCheck } from 'lucide-react'
 import { FullLogo } from '../components/Brand'
 import { Button, TextField } from '../components/ui'
-
 import { useAuth } from '../hooks/useAuth'
 
 type LoginMode = 'magic-link' | 'password'
@@ -12,11 +11,9 @@ type PasswordMode = 'login' | 'register'
 export function LoginPage() {
   const { loading, signInWithEmail, signInWithGoogle, signInWithPassword, signUpWithPassword } = useAuth()
   
-  // UX Otimizada: Foco inicial direto no Magic Link (Link por e-mail) para menor atrito
   const [loginMode, setLoginMode] = useState<LoginMode>('magic-link')
   const [passwordMode, setPasswordMode] = useState<PasswordMode>('login')
   
-  // Estados do formulário
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -36,7 +33,6 @@ export function LoginPage() {
         setErrorMessage('Não foi possível enviar o link agora. Confira o e-mail e tente novamente.')
       }
     } else {
-      // Fluxo tradicional com Senha
       if (password.length < 6) {
         setErrorMessage('A senha precisa ter pelo menos 6 caracteres.')
         return
@@ -66,33 +62,40 @@ export function LoginPage() {
   return (
     <main className="auth-page auth-page-with-footer">
       <section className="auth-card">
-        <FullLogo />
-        <div>
-          <h1 style={{ textAlign: 'center' }}>Entrar</h1>
-          <p style={{ textAlign: 'center' }}>Acesso rápido</p>
+        {/* Adicionei uma classe para a logo para garantir o alinhamento */}
+        <div className="auth-logo-wrapper">
+          <FullLogo />
+        </div>
+        
+        {/* Aplicando a classe auth-card-header que já existia no seu CSS */}
+        <div className="auth-card-header">
+          <h1>Entrar</h1>
+          <p>Acesso rápido</p>
         </div>
 
-        {/* Opção 1: Google (Destaque máximo na hierarquia visual) */}
-        <Button className="full" disabled={loading} onClick={() => void googleSignIn()} type="button">
+        {/* Alterado para usar a classe específica de redes sociais (se o seu componente Button aceitar custom classes) */}
+        <button 
+          className="social-login-btn full" 
+          disabled={loading} 
+          onClick={() => void googleSignIn()} 
+          type="button"
+        >
           <ShieldCheck size={18} aria-hidden="true" />
           {loading ? 'Entrando...' : 'Continuar com Google'}
-        </Button>
+        </button>
 
         <div className="divider">ou use seu e-mail</div>
 
-        {/* Formulário Principal Unificado */}
         <form className="auth-form" onSubmit={handleSubmit}>
-          
           <TextField
             label="E-mail"
             onChange={(event) => setEmail(event.target.value)}
-            placeholder="voce@fazenda.com.br"
+            placeholder="voce@exemplo.com.br"
             type="email"
             value={email}
             required
           />
 
-          {/* Revelação Progressiva: Campos de senha só aparecem se o utilizador alternar */}
           {loginMode === 'password' && (
             <>
               <div className="auth-inline-actions">
@@ -149,37 +152,30 @@ export function LoginPage() {
           </Button>
         </form>
 
-        {/* Mensagens de Feedback ao utilizador */}
         {emailLinkSent && (
-          <p className="auth-message success">Enviamos um link para {email}. Abra o e-mail para concluir o acesso.</p>
+          <p className="auth-message success" role="alert">Enviamos um link para {email}. Abra o e-mail para concluir o acesso.</p>
         )}
         {errorMessage && (
-          <p className="auth-message error">{errorMessage}</p>
+          <p className="auth-message error" role="alert">{errorMessage}</p>
         )}
 
-        {/* Opção secundária sutil para alternar o método de login */}
-        <div style={{ textAlign: 'center', marginTop: '1rem' }}>
+        {/* Removido o inline CSS e criado uma classe limpa no CSS abaixo */}
+        <div className="auth-switch-mode">
           <button
             type="button"
             onClick={() => {
               setLoginMode(mode => mode === 'magic-link' ? 'password' : 'magic-link')
               setErrorMessage('')
             }}
-            style={{ 
-              background: 'transparent', border: 'none', textDecoration: 'underline', 
-              cursor: 'pointer', fontSize: '0.875rem', color: 'inherit', opacity: 0.8 
-            }}
           >
             {loginMode === 'magic-link' 
               ? 'Prefere usar uma senha? Entrar com senha' 
-              : 'Voltar para acesso sem senha (Link por e-mail)'}
+              : 'Voltar para acesso sem senha'}
           </button>
         </div>
 
-        <small>Ao continuar você aceita nossos Termos e Política de Privacidade</small>
+        <small className="auth-terms">Ao continuar você aceita nossos Termos e Política de Privacidade</small>
       </section>
-      
-    
     </main>
   )
 }

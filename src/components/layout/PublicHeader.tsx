@@ -12,9 +12,9 @@ export function PublicHeader() {
         <a href="/#feedback">Validação local</a>
       </nav>
       <div className="public-actions">
-        <a href="/login">Entrar</a>
-        <LinkButton to="/onboarding">
-          Começar grátis <ArrowRight size={17} aria-hidden="true" />
+        <a href="/login"></a>
+        <LinkButton to="/login">
+          Entrar <ArrowRight size={17} aria-hidden="true" />
         </LinkButton>
       </div>
     </header>

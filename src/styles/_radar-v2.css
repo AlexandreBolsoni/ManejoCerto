@@ -1,0 +1,2393 @@
+/* Radar climático v2 */
+.radar2-page {
+  display: grid;
+  gap: 18px;
+}
+
+.app-shell:has(.radar2-page) .feedback-fab {
+  display: none;
+}
+
+.radar2-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 22px;
+  padding-bottom: 18px;
+  border-bottom: 1px solid var(--border);
+}
+
+.radar2-heading,
+.radar2-header-actions,
+.radar2-heading p,
+.radar2-map-toolbar,
+.radar2-map-toolbar > div,
+.radar2-map-badges,
+.radar2-map-footer,
+.radar2-data-notice,
+.radar2-summary-card,
+.radar2-summary-card > div > div,
+.radar2-decision-card,
+.radar2-alert-card {
+  display: flex;
+  align-items: center;
+}
+
+.radar2-heading {
+  gap: 13px;
+}
+
+.radar2-heading-icon {
+  display: grid;
+  flex: 0 0 auto;
+  width: 48px;
+  height: 48px;
+  border-radius: 17px;
+  color: #f5ffe9;
+  background: linear-gradient(145deg, var(--green-700), var(--green-400));
+  box-shadow: 0 10px 24px rgba(80, 117, 60, 0.22);
+  place-items: center;
+}
+
+.radar2-heading > div {
+  display: grid;
+  gap: 2px;
+}
+
+.radar2-heading > div > span,
+.radar2-target-select > span,
+.radar2-summary-card > div > span,
+.radar2-status-card span,
+.radar2-decision-card small,
+.radar2-alert-card small {
+  color: var(--green-700);
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.radar2-heading h1 {
+  color: var(--green-950);
+  font-size: clamp(1.85rem, 3vw, 2.35rem);
+  line-height: 1.05;
+}
+
+.radar2-heading p {
+  flex-wrap: wrap;
+  gap: 5px 12px;
+  color: var(--muted);
+  font-size: 0.88rem;
+}
+
+.radar2-heading p small {
+  padding-left: 12px;
+  border-left: 1px solid var(--border);
+  font-size: 0.78rem;
+}
+
+.radar2-header-actions {
+  gap: 10px;
+}
+
+.radar2-target-select {
+  display: grid;
+  gap: 3px;
+}
+
+.radar2-target-select select {
+  min-height: 40px;
+  min-width: 240px;
+  padding: 0 34px 0 12px;
+  background: var(--card);
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+.radar2-view-switcher {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 6px;
+  padding: 5px;
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  background: #edf3e8;
+}
+
+.radar2-view-switcher button {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 58px;
+  border: 0;
+  border-radius: 15px;
+  padding: 8px 16px;
+  color: var(--muted);
+  background: transparent;
+  text-align: left;
+  transition: 180ms ease;
+}
+
+.radar2-view-switcher button svg {
+  flex: 0 0 auto;
+}
+
+.radar2-view-switcher button span {
+  display: grid;
+  line-height: 1.2;
+}
+
+.radar2-view-switcher button strong {
+  color: inherit;
+  font-size: 0.88rem;
+}
+
+.radar2-view-switcher button span {
+  font-size: 0.7rem;
+}
+
+.radar2-view-switcher button.active {
+  color: #f7fff1;
+  background: linear-gradient(135deg, var(--green-700), var(--green-400));
+  box-shadow: 0 8px 18px rgba(80, 117, 60, 0.2);
+}
+
+.radar2-view-panel {
+  display: grid;
+  gap: 16px;
+  animation: radar2-panel-in 260ms ease both;
+}
+
+@keyframes radar2-panel-in {
+  from {
+    opacity: 0;
+    transform: translateY(5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.radar2-data-notice {
+  gap: 10px;
+  padding: 11px 14px;
+  border: 1px solid #d4e0cc;
+  border-radius: 15px;
+  color: #53624c;
+  background: #f1f7ed;
+  font-size: 0.82rem;
+}
+
+.radar2-data-notice.warning {
+  border-color: #efd9a9;
+  color: #755613;
+  background: #fff8e6;
+}
+
+.radar2-data-notice strong {
+  color: inherit;
+}
+
+.radar2-map-card {
+  overflow: hidden;
+  border: 1px solid #263f4b;
+  border-radius: 25px;
+  background: #081e2a;
+  box-shadow: 0 24px 60px rgba(20, 43, 51, 0.18);
+}
+
+.radar2-map-toolbar,
+.radar2-map-footer {
+  justify-content: space-between;
+  gap: 14px;
+  color: #d5e6e8;
+  background: #0b2430;
+}
+
+.radar2-map-toolbar {
+  min-height: 68px;
+  padding: 10px 16px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.radar2-map-toolbar > div:first-child {
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.radar2-map-toolbar strong,
+.radar2-map-toolbar small {
+  color: inherit;
+}
+
+.radar2-map-toolbar small {
+  display: block;
+  width: 100%;
+  padding-left: 16px;
+  color: #89a7ad;
+  font-size: 0.68rem;
+}
+
+.radar2-live-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #7bd057;
+  box-shadow: 0 0 0 5px rgba(123, 208, 87, 0.12);
+}
+
+.radar2-map-badges {
+  flex-wrap: wrap;
+  gap: 6px;
+  justify-content: flex-end;
+}
+
+.radar2-map-badges span {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  min-height: 28px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-pill);
+  padding: 0 9px;
+  color: #bad0d4;
+  background: rgba(255, 255, 255, 0.04);
+  font-size: 0.68rem;
+  font-weight: 700;
+}
+
+.radar2-map-stage {
+  position: relative;
+  min-height: 600px;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 30% 25%, rgba(58, 141, 151, 0.2), transparent 35%),
+    linear-gradient(145deg, #081e2a, #103747);
+  isolation: isolate;
+}
+
+.radar2-map-stage::after {
+  position: absolute;
+  z-index: 480;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+    linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+    radial-gradient(circle at 50% 45%, transparent 20%, rgba(1, 13, 21, 0.3) 100%);
+  background-size: 80px 80px, 80px 80px, auto;
+  content: "";
+}
+
+.radar2-leaflet-map {
+  position: absolute !important;
+  z-index: 1;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  background: #081e2a;
+}
+
+.radar2-leaflet-map .leaflet-tile-pane {
+  filter: saturate(0.8) contrast(1.12);
+}
+
+.radar2-leaflet-map .leaflet-overlay-pane {
+  z-index: 470;
+}
+
+.radar2-farm-pulse {
+  filter: drop-shadow(0 0 8px rgba(133, 194, 98, 0.95));
+}
+
+.radar2-weather-layer,
+.radar2-icon-layer {
+  position: absolute;
+  z-index: 450;
+  inset: 0;
+  pointer-events: none;
+}
+
+.radar2-weather-layer svg {
+  width: 100%;
+  height: 100%;
+}
+
+.radar2-zone-halo {
+  fill: var(--radar-zone);
+  filter: url("#radar2-soft-zone");
+  opacity: 0.32;
+}
+
+.radar2-zone-body {
+  fill: var(--radar-zone);
+  opacity: 0.17;
+  stroke: color-mix(in srgb, var(--radar-zone), white 28%);
+  stroke-dasharray: 8 7;
+  stroke-width: 2.2;
+}
+
+.radar2-zone-accent {
+  fill: var(--radar-zone);
+  filter: url("#radar2-soft-zone");
+  opacity: 0.28;
+}
+
+.radar2-zone.high .radar2-zone-body {
+  opacity: 0.3;
+  stroke-width: 3;
+}
+
+.radar2-zone.high .radar2-zone-accent {
+  animation: radar2-zone-pulse 2.4s ease-in-out infinite;
+  opacity: 0.48;
+}
+
+@keyframes radar2-zone-pulse {
+  50% {
+    opacity: 0.22;
+  }
+}
+
+.radar2-system-arrows path {
+  fill: none;
+  marker-end: url("#radar2-arrow-head");
+  opacity: 0.76;
+  stroke: rgba(183, 239, 255, 0.9);
+  stroke-dasharray: 8 8;
+  stroke-linecap: round;
+  stroke-width: 4;
+  animation: radar2-flow 9s linear infinite;
+}
+
+.radar2-system-arrows path.front {
+  stroke: rgba(117, 205, 255, 0.95);
+  stroke-width: 5;
+}
+
+.radar2-system-arrows path.system {
+  stroke: rgba(255, 224, 128, 0.9);
+}
+
+@keyframes radar2-flow {
+  to {
+    stroke-dashoffset: -80;
+  }
+}
+
+.radar2-map-icon {
+  position: absolute;
+  display: grid;
+  min-width: 128px;
+  justify-items: center;
+  text-align: center;
+  transform: translate(-50%, -50%);
+  filter: drop-shadow(0 5px 12px rgba(1, 13, 21, 0.56));
+}
+
+.radar2-map-icon > span {
+  display: grid;
+  width: 57px;
+  height: 57px;
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  border-radius: 20px;
+  color: #f6fdff;
+  background: rgba(9, 31, 40, 0.72);
+  backdrop-filter: blur(9px);
+  place-items: center;
+}
+
+.radar2-map-icon > span svg {
+  width: 36px;
+  height: 36px;
+  stroke-width: 1.8;
+}
+
+.radar2-map-icon.sun > span {
+  color: #ffcf54;
+}
+
+.radar2-map-icon.rain > span {
+  color: #78cfff;
+}
+
+.radar2-map-icon.storm > span {
+  color: #e9bcff;
+  background: rgba(64, 30, 78, 0.78);
+}
+
+.radar2-map-icon.frost > span {
+  color: #bfeeff;
+}
+
+.radar2-map-icon strong {
+  max-width: 150px;
+  margin-top: 6px;
+  color: #f1fbfc;
+  font-size: 0.7rem;
+  line-height: 1.15;
+}
+
+.radar2-map-icon small {
+  max-width: 150px;
+  margin-top: 2px;
+  color: #c4d9dd;
+  font-size: 0.58rem;
+}
+
+.radar2-farm-callout,
+.radar2-map-status,
+.radar2-map-loading {
+  position: absolute;
+  z-index: 510;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 16px;
+  color: #edf7f8;
+  background: rgba(5, 25, 34, 0.78);
+  box-shadow: 0 12px 28px rgba(0, 9, 14, 0.22);
+  backdrop-filter: blur(12px);
+}
+
+.radar2-farm-callout {
+  display: flex;
+  bottom: 16px;
+  left: 16px;
+  gap: 8px;
+  align-items: center;
+  padding: 9px 11px;
+}
+
+.radar2-farm-callout svg {
+  color: #85c262;
+}
+
+.radar2-farm-callout span {
+  display: grid;
+}
+
+.radar2-farm-callout small {
+  color: #a7bec2;
+  font-size: 0.6rem;
+}
+
+.radar2-farm-callout strong {
+  color: #f2fbf3;
+  font-size: 0.74rem;
+}
+
+.radar2-map-status {
+  top: 16px;
+  right: 16px;
+  display: grid;
+  width: 168px;
+  padding: 12px;
+}
+
+.radar2-map-status > span {
+  color: #b8d8ae;
+  font-size: 0.64rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.radar2-map-status > strong {
+  color: #ffffff;
+  font-size: 2.1rem;
+  line-height: 1;
+}
+
+.radar2-map-status > small {
+  margin-top: 4px;
+  color: #bdd0d3;
+  font-size: 0.64rem;
+}
+
+.radar2-map-status.unstable,
+.radar2-map-status.alert,
+.radar2-map-status.critical {
+  border-color: rgba(255, 194, 99, 0.35);
+}
+
+.radar2-map-status.unstable > span,
+.radar2-map-status.alert > span,
+.radar2-map-status.critical > span {
+  color: #ffc263;
+}
+
+.radar2-map-loading {
+  right: 16px;
+  bottom: 16px;
+  padding: 8px 11px;
+  font-size: 0.68rem;
+  font-weight: 700;
+}
+
+.radar2-map-footer {
+  min-height: 38px;
+  padding: 7px 16px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  color: #8eabb0;
+  font-size: 0.65rem;
+}
+
+.radar2-summary-card {
+  gap: 16px;
+  align-items: flex-start;
+  padding: 22px;
+  border: 1px solid #d9e5d3;
+  border-radius: 22px;
+  background: linear-gradient(135deg, #ffffff, #f3f8ef);
+  box-shadow: var(--shadow);
+}
+
+.radar2-summary-card.unstable,
+.radar2-summary-card.alert,
+.radar2-summary-card.critical {
+  border-color: #ecd7a7;
+  background: linear-gradient(135deg, #ffffff, #fff8e9);
+}
+
+.radar2-summary-icon {
+  display: grid;
+  flex: 0 0 auto;
+  width: 48px;
+  height: 48px;
+  border-radius: 17px;
+  color: var(--green-700);
+  background: #eaf4e4;
+  place-items: center;
+}
+
+.radar2-summary-card > div {
+  display: grid;
+  gap: 6px;
+}
+
+.radar2-summary-card h2 {
+  font-size: 1.2rem;
+}
+
+.radar2-summary-card p {
+  color: var(--muted);
+  font-size: 0.88rem;
+}
+
+.radar2-summary-card > div > div {
+  gap: 8px;
+  width: fit-content;
+  margin-top: 7px;
+  border-radius: 14px;
+  padding: 9px 11px;
+  color: #3d6031;
+  background: #e9f4e4;
+  font-size: 0.78rem;
+}
+
+.radar2-summary-card > div > div.attention {
+  color: #755613;
+  background: #fff1ce;
+}
+
+.radar2-summary-card > div > div span {
+  display: grid;
+}
+
+.radar2-summary-card > div > div strong {
+  color: inherit;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+}
+
+.radar2-legend {
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  background: var(--card);
+}
+
+.radar2-legend > button {
+  display: flex;
+  width: 100%;
+  min-height: 62px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  border: 0;
+  padding: 10px 16px;
+  color: var(--text);
+  background: transparent;
+  text-align: left;
+}
+
+.radar2-legend > button > span {
+  display: grid;
+}
+
+.radar2-legend > button > span:last-child {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--green-700);
+  font-size: 0.75rem;
+  font-weight: 800;
+}
+
+.radar2-legend > button small {
+  color: var(--muted);
+  font-size: 0.7rem;
+}
+
+.radar2-legend > button svg {
+  transition: transform 180ms ease;
+}
+
+.radar2-legend.open > button svg {
+  transform: rotate(180deg);
+}
+
+.radar2-legend-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+  padding: 0 16px 16px;
+  border-top: 1px solid var(--border);
+}
+
+.radar2-legend-grid span {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  min-height: 36px;
+  color: var(--muted);
+  font-size: 0.74rem;
+  font-weight: 700;
+}
+
+.radar2-legend-grid i {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  box-shadow: 0 0 0 3px rgba(80, 117, 60, 0.08);
+}
+
+.radar2-legend-grid svg {
+  color: var(--green-700);
+}
+
+.radar2-quick-view {
+  display: grid;
+  gap: 20px;
+}
+
+.radar2-atmosphere-card {
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  gap: 28px;
+  min-height: 510px;
+  overflow: hidden;
+  padding: 26px;
+  border: 1px solid rgba(231, 246, 237, 0.32);
+  border-radius: 28px;
+  color: #f7fff8;
+  background:
+    linear-gradient(115deg, rgba(19, 57, 46, 0.48), rgba(25, 86, 113, 0.12)),
+    url("/assets/radar-cloudscape-nimbo.png") center / cover;
+  box-shadow: 0 28px 70px rgba(25, 57, 50, 0.22);
+}
+
+.radar2-atmosphere-card::before {
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  background:
+    radial-gradient(circle at 78% 18%, rgba(255, 255, 255, 0.12), transparent 35%),
+    linear-gradient(105deg, rgba(16, 54, 39, 0.82) 0%, rgba(28, 81, 83, 0.48) 48%, rgba(20, 72, 106, 0.22) 100%);
+  content: "";
+}
+
+.radar2-atmosphere-card::after {
+  position: absolute;
+  z-index: -1;
+  right: -120px;
+  bottom: -180px;
+  width: 520px;
+  height: 360px;
+  border-radius: 50%;
+  background: rgba(111, 180, 102, 0.16);
+  filter: blur(60px);
+  content: "";
+}
+
+.radar2-atmosphere-card.attention::before,
+.radar2-atmosphere-card.unstable::before {
+  background:
+    radial-gradient(circle at 78% 18%, rgba(255, 210, 112, 0.15), transparent 35%),
+    linear-gradient(105deg, rgba(62, 66, 32, 0.82) 0%, rgba(34, 79, 75, 0.5) 52%, rgba(20, 72, 106, 0.2) 100%);
+}
+
+.radar2-atmosphere-card.alert::before,
+.radar2-atmosphere-card.critical::before {
+  background:
+    radial-gradient(circle at 78% 18%, rgba(255, 188, 140, 0.13), transparent 35%),
+    linear-gradient(105deg, rgba(72, 47, 36, 0.84) 0%, rgba(47, 71, 66, 0.58) 52%, rgba(20, 72, 106, 0.18) 100%);
+}
+
+.radar2-atmosphere-topline,
+.radar2-atmosphere-footer,
+.radar2-atmosphere-location,
+.radar2-atmosphere-status,
+.radar2-current-temperature,
+.radar2-current-chips,
+.radar2-field-decisions > header {
+  display: flex;
+  align-items: center;
+}
+
+.radar2-atmosphere-topline,
+.radar2-atmosphere-footer {
+  position: relative;
+  z-index: 1;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.radar2-atmosphere-location,
+.radar2-atmosphere-status,
+.radar2-current-chips span {
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #f7fff8;
+  background: rgba(235, 249, 241, 0.12);
+  box-shadow: inset 0 1px rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(16px);
+}
+
+.radar2-atmosphere-location,
+.radar2-atmosphere-status {
+  gap: 7px;
+  min-height: 34px;
+  border-radius: var(--radius-pill);
+  padding: 6px 11px;
+  font-size: 0.72rem;
+  font-weight: 750;
+}
+
+.radar2-atmosphere-status i {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #aee986;
+  box-shadow: 0 0 0 4px rgba(174, 233, 134, 0.16);
+}
+
+.radar2-atmosphere-card.attention .radar2-atmosphere-status i,
+.radar2-atmosphere-card.unstable .radar2-atmosphere-status i {
+  background: #ffd174;
+  box-shadow: 0 0 0 4px rgba(255, 209, 116, 0.16);
+}
+
+.radar2-atmosphere-card.alert .radar2-atmosphere-status i,
+.radar2-atmosphere-card.critical .radar2-atmosphere-status i {
+  background: #ff9e8d;
+  box-shadow: 0 0 0 4px rgba(255, 158, 141, 0.16);
+}
+
+.radar2-atmosphere-content {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: minmax(250px, 0.82fr) minmax(0, 1.35fr);
+  gap: 34px;
+  align-items: end;
+}
+
+.radar2-current-weather {
+  display: grid;
+  align-content: end;
+  gap: 5px;
+  min-height: 315px;
+}
+
+.radar2-current-weather small {
+  color: rgba(247, 255, 248, 0.72);
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+}
+
+.radar2-current-temperature {
+  gap: 15px;
+  margin: 4px 0 0 -5px;
+}
+
+.radar2-current-temperature > svg {
+  width: 58px;
+  height: 58px;
+  stroke-width: 1.35;
+  filter: drop-shadow(0 8px 15px rgba(14, 44, 38, 0.24));
+}
+
+.radar2-current-temperature strong {
+  color: #f8fff9;
+  font-size: clamp(5.2rem, 9vw, 7.3rem);
+  font-weight: 500;
+  letter-spacing: -0.09em;
+  line-height: 0.92;
+  text-shadow: 0 12px 25px rgba(14, 44, 38, 0.18);
+}
+
+.radar2-current-temperature sup {
+  position: relative;
+  top: -0.55em;
+  margin-left: 0.08em;
+  font-size: 0.22em;
+  font-weight: 650;
+  letter-spacing: 0;
+}
+
+.radar2-current-weather h2 {
+  color: #f8fff9;
+  font-size: 1.35rem;
+}
+
+.radar2-current-weather p {
+  max-width: 360px;
+  color: rgba(247, 255, 248, 0.76);
+  font-size: 0.82rem;
+}
+
+.radar2-current-chips {
+  flex-wrap: wrap;
+  gap: 7px;
+  margin-top: 10px;
+}
+
+.radar2-current-chips span {
+  border-radius: var(--radius-pill);
+  padding: 6px 9px;
+  font-size: 0.66rem;
+  font-weight: 700;
+}
+
+.radar2-atmosphere-footer {
+  padding-top: 14px;
+  border-top: 1px solid rgba(255, 255, 255, 0.17);
+  color: rgba(247, 255, 248, 0.66);
+  font-size: 0.67rem;
+  font-weight: 650;
+}
+
+.radar2-atmosphere-card .radar2-metric-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-content: end;
+  gap: 10px;
+}
+
+.radar2-atmosphere-card .radar2-metric-card {
+  gap: 8px;
+  min-height: 145px;
+  border-color: rgba(255, 255, 255, 0.19);
+  color: #f7fff8;
+  background: linear-gradient(145deg, rgba(239, 250, 244, 0.17), rgba(225, 242, 238, 0.08));
+  box-shadow: inset 0 1px rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(18px);
+}
+
+.radar2-atmosphere-card .radar2-metric-card:hover {
+  background: linear-gradient(145deg, rgba(239, 250, 244, 0.22), rgba(225, 242, 238, 0.12));
+}
+
+.radar2-atmosphere-card .radar2-metric-card header span,
+.radar2-atmosphere-card .radar2-metric-card.blue header span,
+.radar2-atmosphere-card .radar2-metric-card.amber header span,
+.radar2-atmosphere-card .radar2-metric-card.red header span {
+  color: #f4fff5;
+  background: rgba(238, 250, 243, 0.15);
+}
+
+.radar2-atmosphere-card .radar2-metric-card small,
+.radar2-atmosphere-card .radar2-metric-card > strong,
+.radar2-atmosphere-card .radar2-metric-card p {
+  color: inherit;
+}
+
+.radar2-atmosphere-card .radar2-metric-card small,
+.radar2-atmosphere-card .radar2-metric-card p {
+  opacity: 0.72;
+}
+
+.radar2-atmosphere-card .radar2-metric-card > strong {
+  font-size: 1.35rem;
+  text-shadow: 0 5px 12px rgba(14, 44, 38, 0.12);
+}
+
+.radar2-metric-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.radar2-metric-card {
+  display: grid;
+  gap: 12px;
+  min-height: 168px;
+  padding: 18px;
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  background: var(--card);
+  box-shadow: var(--shadow);
+  transition: background 180ms ease;
+}
+
+.radar2-metric-card header {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.radar2-metric-card header span {
+  display: grid;
+  width: 34px;
+  height: 34px;
+  border-radius: 12px;
+  color: var(--green-700);
+  background: var(--green-50);
+  place-items: center;
+}
+
+.radar2-metric-card.blue header span {
+  color: #2877a5;
+  background: #e6f4fb;
+}
+
+.radar2-metric-card.amber header span {
+  color: #946516;
+  background: #fff3d8;
+}
+
+.radar2-metric-card.red header span {
+  color: #a33a32;
+  background: #ffe8e5;
+}
+
+.radar2-metric-card small {
+  color: var(--muted);
+  font-size: 0.72rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.radar2-metric-card > strong {
+  font-size: 1.55rem;
+  line-height: 1;
+}
+
+.radar2-metric-card p {
+  display: grid;
+  gap: 2px;
+  color: var(--muted);
+  font-size: 0.72rem;
+}
+
+.radar2-field-decisions {
+  display: grid;
+  gap: 12px;
+  padding: 20px;
+  border: 1px solid var(--border);
+  border-radius: 24px;
+  background: rgba(255, 255, 255, 0.62);
+}
+
+.radar2-field-decisions > header {
+  justify-content: space-between;
+  gap: 24px;
+}
+
+.radar2-field-decisions > header div {
+  display: grid;
+  gap: 2px;
+}
+
+.radar2-field-decisions > header span {
+  color: var(--green-700);
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.radar2-field-decisions > header h2 {
+  font-size: 1.25rem;
+}
+
+.radar2-field-decisions > header p {
+  max-width: 370px;
+  color: var(--muted);
+  font-size: 0.75rem;
+  text-align: right;
+}
+
+.radar2-decision-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.radar2-decision-card,
+.radar2-alert-card {
+  gap: 13px;
+  align-items: flex-start;
+  padding: 18px;
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  background: var(--card);
+}
+
+.radar2-decision-card > span,
+.radar2-alert-card > span {
+  display: grid;
+  flex: 0 0 auto;
+  width: 42px;
+  height: 42px;
+  border-radius: 14px;
+  color: var(--green-700);
+  background: var(--green-50);
+  place-items: center;
+}
+
+.radar2-decision-card.not_recommended,
+.radar2-decision-card.high_need,
+.radar2-alert-card.high {
+  border-color: #edc2bb;
+  background: #fff9f8;
+}
+
+.radar2-decision-card.not_recommended > span,
+.radar2-decision-card.high_need > span,
+.radar2-alert-card.high > span {
+  color: #a54037;
+  background: #ffe8e5;
+}
+
+.radar2-decision-card.attention,
+.radar2-alert-card.moderate {
+  border-color: #ecd7a7;
+  background: #fffdf7;
+}
+
+.radar2-decision-card.attention > span,
+.radar2-alert-card.moderate > span {
+  color: #8c6117;
+  background: #fff1ce;
+}
+
+.radar2-decision-card div,
+.radar2-alert-card div {
+  display: grid;
+  gap: 3px;
+}
+
+.radar2-decision-card h3,
+.radar2-alert-card h3 {
+  font-size: 1rem;
+}
+
+.radar2-decision-card p,
+.radar2-alert-card p {
+  color: var(--muted);
+  font-size: 0.78rem;
+}
+
+.radar2-decision-card p strong {
+  color: inherit;
+}
+
+.radar2-alert-card em {
+  margin-left: auto;
+  border-radius: var(--radius-pill);
+  padding: 4px 9px;
+  color: var(--green-700);
+  background: var(--green-50);
+  font-size: 0.68rem;
+  font-style: normal;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.radar2-empty-state {
+  display: grid;
+  min-height: 330px;
+  justify-items: center;
+  align-content: center;
+  gap: 10px;
+  padding: 28px;
+  border: 1px solid var(--border);
+  border-radius: 24px;
+  background: linear-gradient(145deg, var(--card), var(--green-50));
+  text-align: center;
+}
+
+.radar2-empty-state > span {
+  display: grid;
+  width: 58px;
+  height: 58px;
+  border-radius: 20px;
+  color: var(--green-700);
+  background: #e4f0dc;
+  place-items: center;
+}
+
+.radar2-empty-state p {
+  max-width: 440px;
+  color: var(--muted);
+}
+
+.radar2-loading-bars {
+  display: flex;
+  gap: 5px;
+  margin-top: 8px;
+}
+
+.radar2-loading-bars i {
+  width: 7px;
+  height: 22px;
+  border-radius: var(--radius-pill);
+  background: var(--green-400);
+  animation: radar2-load 900ms ease-in-out infinite alternate;
+}
+
+.radar2-loading-bars i:nth-child(2) {
+  animation-delay: 150ms;
+}
+
+.radar2-loading-bars i:nth-child(3) {
+  animation-delay: 300ms;
+}
+
+@keyframes radar2-load {
+  to {
+    height: 8px;
+    opacity: 0.4;
+  }
+}
+
+@media (max-width: 920px) {
+  .radar2-header {
+    align-items: flex-start;
+  }
+
+  .radar2-atmosphere-content {
+    grid-template-columns: 1fr;
+    gap: 22px;
+  }
+
+  .radar2-current-weather {
+    min-height: 235px;
+  }
+
+  .radar2-map-stage {
+    min-height: 560px;
+  }
+
+  .radar2-metric-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .radar2-legend-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 700px) {
+  .radar2-page {
+    gap: 12px;
+  }
+
+  .radar2-header,
+  .radar2-header-actions {
+    display: grid;
+  }
+
+  .radar2-header-actions {
+    grid-template-columns: minmax(0, 1fr) auto;
+    width: 100%;
+  }
+
+  .radar2-target-select select {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .radar2-heading-icon {
+    width: 43px;
+    height: 43px;
+    border-radius: 15px;
+  }
+
+  .radar2-heading h1 {
+    font-size: 1.7rem;
+  }
+
+  .radar2-heading p small {
+    width: 100%;
+    padding-left: 0;
+    border-left: 0;
+  }
+
+  .radar2-atmosphere-card {
+    gap: 20px;
+    min-height: 0;
+    padding: 20px;
+    border-radius: 24px;
+  }
+
+  .radar2-current-weather {
+    min-height: 210px;
+  }
+
+  .radar2-current-temperature > svg {
+    width: 48px;
+    height: 48px;
+  }
+
+  .radar2-current-temperature strong {
+    font-size: 5.2rem;
+  }
+
+  .radar2-field-decisions > header {
+    display: grid;
+    gap: 5px;
+  }
+
+  .radar2-field-decisions > header p {
+    text-align: left;
+  }
+
+  .radar2-view-switcher button {
+    min-height: 52px;
+    padding: 7px 10px;
+  }
+
+  .radar2-view-switcher button span {
+    font-size: 0.62rem;
+  }
+
+  .radar2-view-switcher button strong {
+    font-size: 0.76rem;
+  }
+
+  .radar2-map-toolbar {
+    display: grid;
+  }
+
+  .radar2-map-badges {
+    justify-content: flex-start;
+  }
+
+  .radar2-map-stage {
+    min-height: 540px;
+  }
+
+  .radar2-map-footer span:last-child {
+    display: none;
+  }
+
+  .radar2-map-icon {
+    min-width: 100px;
+  }
+
+  .radar2-map-icon > span {
+    width: 46px;
+    height: 46px;
+    border-radius: 16px;
+  }
+
+  .radar2-map-icon > span svg {
+    width: 28px;
+    height: 28px;
+  }
+
+  .radar2-map-icon strong,
+  .radar2-map-icon small {
+    max-width: 105px;
+  }
+
+  .radar2-map-icon strong {
+    font-size: 0.57rem;
+  }
+
+  .radar2-map-icon small {
+    display: none;
+  }
+
+  .radar2-map-status {
+    top: 10px;
+    right: 10px;
+    width: 142px;
+    padding: 9px;
+  }
+
+  .radar2-map-status > strong {
+    font-size: 1.7rem;
+  }
+
+  .radar2-farm-callout {
+    bottom: 10px;
+    left: 10px;
+  }
+
+  .radar2-map-loading {
+    right: 10px;
+    bottom: 10px;
+    max-width: 130px;
+  }
+
+  .radar2-summary-card {
+    gap: 11px;
+    padding: 18px;
+  }
+
+  .radar2-summary-icon {
+    width: 42px;
+    height: 42px;
+  }
+
+  .radar2-summary-card > div > div {
+    width: 100%;
+  }
+
+  .radar2-legend > button > span:last-child {
+    font-size: 0;
+  }
+
+  .radar2-legend-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .radar2-status-card {
+    min-height: 130px;
+    padding: 20px;
+  }
+
+  .radar2-status-card > strong {
+    font-size: 3.2rem;
+  }
+
+  .radar2-decision-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 470px) {
+  .radar2-refresh {
+    width: 42px;
+    padding: 0;
+  }
+
+  .radar2-refresh span {
+    display: none;
+  }
+
+  .radar2-view-switcher button {
+    justify-content: center;
+  }
+
+  .radar2-view-switcher button > svg {
+    display: none;
+  }
+
+  .radar2-map-card {
+    border-radius: 20px;
+  }
+
+  .radar2-map-toolbar {
+    min-height: 58px;
+    padding: 9px 11px;
+  }
+
+  .radar2-map-toolbar > div:first-child small,
+  .radar2-map-badges span:nth-child(n + 2) {
+    display: none;
+  }
+
+  .radar2-map-stage {
+    min-height: 500px;
+  }
+
+  .radar2-map-icon > span {
+    width: 42px;
+    height: 42px;
+  }
+
+  .radar2-map-icon > span svg {
+    width: 25px;
+    height: 25px;
+  }
+
+  .radar2-map-icon strong {
+    display: none;
+  }
+
+  .radar2-map-status {
+    width: 130px;
+  }
+
+  .radar2-map-status > small {
+    font-size: 0.56rem;
+  }
+
+  .radar2-summary-card {
+    display: grid;
+  }
+
+  .radar2-legend-grid,
+  .radar2-metric-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .radar2-atmosphere-card {
+    gap: 16px;
+    padding: 14px;
+    border-radius: 21px;
+  }
+
+  .radar2-atmosphere-topline {
+    align-items: flex-start;
+    flex-wrap: wrap;
+  }
+
+  .radar2-atmosphere-content {
+    gap: 16px;
+  }
+
+  .radar2-current-weather {
+    min-height: 190px;
+  }
+
+  .radar2-current-temperature {
+    gap: 10px;
+  }
+
+  .radar2-current-temperature > svg {
+    width: 42px;
+    height: 42px;
+  }
+
+  .radar2-current-temperature strong {
+    font-size: 4.5rem;
+  }
+
+  .radar2-atmosphere-card .radar2-metric-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 7px;
+  }
+
+  .radar2-atmosphere-card .radar2-metric-card {
+    gap: 6px;
+    min-height: 132px;
+    padding: 12px;
+    border-radius: 16px;
+  }
+
+  .radar2-atmosphere-card .radar2-metric-card header span {
+    width: 30px;
+    height: 30px;
+  }
+
+  .radar2-atmosphere-card .radar2-metric-card small,
+  .radar2-atmosphere-card .radar2-metric-card p {
+    font-size: 0.62rem;
+  }
+
+  .radar2-atmosphere-card .radar2-metric-card > strong {
+    font-size: 1.12rem;
+  }
+
+  .radar2-atmosphere-footer {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 3px;
+  }
+
+  .radar2-field-decisions {
+    padding: 14px;
+    border-radius: 20px;
+  }
+
+  .radar2-metric-card {
+    min-height: 138px;
+  }
+
+  .radar2-status-card {
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 8px;
+  }
+
+  .radar2-status-card p {
+    font-size: 0.75rem;
+  }
+
+  .radar2-status-card > strong {
+    font-size: 2.7rem;
+  }
+
+  .radar2-alert-card {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+  }
+
+  .radar2-alert-card em {
+    grid-column: 2;
+    margin-left: 0;
+    justify-self: start;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .radar2-view-panel,
+  .radar2-zone.high .radar2-zone-accent,
+  .radar2-system-arrows path,
+  .radar2-loading-bars i {
+    animation: none !important;
+  }
+}
+
+/* Radar climático operacional */
+.radar-climate-page {
+  gap: 16px;
+}
+
+.radar-climate-page .radar2-header {
+  align-items: flex-start;
+  padding-bottom: 2px;
+  border-bottom: 0;
+}
+
+.radar-climate-page .radar2-heading-icon {
+  width: 50px;
+  height: 50px;
+  border-radius: 13px;
+  background:
+    radial-gradient(circle at 35% 30%, rgba(255, 255, 255, 0.22), transparent 34%),
+    linear-gradient(145deg, var(--green-700), #2f5f2c);
+}
+
+.radar-climate-page .radar2-heading h1 {
+  font-size: clamp(1.95rem, 3vw, 2.45rem);
+}
+
+.radar-climate-page .radar2-heading p {
+  font-size: 0.9rem;
+}
+
+.radar-climate-page .radar2-header-actions {
+  align-items: end;
+  gap: 14px;
+}
+
+.radar-climate-page .radar2-target-select {
+  min-width: min(330px, 42vw);
+}
+
+.radar-climate-page .radar2-target-select select,
+.radar-climate-page .radar2-refresh {
+  min-height: 45px;
+  border-radius: 12px;
+  box-shadow: var(--shadow-sm);
+}
+
+.radar-climate-scene-control {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 6px;
+  padding: 7px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.82);
+  box-shadow: var(--shadow);
+}
+
+.radar-climate-scene-control button {
+  display: inline-flex;
+  min-width: 0;
+  min-height: 42px;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  border: 0;
+  border-radius: 8px;
+  color: var(--muted);
+  background: transparent;
+  font-size: 0.86rem;
+  font-weight: 800;
+  transition: 160ms ease;
+}
+
+.radar-climate-scene-control button:hover,
+.radar-climate-layer-buttons button:hover,
+.radar-climate-card.layers button:hover,
+.radar-climate-timeline button:hover {
+  color: var(--green-700);
+  background: #eef5e9;
+}
+
+.radar-climate-scene-control button.active,
+.radar-climate-layer-buttons button.active,
+.radar-climate-card.layers button.active {
+  color: #ffffff;
+  background: linear-gradient(135deg, var(--green-700), var(--green-500));
+  box-shadow: 0 9px 18px rgba(80, 117, 60, 0.2);
+}
+
+.radar-climate-layout {
+  display: grid;
+  grid-template-columns: minmax(340px, 1.08fr) minmax(260px, 0.82fr) minmax(360px, 0.95fr);
+  gap: 14px;
+  align-items: start;
+}
+
+.radar-climate-map-card,
+.radar-climate-card {
+  min-width: 0;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.92);
+  box-shadow: var(--shadow);
+}
+
+.radar-climate-map-card {
+  grid-column: 1 / 3;
+  overflow: hidden;
+  padding: 0 14px 14px;
+}
+
+.radar-climate-map-card > header {
+  display: flex;
+  min-height: 70px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 12px 0;
+}
+
+.radar-climate-map-card > header > div:first-child,
+.radar-climate-card h2,
+.radar-climate-card > header,
+.radar-climate-card > header > span {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+}
+
+.radar-climate-map-card > header svg,
+.radar-climate-card h2 svg,
+.radar-climate-card > header svg {
+  color: var(--green-700);
+}
+
+.radar-climate-map-card > header strong,
+.radar-climate-card h2,
+.radar-climate-card > header span {
+  color: var(--text);
+  font-size: 0.98rem;
+  font-weight: 800;
+}
+
+.radar-climate-layer-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  justify-content: flex-end;
+}
+
+.radar-climate-layer-buttons button,
+.radar-climate-card.layers button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  min-height: 36px;
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  padding: 0 12px;
+  color: var(--muted);
+  background: var(--surface);
+  font-size: 0.78rem;
+  font-weight: 800;
+  transition: 160ms ease;
+}
+
+.radar-climate-map-stage {
+  position: relative;
+  min-height: 500px;
+  overflow: hidden;
+  border-radius: 10px;
+  background: #dfe9d7;
+  isolation: isolate;
+}
+
+.radar-climate-leaflet-map {
+  position: absolute !important;
+  z-index: 1;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  font-family: inherit;
+  background: #dce8d5;
+}
+
+.radar-climate-leaflet-map .leaflet-tile-pane {
+  filter: saturate(0.94) contrast(0.98) brightness(1.03);
+}
+
+.radar-climate-map-stage.mode-satellite .radar-climate-leaflet-map .leaflet-tile-pane {
+  filter: saturate(0.95) contrast(0.95) brightness(0.9);
+}
+
+.radar-climate-leaflet-map .leaflet-control-zoom {
+  overflow: hidden;
+  border: 1px solid rgba(37, 54, 27, 0.12);
+  border-radius: 10px;
+  box-shadow: var(--shadow-sm);
+}
+
+.radar-climate-leaflet-map .leaflet-control-zoom a {
+  color: var(--text);
+  background: rgba(255, 255, 255, 0.92);
+}
+
+.radar-climate-summary-overlay,
+.radar-climate-layer-legend,
+.radar-climate-timeline,
+.radar-climate-hour-chip,
+.radar-climate-loading {
+  position: absolute;
+  z-index: 520;
+  border: 1px solid rgba(37, 54, 27, 0.1);
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 12px 28px rgba(37, 54, 27, 0.14);
+  backdrop-filter: blur(10px);
+}
+
+.radar-climate-leaflet-map .radar-climate-map-label {
+  display: block;
+  border: 1px solid rgba(37, 54, 27, 0.1);
+  border-radius: 10px;
+  padding: 8px 10px;
+  color: var(--text);
+  background: rgba(255, 255, 255, 0.92);
+  box-shadow: 0 12px 28px rgba(37, 54, 27, 0.14);
+  font-size: 0.75rem;
+  font-weight: 800;
+  backdrop-filter: blur(10px);
+}
+
+.radar-climate-leaflet-map .radar-climate-map-label::before {
+  border-right-color: rgba(255, 255, 255, 0.92);
+}
+
+.radar-climate-leaflet-map .radar-climate-map-label span {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap;
+}
+
+.radar-climate-leaflet-map .radar-climate-map-label svg {
+  color: var(--green-700);
+}
+
+.radar-climate-summary-overlay {
+  top: 18px;
+  right: 18px;
+  display: grid;
+  gap: 7px;
+  max-width: 280px;
+  border-radius: 13px;
+  padding: 14px;
+}
+
+.radar-climate-summary-overlay svg {
+  color: var(--green-700);
+}
+
+.radar-climate-summary-overlay strong {
+  font-size: 0.88rem;
+}
+
+.radar-climate-summary-overlay p {
+  color: var(--muted);
+  font-size: 0.76rem;
+}
+
+.radar-climate-layer-legend {
+  bottom: 18px;
+  left: 18px;
+  display: grid;
+  gap: 8px;
+  width: min(235px, calc(100% - 36px));
+  border-radius: 12px;
+  padding: 13px;
+}
+
+.radar-climate-layer-legend strong {
+  font-size: 0.68rem;
+}
+
+.radar-climate-layer-legend i {
+  display: block;
+  height: 8px;
+  border-radius: var(--radius-pill);
+}
+
+.radar-climate-layer-legend span {
+  display: flex;
+  justify-content: space-between;
+}
+
+.radar-climate-layer-legend small {
+  color: var(--muted);
+  font-size: 0.66rem;
+  font-weight: 700;
+}
+
+.radar-climate-layer-legend em {
+  color: var(--muted);
+  font-size: 0.62rem;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+.radar-climate-wind-marker {
+  display: grid;
+  width: 48px;
+  height: 48px;
+  border: 0;
+  background: transparent;
+  place-items: center;
+}
+
+.radar-climate-wind-marker span {
+  display: grid;
+  width: 34px;
+  height: 34px;
+  border: 2px solid rgba(255, 255, 255, 0.86);
+  border-radius: 999px;
+  color: #ffffff;
+  background: var(--wind-color);
+  box-shadow: 0 8px 18px rgba(37, 54, 27, 0.24);
+  font-size: 1.15rem;
+  font-weight: 900;
+  line-height: 1;
+  transform: rotate(var(--wind-rotation));
+  place-items: center;
+}
+
+.radar-climate-wind-marker strong {
+  position: absolute;
+  right: -2px;
+  bottom: 0;
+  min-width: 22px;
+  border: 1px solid rgba(37, 54, 27, 0.12);
+  border-radius: 999px;
+  padding: 1px 4px;
+  color: var(--text);
+  background: rgba(255, 255, 255, 0.94);
+  box-shadow: var(--shadow-sm);
+  font-size: 0.58rem;
+  line-height: 1.2;
+  text-align: center;
+}
+
+.radar-climate-timeline {
+  right: 94px;
+  bottom: 18px;
+  left: min(360px, 42%);
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(76px, 1fr));
+  gap: 4px;
+  border-radius: 11px;
+  padding: 9px;
+}
+
+.radar-climate-timeline button {
+  display: grid;
+  gap: 1px;
+  min-height: 35px;
+  border: 0;
+  border-radius: 7px;
+  color: var(--muted);
+  background: transparent;
+  font-size: 0.82rem;
+  font-weight: 800;
+  transition: 160ms ease;
+}
+
+.radar-climate-timeline button span,
+.radar-climate-timeline button small {
+  color: inherit;
+  line-height: 1.15;
+}
+
+.radar-climate-timeline button small {
+  overflow: hidden;
+  font-size: 0.58rem;
+  font-weight: 750;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.radar-climate-timeline button.active {
+  position: relative;
+  color: #ffffff;
+  background: var(--green-700);
+}
+
+.radar-climate-timeline button.active::after {
+  position: absolute;
+  bottom: -14px;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-top: 7px solid var(--green-700);
+  border-right: 7px solid transparent;
+  border-left: 7px solid transparent;
+  content: "";
+  transform: translateX(-50%);
+}
+
+.radar-climate-hour-chip {
+  top: 18px;
+  left: 18px;
+  border-radius: var(--radius-pill);
+  padding: 8px 11px;
+  color: var(--green-700);
+  font-size: 0.72rem;
+  font-weight: 800;
+}
+
+.radar-climate-loading {
+  right: 18px;
+  bottom: 82px;
+  border-radius: var(--radius-pill);
+  padding: 8px 12px;
+  color: var(--text);
+  font-size: 0.72rem;
+  font-weight: 800;
+}
+
+.radar-climate-side {
+  display: grid;
+  grid-column: 3;
+  grid-row: 1;
+  gap: 12px;
+}
+
+.radar-climate-card {
+  display: grid;
+  gap: 14px;
+  padding: 18px;
+}
+
+.radar-climate-card > header {
+  justify-content: space-between;
+}
+
+.radar-climate-card > header small {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: var(--muted);
+  font-size: 0.68rem;
+  font-weight: 750;
+}
+
+.radar-climate-now-body {
+  display: grid;
+  grid-template-columns: minmax(120px, 0.8fr) minmax(190px, 1.2fr);
+  gap: 18px;
+  align-items: center;
+}
+
+.radar-climate-now-body > div:first-child {
+  display: grid;
+  justify-items: start;
+  gap: 6px;
+}
+
+.radar-climate-now-body > div:first-child strong {
+  color: var(--green-950);
+  font-size: clamp(3.3rem, 6vw, 4.9rem);
+  font-weight: 800;
+  line-height: 0.9;
+}
+
+.radar-climate-now-body > div:first-child span {
+  color: var(--muted);
+  font-size: 0.88rem;
+}
+
+.radar-climate-now-body dl {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  overflow: hidden;
+  margin: 0;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+}
+
+.radar-climate-now-body dl div {
+  display: grid;
+  gap: 4px;
+  min-height: 73px;
+  padding: 12px;
+  border-right: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+
+.radar-climate-now-body dl div:nth-child(2n) {
+  border-right: 0;
+}
+
+.radar-climate-now-body dl div:nth-last-child(-n + 2) {
+  border-bottom: 0;
+}
+
+.radar-climate-now-body dt {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  color: var(--muted);
+  font-size: 0.7rem;
+  font-weight: 800;
+}
+
+.radar-climate-now-body dd {
+  margin: 0;
+  color: var(--text);
+  font-size: 1rem;
+  font-weight: 850;
+  line-height: 1.1;
+}
+
+.radar-climate-card.quick > div,
+.radar-climate-card.decision > div {
+  display: grid;
+  gap: 10px;
+}
+
+.radar-climate-card.quick p,
+.radar-climate-card.decision p {
+  display: grid;
+  grid-template-columns: 34px minmax(0, 1fr);
+  gap: 10px;
+  align-items: center;
+  color: var(--text);
+  font-size: 0.82rem;
+}
+
+.radar-climate-card.quick p span,
+.radar-climate-card.decision p span,
+.radar-climate-clear-alert span {
+  display: grid;
+  width: 30px;
+  height: 30px;
+  border-radius: 999px;
+  color: #ffffff;
+  background: var(--green-700);
+  place-items: center;
+}
+
+.radar-climate-card.layers > div {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.radar-climate-card.layers button {
+  min-width: 0;
+  min-height: 38px;
+  padding: 0 10px;
+  font-size: 0.7rem;
+}
+
+.radar-climate-card.operational > div {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(160px, 0.85fr);
+  gap: 18px;
+  align-items: end;
+}
+
+.radar-climate-card.operational span:first-child {
+  display: grid;
+  gap: 3px;
+}
+
+.radar-climate-card.operational span:first-child strong {
+  color: var(--green-700);
+  font-size: 1.1rem;
+}
+
+.radar-climate-card.operational small {
+  color: var(--muted);
+  font-size: 0.68rem;
+}
+
+.radar-climate-confidence {
+  display: grid;
+  gap: 5px;
+}
+
+.radar-climate-confidence strong {
+  justify-self: end;
+  font-size: 0.95rem;
+}
+
+.radar-climate-confidence i {
+  display: block;
+  overflow: hidden;
+  height: 9px;
+  border-radius: var(--radius-pill);
+  background: #e6efdf;
+}
+
+.radar-climate-confidence b {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--green-700);
+}
+
+.radar-climate-card.forecast {
+  grid-column: 1;
+}
+
+.radar-climate-card.forecast > header {
+  align-items: center;
+}
+
+.radar-climate-card.forecast p {
+  color: var(--muted);
+  font-size: 0.72rem;
+}
+
+.radar-climate-bars {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 10px;
+  align-items: end;
+  min-height: 126px;
+  padding-top: 8px;
+  border-bottom: 1px solid var(--border);
+}
+
+.radar-climate-bars span {
+  display: grid;
+  height: 120px;
+  align-content: end;
+  justify-items: center;
+  gap: 5px;
+  color: var(--muted);
+  font-size: 0.7rem;
+  font-weight: 700;
+}
+
+.radar-climate-bars strong {
+  color: var(--muted);
+  font-size: 0.72rem;
+}
+
+.radar-climate-bars i {
+  display: block;
+  width: 34px;
+  min-height: 5px;
+  border-radius: 3px 3px 0 0;
+  background: #b8d3aa;
+}
+
+.radar-climate-card.alerts {
+  grid-column: 2;
+  min-height: 205px;
+}
+
+.radar-climate-clear-alert {
+  display: grid;
+  min-height: 132px;
+  align-content: center;
+  justify-items: center;
+  gap: 7px;
+  text-align: center;
+}
+
+.radar-climate-clear-alert span {
+  width: 62px;
+  height: 62px;
+  color: var(--green-700);
+  background: #e5f0dd;
+}
+
+.radar-climate-clear-alert strong {
+  font-size: 0.95rem;
+}
+
+.radar-climate-clear-alert p {
+  color: var(--muted);
+  font-size: 0.8rem;
+}
+
+.radar-climate-alert-list {
+  display: grid;
+  gap: 10px;
+}
+
+.radar-climate-alert-list p {
+  display: grid;
+  grid-template-columns: 30px minmax(0, 1fr);
+  gap: 10px;
+  margin: 0;
+  color: var(--text);
+}
+
+.radar-climate-alert-list svg {
+  color: var(--green-700);
+}
+
+.radar-climate-alert-list span {
+  display: grid;
+  gap: 2px;
+}
+
+.radar-climate-alert-list small {
+  color: var(--muted);
+  font-size: 0.7rem;
+}
+
+.radar-climate-card.decision {
+  grid-column: 3;
+}
+
+@media (max-width: 1240px) {
+  .radar-climate-layout {
+    grid-template-columns: minmax(0, 1fr) minmax(330px, 0.72fr);
+  }
+
+  .radar-climate-map-card {
+    grid-column: 1;
+  }
+
+  .radar-climate-side {
+    grid-column: 2;
+  }
+
+  .radar-climate-card.forecast,
+  .radar-climate-card.alerts {
+    grid-column: 1;
+  }
+
+  .radar-climate-card.decision {
+    grid-column: 2;
+  }
+}
+
+@media (max-width: 1040px) {
+  .radar-climate-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .radar-climate-map-card,
+  .radar-climate-side,
+  .radar-climate-card.forecast,
+  .radar-climate-card.alerts,
+  .radar-climate-card.decision {
+    grid-column: 1;
+  }
+
+  .radar-climate-side {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-row: auto;
+  }
+}
+
+@media (max-width: 760px) {
+  .radar-climate-page .radar2-header-actions,
+  .radar-climate-page .radar2-target-select {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .radar-climate-scene-control {
+    grid-template-columns: 1fr;
+  }
+
+  .radar-climate-map-card > header,
+  .radar-climate-layer-buttons {
+    justify-content: flex-start;
+  }
+
+  .radar-climate-map-stage {
+    min-height: 520px;
+  }
+
+  .radar-climate-timeline {
+    right: 12px;
+    bottom: 12px;
+    left: 12px;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+  }
+
+  .radar-climate-layer-legend {
+    display: none;
+  }
+
+  .radar-climate-loading {
+    bottom: 72px;
+    left: 12px;
+    right: auto;
+  }
+
+  .radar-climate-side,
+  .radar-climate-now-body,
+  .radar-climate-card.operational > div {
+    grid-template-columns: 1fr;
+  }
+
+  .radar-climate-card.layers > div {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 520px) {
+  .radar-climate-map-card,
+  .radar-climate-card {
+    border-radius: 11px;
+  }
+
+  .radar-climate-map-card {
+    padding: 0 10px 10px;
+  }
+
+  .radar-climate-map-stage {
+    min-height: 480px;
+  }
+
+  .radar-climate-layer-buttons button {
+    flex: 1 1 46%;
+  }
+
+  .radar-climate-timeline {
+    overflow-x: auto;
+    grid-template-columns: repeat(5, 68px);
+  }
+
+  .radar-climate-now-body dl,
+  .radar-climate-bars {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .radar-climate-bars {
+    min-height: 170px;
+  }
+}
