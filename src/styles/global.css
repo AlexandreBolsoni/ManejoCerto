@@ -120,8 +120,7 @@ textarea:focus-visible {
 }
 
 .brand-link img {
-  width: 36px;
-  height: 30px;
+  width: 250px;
   object-fit: contain;
 }
 
@@ -134,17 +133,22 @@ textarea:focus-visible {
   height: 26px;
 }
 
-.full-logo {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  width: min(330px, 100%);
-  justify-self: center;
+.titulo-logo {
+text-align: center;
+color: white;
+text-shadow: 0 0 2px black;
+font-size: 18px;
+font-weight: 800;
+}
+.logo-sidebar {
+  width: 120px;
+  height: auto;
+  display: block;
+  object-fit: contain;
 }
 
 .full-logo img {
-  width: 72px;
-  height: 58px;
+  width: 100%;
   object-fit: contain;
 }
 
@@ -319,7 +323,7 @@ textarea:focus-visible {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  min-height: 66px;
+  min-height: 50px;
   padding: 0 max(28px, calc((100vw - 1230px) / 2));
   border-bottom: 1px solid var(--border);
   background: rgba(251, 252, 246, 0.9);
@@ -1104,8 +1108,8 @@ textarea:focus-visible {
 }
 
 .sidebar-brand .brand-link img {
-  width: 31px;
-  height: 24px;
+  width: 300px;
+  height: 300px;
   filter: drop-shadow(0 6px 12px rgba(4, 28, 12, 0.24));
 }
 

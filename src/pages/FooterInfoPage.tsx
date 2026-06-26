@@ -168,7 +168,7 @@ const infoPages: Record<InfoPageKey, InfoPageContent> = {
     ],
   },
   dataSources: {
-    title: 'Fontes de dados do NimbuES',
+    title: 'Fontes de dados',
     kicker: 'Dados e fontes',
     summary: 'Combinamos clima, mapas, radar, localização e mercado agrícola para gerar uma visão útil para o produtor.',
     Icon: Database,

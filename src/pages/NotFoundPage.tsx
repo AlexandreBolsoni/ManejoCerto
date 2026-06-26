@@ -6,7 +6,7 @@ export function NotFoundPage() {
     <main className="not-found-page">
       <Card className="empty-state">
         <h1>Rota não encontrada</h1>
-        <p>Volte para o painel principal do NimbuES.</p>
+        <p>Volte para o painel principal.</p>
         <LinkButton to="/dashboard">Abrir dashboard</LinkButton>
       </Card>
     </main>

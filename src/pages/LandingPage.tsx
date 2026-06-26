@@ -47,8 +47,9 @@ export function LandingPage() {
             <Badge tone="green">• Funciona offline no campo</Badge>
             <h1>Inteligência climática para proteger sua safra</h1>
             <p>
-              O NimbuES traduz dados de previsão em decisões práticas para propriedades capixabas. Responde ao que importa:
-              <em> irrigar agora ou adiar?, qual a melhor janela para aplicar defensivos?</em>
+              Traduzimos dados de previsão em decisões práticas para propriedades capixabas. Responder oque realmente importa:
+              <em> irrigar agora ou adiar?
+              <br /> qual a melhor janela para aplicar defensivos?</em>
             </p>
             <div className="hero-actions">
               <LinkButton size="lg" to="/onboarding">
@@ -106,7 +107,7 @@ export function LandingPage() {
 
         <section className="landing-band" id="recursos">
           <div className="section-intro">
-            <span>O que o NimbuES entrega</span>
+            <span>O que o Manejo Certo entrega</span>
             <h2>Decisões operacionais, não números soltos</h2>
             <p>Cada card responde a uma pergunta da rotina no campo, com justificativa textual simples e nível de confiança.</p>
           </div>
@@ -126,7 +127,7 @@ export function LandingPage() {
             <Badge tone="soft">WCAG 2.2 AA · contraste 4.5:1 garantido</Badge>
             <h2>Do dado bruto à ação explicável</h2>
             <p>
-              Em vez de tabelas de meteorologia, o NimbuES entrega uma recomendação por área — com o porquê,
+              Em vez de tabelas de meteorologia, o Manejo Certo entrega uma recomendação por área — com o porquê,
               a confiança e as fontes que sustentam a decisão.
             </p>
           </div>
@@ -165,7 +166,7 @@ export function LandingPage() {
             <span>Calibração com humano no loop</span>
             <h2>Sua observação melhora a previsão da sua fazenda</h2>
             <p>
-              A cada confirmação ou correção, o NimbuES limpa falsos positivos de radares e satélites e refina
+              A cada confirmação ou correção, o Manejo Certo limpa falsos positivos de radares e satélites e refina
               o modelo localmente — para o seu solo, sua microrregião e sua cultura.
             </p>
             <ul>

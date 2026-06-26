@@ -60,10 +60,9 @@ export function OnboardingPage() {
 
         <div className="onboarding-grid">
           <div className="onboarding-copy">
-            <span className="onboarding-kicker">PWA · funciona offline no campo</span>
-            <h1>Configure sua fazenda antes de confiar nos alertas</h1>
+            <h1>Configure sua fazenda </h1>
             <p>
-              O NimbuES transforma previsão, radar e observações locais em decisões por área de cultivo. Para isso,
+              transformamos previsões, radares e observações locais em decisões por área de cultivo. Para isso,
               começamos pela cidade, município, distrito, vila ou povoado e pelo ponto aproximado no mapa.
             </p>
 

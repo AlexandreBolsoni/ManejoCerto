@@ -1,7 +1,7 @@
 import { ChevronDown } from 'lucide-react'
 import { NavLink } from 'react-router-dom'
 import type { Farm, UserProfile } from '../../types'
-import { Brand } from '../Brand'
+import'../../../public/assets/icone.png'
 import { sideNavItems } from './navigation'
 
 export type SidebarProps = {
@@ -13,7 +13,7 @@ export function Sidebar({ farm, user }: SidebarProps) {
   return (
     <aside className="app-sidebar">
       <div className="sidebar-brand">
-        <Brand to="/dashboard" />
+      <h1 className="titulo-logo">Manejo Certo</h1>
       </div>
       <nav className="sidebar-nav" aria-label="Navegação principal">
         {sideNavItems.map(({ Icon, label, path }) => (
@@ -27,8 +27,8 @@ export function Sidebar({ farm, user }: SidebarProps) {
         <NavLink className={({ isActive }) => `sidebar-profile ${isActive ? 'active' : ''}`} to="/conta">
           <span>{user?.initials ?? 'AH'}</span>
           <div>
-            <strong>{user?.name ?? 'Alexandre'}</strong>
-            <small>{farm?.name ?? 'Fazenda principal'}</small>
+            <strong>{user?.name ?? 'Faça Login'}</strong>
+            <small>{farm?.name ?? 'Não cadastraddo'}</small>
           </div>
           <ChevronDown size={14} aria-hidden="true" />
         </NavLink>

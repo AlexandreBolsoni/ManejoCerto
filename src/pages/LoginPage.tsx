@@ -69,7 +69,7 @@ export function LoginPage() {
         <FullLogo />
         <div>
           <h1 style={{ textAlign: 'center' }}>Entrar</h1>
-          <p style={{ textAlign: 'center' }}>Acesso rápido para o NimbuES</p>
+          <p style={{ textAlign: 'center' }}>Acesso rápido</p>
         </div>
 
         {/* Opção 1: Google (Destaque máximo na hierarquia visual) */}
