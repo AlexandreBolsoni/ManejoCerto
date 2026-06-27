@@ -4,8 +4,10 @@
 
 .app-shell {
   display: grid;
-  grid-template-columns: var(--sidebar-width, 260px) minmax(0, 1fr);
+  grid-template-columns: var(--sidebar-width, 182px) minmax(0, 1fr);
+  align-items: start;
   min-height: 100dvh;
+  background: linear-gradient(90deg, rgba(242, 248, 237, 0.75) 0%, rgba(251, 252, 246, 0.96) 24%, transparent 100%);
 }
 
 /* ==========================================================================
@@ -15,11 +17,17 @@
 .app-sidebar {
   position: sticky;
   top: 0;
+  align-self: start;
   display: flex;
   flex-direction: column;
-  height: 100dvh;
-  overflow-y: auto; /* Permite scroll caso a tela seja muito baixa */
+  min-height: 100dvh;
+  max-height: 100dvh;
+  overflow-y: auto;
   overflow-x: hidden;
+  overscroll-behavior: contain;
+  scrollbar-gutter: stable;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
   border-right: 1px solid rgba(225, 244, 217, 0.08);
   color: #f5fff1;
   background:
@@ -42,8 +50,8 @@
 .sidebar-brand {
   display: flex;
   align-items: center;
-  min-height: 72px;
-  padding: 18px 12px 14px;
+  min-height: 78px;
+  padding: 20px 12px 16px;
   border-bottom: 1px solid rgba(226, 245, 219, 0.12);
 }
 
@@ -79,16 +87,16 @@
 
 .sidebar-nav {
   display: grid;
-  gap: 14px;
-  padding: 14px 12px 0;
+  gap: 10px;
+  padding: 16px 12px 0;
 }
 
 .app-nav-link {
   display: flex;
   align-items: center;
   gap: 11px;
-  min-height: 35px;
-  border-radius: 8px;
+  min-height: 40px;
+  border-radius: 12px;
   padding: 0 9px;
   color: rgba(245, 255, 241, 0.9);
   font-size: 0.74rem;
@@ -206,6 +214,7 @@
 
 .app-frame {
   min-width: 0;
+  min-height: 100dvh;
   display: flex;
   flex-direction: column;
 }
@@ -213,9 +222,9 @@
 .app-content {
   display: grid;
   width: 100%;
-  max-width: 1240px;
+  max-width: 1280px;
   margin: 0 auto;
-  padding: clamp(24px, 4vh, 42px) clamp(20px, 4vw, 28px) 96px;
+  padding: clamp(24px, 4vh, 42px) clamp(20px, 4vw, 34px) 112px;
   gap: clamp(24px, 3vw, 34px);
 }
 
@@ -297,12 +306,13 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    min-height: 56px;
+    min-height: 60px;
     padding: 0 20px;
-    border-bottom: 1px solid var(--border);
-    background: rgba(251, 252, 246, 0.95);
-    backdrop-filter: blur(14px);
-    -webkit-backdrop-filter: blur(14px);
+    border-bottom: 1px solid rgba(223, 231, 216, 0.8);
+    background: rgba(251, 252, 246, 0.96);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    box-shadow: 0 8px 28px rgba(37, 54, 27, 0.04);
   }
 
 
@@ -324,12 +334,14 @@
     z-index: 34;
     display: grid;
     grid-template-columns: repeat(5, minmax(0, 1fr));
-    min-height: calc(66px + env(safe-area-inset-bottom));
-    padding-bottom: env(safe-area-inset-bottom);
-    border-top: 1px solid var(--border);
+    min-height: calc(72px + env(safe-area-inset-bottom));
+    padding: 8px 10px calc(10px + env(safe-area-inset-bottom));
+    border-top: 1px solid rgba(223, 231, 216, 0.7);
     background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(14px);
-    -webkit-backdrop-filter: blur(14px);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    box-shadow: 0 -10px 24px rgba(37, 54, 27, 0.06);
+    border-radius: 22px 22px 0 0;
   }
 
   .bottom-nav a {

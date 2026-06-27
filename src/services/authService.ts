@@ -23,8 +23,8 @@ const emailLinkStorageKey = 'nimbo:emailForSignIn'
 function mapFirebaseUser(user: User): UserProfile {
   return {
     id: user.uid,
-    name: user.displayName ?? 'Produtor NimbuES',
-    email: user.email ?? 'produtor@nimbo.local',
+    name: user.displayName ?? 'Produtor Manejo Certo',
+    email: user.email ?? 'produtor@manejocerto.local',
     initials: (user.displayName ?? user.email ?? 'PN')
       .split(/\s|@/)
       .filter(Boolean)
@@ -109,7 +109,7 @@ export const authService = {
     if (!firebaseAuth || !isSignInWithEmailLink(firebaseAuth, url)) return null
 
     const storedEmail = localStorageAdapter.getItem(emailLinkStorageKey)
-    const email = storedEmail ?? window.prompt('Confirme o e-mail usado para entrar no NimbuES')
+    const email = storedEmail ?? window.prompt('Confirme o e-mail usado para entrar no Manejo Certo')
 
     if (!email) {
       throw new Error('E-mail necessario para concluir o login por link.')

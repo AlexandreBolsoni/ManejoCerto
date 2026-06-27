@@ -73,8 +73,9 @@
   align-items: center;
   text-align: center;
   gap: 24px;
-  padding: 48px clamp(20px, 4vw, 32px) 32px;
-  background: var(--surface);
+  padding: 56px clamp(20px, 4vw, 36px) 36px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.92), rgba(242, 248, 237, 0.84));
+  border-top: 1px solid rgba(223, 231, 216, 0.8);
 }
 
 .footer-public-brand {
@@ -125,7 +126,8 @@
   display: grid;
   gap: 40px;
   padding: clamp(32px, 5vw, 48px) clamp(20px, 4vw, 32px) 24px;
-  background: var(--card); /* Fundo sólido para destacar do body do dashboard */
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.95), rgba(242, 248, 237, 0.85));
+  border-top: 1px solid rgba(223, 231, 216, 0.8);
 }
 
 /* Topo (Marca e Cards de Informação) */

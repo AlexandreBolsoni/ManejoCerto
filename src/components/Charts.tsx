@@ -81,7 +81,7 @@ export function MarketChart({
         <span>
           {chartPoints.length < 2
             ? 'Cotação atual sem série histórica publicada para este período.'
-            : `A fonte trouxe ${daysCovered} dia(s) reais. Para gráfico ${marketPeriodLabel[period].toLowerCase()}, o NimbuES exige pelo menos ${minimumDays} dia(s).`}
+            : `A fonte trouxe ${daysCovered} dia(s) reais. Para gráfico ${marketPeriodLabel[period].toLowerCase()}, o Manejo Certo exige pelo menos ${minimumDays} dia(s).`}
         </span>
         {chartPoints.length > 0 ? <em>Último ponto: {chartPoints[chartPoints.length - 1].label}</em> : null}
       </div>

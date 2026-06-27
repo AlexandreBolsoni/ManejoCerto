@@ -23,3 +23,86 @@
 @import '_market.css';
 @import '_radar.css';
 @import '_radar-v2.css';
+
+body {
+  background: radial-gradient(1200px 700px at top left, rgba(127, 181, 77, 0.12), transparent 52%), var(--surface);
+}
+
+#root {
+  min-height: 100dvh;
+}
+
+::selection {
+  background: rgba(80, 117, 60, 0.22);
+  color: var(--green-950);
+}
+
+.pwa-install-banner {
+  position: fixed;
+  left: 16px;
+  right: 16px;
+  bottom: 16px;
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px 16px;
+  border-radius: 18px;
+  background: linear-gradient(135deg, #103c2b, #1f6b44);
+  color: white;
+  box-shadow: 0 16px 40px rgba(16, 60, 43, 0.28);
+  backdrop-filter: blur(16px);
+}
+
+.pwa-install-banner strong {
+  display: block;
+  font-size: 0.95rem;
+  margin-bottom: 4px;
+}
+
+.pwa-install-banner p {
+  margin: 0;
+  font-size: 0.82rem;
+  opacity: 0.95;
+}
+
+.pwa-install-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.pwa-install-actions button {
+  border: none;
+  border-radius: 999px;
+  padding: 8px 12px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.pwa-install-actions button:first-child {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: white;
+  color: #103c2b;
+}
+
+.pwa-install-actions button:last-child {
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+}
+
+@media (max-width: 640px) {
+  .pwa-install-banner {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .pwa-install-actions {
+    width: 100%;
+    justify-content: flex-end;
+  }
+}

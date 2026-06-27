@@ -27,7 +27,7 @@ export function RadarEmptyState({
     error: {
       Icon: RefreshCw,
       title: 'Não conseguimos atualizar o radar agora',
-      body: 'Tente novamente em alguns minutos. Os demais dados do NimbuES continuam disponíveis.',
+      body: 'Tente novamente em alguns minutos. Os demais dados do Manejo Certo continuam disponíveis.',
     },
   }[kind]
   const Icon = content.Icon

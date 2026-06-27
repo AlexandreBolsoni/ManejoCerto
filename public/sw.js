@@ -1,10 +1,12 @@
-const CACHE_NAME = 'nimbues-prototype-v6'
+const CACHE_NAME = 'manejocerto-prototype-v6'
 const APP_SHELL = [
   '/',
   '/index.html',
   '/manifest.webmanifest',
+  '/assets/icone.png',
   '/assets/nimbo-mark.svg',
   '/assets/hero-fields.jpg',
+  '/assets/logo-nome.png',
 ]
 
 self.addEventListener('install', (event) => {

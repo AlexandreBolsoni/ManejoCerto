@@ -1,8 +1,14 @@
-import { ArrowRight, Bell, CheckCircle2, CloudRain, Crosshair, Droplets, Gauge, Leaf, Map, Sprout, Wifi } from 'lucide-react'
+import { ArrowRight, Bell, CheckCircle2, CloudRain, Crosshair, Download, Droplets, Gauge, Leaf, Map, Sprout, Wifi } from 'lucide-react'
 import { Badge } from '../components/ui'
 import { LinkButton } from '../components/ui'
 import { NimboFooter } from '../components/footer/NimboFooter'
 import { PublicHeader } from '../components/PublicHeader'
+import { useEffect, useState } from 'react'
+
+type BeforeInstallPrompt = Event & {
+  readonly prompt: () => Promise<void>
+  readonly userChoice: Promise<{ outcome: 'accepted' | 'dismissed' }>
+}
 
 const features = [
   {
@@ -38,6 +44,46 @@ const features = [
 ]
 
 export function LandingPage() {
+  const [deferredPrompt, setDeferredPrompt] = useState<BeforeInstallPrompt | null>(null)
+  const [isInstalled, setIsInstalled] = useState(false)
+  const [installHint, setInstallHint] = useState<string | null>(null)
+
+  useEffect(() => {
+    const onBeforeInstallPrompt = (event: Event) => {
+      event.preventDefault()
+      setDeferredPrompt(event as BeforeInstallPrompt)
+      setInstallHint(null)
+    }
+
+    const onAppInstalled = () => {
+      setIsInstalled(true)
+      setDeferredPrompt(null)
+      setInstallHint(null)
+    }
+
+    const isStandalone = window.matchMedia('(display-mode: standalone)').matches || ('standalone' in window.navigator && Boolean((window.navigator as Navigator & { standalone?: boolean }).standalone))
+    if (isStandalone) {
+      setIsInstalled(true)
+    }
+
+    window.addEventListener('beforeinstallprompt', onBeforeInstallPrompt)
+    window.addEventListener('appinstalled', onAppInstalled)
+
+    return () => {
+      window.removeEventListener('beforeinstallprompt', onBeforeInstallPrompt)
+      window.removeEventListener('appinstalled', onAppInstalled)
+    }
+  }, [])
+
+  async function handleInstall() {
+    if (!deferredPrompt) {
+      setInstallHint('Abra o menu do navegador e escolha “Instalar app” para deixar o Manejo Certo na tela inicial.')
+      return
+    }
+
+    await deferredPrompt.prompt()
+  }
+
   return (
     <div className="landing-page">
       <PublicHeader />
@@ -58,7 +104,12 @@ export function LandingPage() {
               <a className="btn secondary lg" href="#motor">
                 Como funciona o motor
               </a>
+              <button className="btn secondary lg install-pwa-btn" onClick={handleInstall} type="button">
+                <Download size={18} aria-hidden="true" />
+                {isInstalled ? 'App instalado' : 'Instalar app'}
+              </button>
             </div>
+            {installHint ? <p className="install-helper-text">{installHint}</p> : null}
             
             {/* HEROS STATS - Agora agrupados em divs para alinhar perfeitamente */}
             <div className="hero-stats">

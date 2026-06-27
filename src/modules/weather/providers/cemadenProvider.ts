@@ -49,7 +49,7 @@ async function getNearestRainGauge(farm: Farm): Promise<CemadenRainGauge | null>
         Authorization: `Bearer ${idToken}`,
       },
     })
-    if (!response.ok) throw new Error(`Backend NimbuES/Cemaden respondeu ${response.status}`)
+    if (!response.ok) throw new Error(`Backend Manejo Certo/Cemaden respondeu ${response.status}`)
     return (await response.json()) as CemadenRainGauge | null
   } catch (error) {
     console.warn('Cemaden indisponivel. A previsao principal continua ativa.', error)

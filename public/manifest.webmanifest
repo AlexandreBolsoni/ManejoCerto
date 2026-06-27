@@ -1,17 +1,26 @@
 {
-  "name": "NimbuES",
-  "short_name": "NimbuES",
+  "name": "Manejo Certo",
+  "short_name": "Manejo Certo",
   "description": "Inteligencia climatica para proteger a safra capixaba.",
-  "start_url": "/",
+  "id": "/",
+  "start_url": "/?source=pwa",
+  "scope": "/",
   "display": "standalone",
+  "display_override": ["standalone", "minimal-ui"],
   "background_color": "#fbfcf6",
   "theme_color": "#25361b",
   "orientation": "portrait-primary",
   "icons": [
     {
-      "src": "/assets/nimbo-mark.svg",
+      "src": "/assets/icone.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/assets/icone.png",
       "sizes": "512x512",
-      "type": "image/svg+xml",
+      "type": "image/png",
       "purpose": "any"
     }
   ],

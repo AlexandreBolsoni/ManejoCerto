@@ -1,4 +1,4 @@
-import { Database, LocateFixed, ShieldCheck } from 'lucide-react'
+import { Database, Download, LocateFixed, ShieldCheck } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { APP_NAME, APP_SLOGAN, APP_STATE, APP_VERSION } from '../../config/brand'
 import { footerLinkSections, publicFooterLinks } from '../../config/footerLinks'
@@ -9,16 +9,52 @@ import { useWeather } from '../../hooks/useWeather'
 import { Brand } from '../Brand'
 import { LinkButton } from '../ui'
 import '../../../public/assets/logo-nome.png' // Mantido conforme seu original
+import { useEffect, useState } from 'react'
 
 export type FooterVariant = 'full' | 'public' | 'minimal'
+
+type BeforeInstallPrompt = Event & {
+  readonly prompt: () => Promise<void>
+  readonly userChoice: Promise<{ outcome: 'accepted' | 'dismissed' }>
+}
 
 const dataSources = ['Open-Meteo', 'INMET', 'RainViewer', 'IBGE', 'NASA GIBS']
 
 export function NimboFooter({ variant = 'full' }: { variant?: FooterVariant }) {
+  const [deferredPrompt, setDeferredPrompt] = useState<BeforeInstallPrompt | null>(null)
+  const [isInstalled, setIsInstalled] = useState(false)
+  const [installHint, setInstallHint] = useState<string | null>(null)
   const { farm } = useCurrentFarm()
   const { fields } = useFields()
   const { locationStatus, weatherLocation } = useWeather()
   const { user } = useAuth()
+  useEffect(() => {
+    const onBeforeInstallPrompt = (event: Event) => {
+      event.preventDefault()
+      setDeferredPrompt(event as BeforeInstallPrompt)
+      setInstallHint(null)
+    }
+
+    const onAppInstalled = () => {
+      setIsInstalled(true)
+      setDeferredPrompt(null)
+      setInstallHint(null)
+    }
+
+    const isStandalone = window.matchMedia('(display-mode: standalone)').matches || ('standalone' in window.navigator && Boolean((window.navigator as Navigator & { standalone?: boolean }).standalone))
+    if (isStandalone) {
+      setIsInstalled(true)
+    }
+
+    window.addEventListener('beforeinstallprompt', onBeforeInstallPrompt)
+    window.addEventListener('appinstalled', onAppInstalled)
+
+    return () => {
+      window.removeEventListener('beforeinstallprompt', onBeforeInstallPrompt)
+      window.removeEventListener('appinstalled', onAppInstalled)
+    }
+  }, [])
+
   const locationLabel = resolveLocationLabel({
     farmLocation: farm?.locationLabel,
     farmName: farm?.name,
@@ -52,6 +88,15 @@ export function NimboFooter({ variant = 'full' }: { variant?: FooterVariant }) {
   // VARIANTE: PUBLIC (Usada na Landing Page e páginas de info)
   // ==========================================================================
   if (variant === 'public') {
+    async function handleInstall() {
+      if (!deferredPrompt) {
+        setInstallHint('A instalação pode ser feita pelo menu do navegador em “Instalar app”.')
+        return
+      }
+
+      await deferredPrompt.prompt()
+    }
+
     return (
       <footer className="nimbo-footer public">
         <div className="footer-public-brand">
@@ -65,6 +110,11 @@ export function NimboFooter({ variant = 'full' }: { variant?: FooterVariant }) {
             </Link>
           ))}
         </nav>
+        <button className="footer-install-btn" onClick={handleInstall} type="button">
+          <Download size={16} aria-hidden="true" />
+          {isInstalled ? 'App instalado' : 'Instalar app'}
+        </button>
+        {installHint ? <p className="install-helper-text">{installHint}</p> : null}
         <div className="footer-public-copy">
           <small>Versão {APP_VERSION}</small>
           <small>·</small>

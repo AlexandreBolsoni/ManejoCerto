@@ -51,7 +51,7 @@ export function OnboardingPage() {
       <section className="onboarding-card">
         <header className="onboarding-header">
           <div className="onboarding-header-logo">
-            <img src="/assets/logo-nome.png" alt="Nimbo" className="logo" />
+            <img src="/assets/logo-nome.png" alt="Manejo Certo" className="logo" />
           </div>
           <span className="onboarding-badge">Configuração inicial</span>
         </header>

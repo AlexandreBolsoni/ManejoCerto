@@ -1,4 +1,3 @@
-import { ArrowRight } from 'lucide-react'
 import { Brand } from '../Brand'
 import { LinkButton } from '../ui'
 

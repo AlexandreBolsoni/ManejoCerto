@@ -28,7 +28,7 @@ function locationErrorMessage(status: LocationStatus, error?: unknown) {
     return 'Tempo esgotado ao buscar GPS. Use a localizacao por rede, informe a localidade capixaba ou ajuste o pino da fazenda no mapa.'
   }
 
-  return `Nao foi possivel obter localizacao agora. O NimbuES continuara usando a localizacao cadastrada da fazenda quando ela existir.${details}`
+  return `Nao foi possivel obter localizacao agora. O Manejo Certo continuara usando a localizacao cadastrada da fazenda quando ela existir.${details}`
 }
 
 export function AppDataProvider({ children }: { children: ReactNode }) {

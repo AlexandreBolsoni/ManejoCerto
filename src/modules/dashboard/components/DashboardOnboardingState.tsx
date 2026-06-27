@@ -17,7 +17,7 @@ export function DashboardOnboardingState({ locationError, locationStatus, onRequ
         <div>
           <span className="eyebrow">PRIMEIRO ACESSO</span>
           <h1>Cadastre sua fazenda</h1>
-          <p>O NimbuES só calcula clima, radar e recomendações depois que você define a localização operacional.</p>
+          <p>O Manejo Certo só calcula clima, radar e recomendações depois que você define a localização operacional.</p>
         </div>
         <div className="dashboard-actions">
           <Button onClick={onRequestLocation} type="button" variant="secondary">

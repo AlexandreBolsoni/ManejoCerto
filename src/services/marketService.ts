@@ -292,9 +292,9 @@ const brazilProfile: StateMarketProfile = {
   state: 'BR',
   stateName: 'Brasil',
   title: 'Produtos agrícolas de referência nacional',
-    summary: 'Sem uma fazenda cadastrada, o NimbuES mostra uma cesta nacional básica. Ao cadastrar uma localidade capixaba, o painel passa a priorizar produtos regionais.',
+    summary: 'Sem uma fazenda cadastrada, o Manejo Certo mostra uma cesta nacional básica. Ao cadastrar uma localidade capixaba, o painel passa a priorizar produtos regionais.',
   highlights: ['Grãos', 'Café', 'Algodão', 'Cana-de-açúcar'],
-    sources: ['Base NimbuES inicial, IBGE PAM e indicadores de mercado públicos'],
+    sources: ['Base do Manejo Certo, IBGE PAM e indicadores de mercado públicos'],
   products: [
     {
       crop: 'Soja',
@@ -329,7 +329,7 @@ const stateProfiles: Record<string, StateMarketProfile> = {
     stateName: 'Espírito Santo',
     title: 'Produtos agrícolas do Espírito Santo',
     summary:
-      'O agro capixaba combina cafeicultura forte, fruticultura exportadora, especiarias, raízes e olericultura. O NimbuES prioriza produtos que fazem sentido para clima, risco operacional e decisão comercial local.',
+      'O agro capixaba combina cafeicultura forte, fruticultura exportadora, especiarias, raízes e olericultura. O Manejo Certo prioriza produtos que fazem sentido para clima, risco operacional e decisão comercial local.',
     highlights: ['Café Conilon', 'Mamão', 'Pimenta-do-reino', 'Gengibre'],
     sources: ['Incaper: cafeicultura conilon e arábica', 'SEAG/Plano ABC ES com base IBGE-PAM', 'Embrapa/Revista de Política Agrícola'],
     products: [
@@ -442,7 +442,7 @@ const stateProfiles: Record<string, StateMarketProfile> = {
     title: 'Produtos agrícolas de Mato Grosso',
     summary: 'Perfil concentrado em grãos, algodão, pecuária integrada e culturas de segunda safra.',
     highlights: ['Soja', 'Milho', 'Algodão', 'Sorgo'],
-    sources: ['Base NimbuES inicial, IBGE PAM e boletins estaduais'],
+    sources: ['Base do Manejo Certo, IBGE PAM e boletins estaduais'],
     products: [
       {
         crop: 'Soja',
@@ -866,7 +866,7 @@ function createReferenceQuote(product: StateMarketProduct, region: string, state
       monthly: [currentPoint],
       weekly: [currentPoint],
     },
-    source: `Referência NimbuES v0 · ${stateName}`,
+    source: `Referência Manejo Certo · ${stateName}`,
     sourceType: 'reference_price',
     fallbackLevel: stateName === 'Brasil' ? 'brasil' : 'uf',
     officialSource: false,
@@ -876,7 +876,7 @@ function createReferenceQuote(product: StateMarketProduct, region: string, state
     quoteStatus: 'reference',
     quoteType: 'Preço indicativo por cultura e UF',
     dataQualityLabel:
-      'Referência inicial do NimbuES para não deixar a cultura sem preço enquanto o conector público ou regional é validado. O gráfico só é exibido quando houver série real publicada pela fonte.',
+      'Referência inicial do Manejo Certo para não deixar a cultura sem preço enquanto o conector público ou regional é validado. O gráfico só é exibido quando houver série real publicada pela fonte.',
     variations: [
       {
         detail: 'referência inicial por cultura/UF',
@@ -885,7 +885,7 @@ function createReferenceQuote(product: StateMarketProduct, region: string, state
       },
     ],
     volumeLabel: product.category,
-    basisLabel: product.stateShareLabel ?? 'referência NimbuES',
+    basisLabel: product.stateShareLabel ?? 'referência Manejo Certo',
     category: product.category,
     priority: product.priority,
     relevanceLabel: product.relevanceLabel,

@@ -69,7 +69,7 @@ export function FieldsPage() {
       ) : filteredFields.length === 0 ? (
         <EmptyState
           action={<LinkButton to="/talhoes/novo">Cadastrar área</LinkButton>}
-          body="Cadastre uma área para o NimbuES transformar clima em decisões por cultura."
+          body="Cadastre uma área para o Manejo Certo transformar clima em decisões por cultura."
           title="Nenhuma área monitorada"
         />
       ) : (

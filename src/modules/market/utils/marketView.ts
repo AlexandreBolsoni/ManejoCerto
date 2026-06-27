@@ -117,7 +117,7 @@ export function quoteStatusLine(quote: MarketQuote) {
 
 export function compactSourceName(source?: string) {
   if (!source) return 'Fonte pendente'
-  return source.replace('Referência NimbuES v0 · ', 'NimbuES · ')
+  return source.replace('Referência NimbuES v0 · ', 'Manejo Certo · ')
 }
 
 export function primaryDataQualityLabel(quote: MarketQuote, period: MarketPeriod) {
