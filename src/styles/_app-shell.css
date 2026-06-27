@@ -305,10 +305,7 @@
     -webkit-backdrop-filter: blur(14px);
   }
 
-  .mobile-app-header img {
-   
-  }
-  
+
   .app-content {
     padding-bottom: max(24px, calc(92px + env(safe-area-inset-bottom)));
   }
