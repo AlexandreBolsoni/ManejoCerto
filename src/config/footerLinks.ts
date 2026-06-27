@@ -49,7 +49,7 @@ export const footerLinkSections: FooterLinkSection[] = [
   {
     title: 'Informações do app',
     links: [
-      { label: 'Sobre o NimbuES', path: '/about' },
+      { label: 'Sobre', path: '/about' },
       { label: 'Termos de uso', path: '/terms' },
       { label: 'Versão do app', path: '/about' },
     ],

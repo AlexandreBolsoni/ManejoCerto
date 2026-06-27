@@ -8,6 +8,7 @@ import { useFields } from '../../hooks/useFields'
 import { useWeather } from '../../hooks/useWeather'
 import { Brand } from '../Brand'
 import { LinkButton } from '../ui'
+import '../../../public/assets/logo-nome.png' // Mantido conforme seu original
 
 export type FooterVariant = 'full' | 'public' | 'minimal'
 
@@ -26,14 +27,17 @@ export function NimboFooter({ variant = 'full' }: { variant?: FooterVariant }) {
     weatherLocationLabel: weatherLocation?.label,
   })
 
+  // ==========================================================================
+  // VARIANTE: MINIMAL (Usada em fluxos de onboarding ou telas isoladas)
+  // ==========================================================================
   if (variant === 'minimal') {
     return (
       <footer className="nimbo-footer minimal">
-        <div>
+        <div className="footer-minimal-brand">
           <Brand compact to="/" />
-          <span>Versão {APP_VERSION}</span>
+          <span className="footer-version">Versão {APP_VERSION}</span>
         </div>
-        <nav aria-label="Links legais mínimos">
+        <nav aria-label="Links legais mínimos" className="footer-minimal-nav">
           {publicFooterLinks.slice(0, 3).map((link) => (
             <Link key={link.path} to={link.path}>
               {link.label}
@@ -44,58 +48,72 @@ export function NimboFooter({ variant = 'full' }: { variant?: FooterVariant }) {
     )
   }
 
+  // ==========================================================================
+  // VARIANTE: PUBLIC (Usada na Landing Page e páginas de info)
+  // ==========================================================================
   if (variant === 'public') {
     return (
       <footer className="nimbo-footer public">
-        <div className="nimbo-footer-brand">
-          <Brand compact to="/" />
+        <div className="footer-public-brand">
+          <img src="/assets/logo-nome.png" alt={APP_NAME} />
           <p>{APP_SLOGAN}</p>
         </div>
-        <nav aria-label="Links legais públicos">
+        <nav aria-label="Links legais públicos" className="footer-public-nav">
           {publicFooterLinks.map((link) => (
             <Link key={link.path} to={link.path}>
               {link.label}
             </Link>
           ))}
         </nav>
-        <small>
-          Versão {APP_VERSION} · © 2026 {APP_NAME}
-        </small>
+        <div className="footer-public-copy">
+          <small>Versão {APP_VERSION}</small>
+          <small>·</small>
+          <small>© 2026 {APP_NAME}</small>
+        </div>
       </footer>
     )
   }
 
+  // ==========================================================================
+  // VARIANTE: FULL (Usada dentro do App Shell / Painel Logado)
+  // ==========================================================================
   return (
     <footer className="nimbo-footer full">
-      <section className="nimbo-footer-top">
-        <div className="nimbo-footer-brand">
+      
+      {/* Topo do Footer: Marca e Trust Card */}
+      <section className="footer-top">
+        <div className="footer-brand-col">
           <Brand compact to="/dashboard" />
           <p>{APP_SLOGAN}</p>
         </div>
-        <div className="footer-trust-card">
-          <ShieldCheck size={18} aria-hidden="true" />
-          <div>
-            <strong>Transparência e controle</strong>
-            <span>{user?.email ? `Conta conectada: ${user.email}` : 'Acesse sua conta para controlar seus dados.'}</span>
+        
+        <div className="footer-info-cards">
+          <div className="footer-card trust-card">
+            <ShieldCheck size={18} aria-hidden="true" className="icon-green" />
+            <div className="footer-card-text">
+              <strong>Transparência e controle</strong>
+              <span>{user?.email ? `Conta conectada: ${user.email}` : 'Acesse sua conta para controlar seus dados.'}</span>
+            </div>
+          </div>
+
+          <div className="footer-card location-card" aria-label="Localização usada pelo app">
+            <LocateFixed size={18} aria-hidden="true" className="icon-green" />
+            <div className="footer-card-text">
+              <strong>Localização usada</strong>
+              <span>{locationLabel}</span>
+            </div>
+            <LinkButton size="sm" to="/permissions" variant="secondary" className="location-btn">
+              Alterar
+            </LinkButton>
           </div>
         </div>
       </section>
 
-      <section className="footer-location-card" aria-label="Localização usada pelo app">
-        <LocateFixed size={18} aria-hidden="true" />
-        <div>
-          <strong>Localização usada</strong>
-          <span>{locationLabel}</span>
-        </div>
-        <LinkButton size="sm" to="/permissions" variant="secondary">
-          Alterar localização
-        </LinkButton>
-      </section>
-
-      <section className="nimbo-footer-grid" aria-label="Links do rodapé">
+      {/* Grid de Navegação Principal */}
+      <section className="footer-nav-grid" aria-label="Links do rodapé">
         {footerLinkSections.map((section) => (
-          <details className="footer-section" key={section.title} open>
-            <summary>{section.title}</summary>
+          <div className="footer-nav-group" key={section.title}>
+            <h4>{section.title}</h4>
             <nav aria-label={section.title}>
               {section.links.map((link) => (
                 <Link key={`${section.title}-${link.label}-${link.path}`} to={link.path}>
@@ -103,24 +121,28 @@ export function NimboFooter({ variant = 'full' }: { variant?: FooterVariant }) {
                 </Link>
               ))}
             </nav>
-          </details>
+          </div>
         ))}
       </section>
 
-      <section className="footer-data-strip" aria-label="Fontes resumidas">
-        <Database size={17} aria-hidden="true" />
-        <span>Dados usados:</span>
-        <strong>{dataSources.join(', ')}</strong>
-      </section>
+      {/* Faixa de Fontes de Dados e Copyright */}
+      <section className="footer-bottom">
+        <div className="footer-data-strip" aria-label="Fontes resumidas">
+          <Database size={16} aria-hidden="true" />
+          <span>Dados processados via:</span>
+          <strong>{dataSources.join(', ')}</strong>
+        </div>
 
-      <div className="nimbo-footer-bottom">
-        <span>Versão {APP_VERSION}</span>
-        <span>© 2026 {APP_NAME}</span>
-      </div>
+        <div className="footer-copyright">
+          <span>Versão {APP_VERSION}</span>
+          <span>© 2026 {APP_NAME}</span>
+        </div>
+      </section>
     </footer>
   )
 }
 
+// Lógica isolada mantida exatamente como a sua
 function resolveLocationLabel({
   farmLocation,
   farmName,

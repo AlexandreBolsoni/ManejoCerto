@@ -1,5 +1,23 @@
-.feedback-page {
+/* =========================================
+   Base & Utilitários
+   ========================================= */
+.feedback-page,
+.account-page {
   max-width: 760px;
+  margin: 0 auto;
+  padding: 16px;
+}
+
+.account-page h1 {
+  margin-bottom: 24px;
+  font-size: 1.8rem;
+}
+
+/* Transições e cursores globais para elementos interativos */
+button, 
+.back-link {
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
 }
 
 .back-link {
@@ -11,117 +29,19 @@
   background: transparent;
   border: 0;
   font-weight: 600;
+  padding: 4px 8px;
+  margin-left: -8px;
+  border-radius: 8px;
 }
 
-.feedback-header {
-  display: grid;
-  gap: 8px;
-  margin-bottom: 20px;
+.back-link:hover {
+  color: var(--green-700, #333);
+  background: var(--green-50, rgba(0,0,0,0.05));
 }
 
-.feedback-progress {
-  height: 6px;
-  overflow: hidden;
-  border-radius: var(--radius-pill);
-  background: var(--green-50);
-}
-
-.feedback-progress span {
-  display: block;
-  width: 25%;
-  height: 100%;
-  background: var(--green-700);
-}
-
-.feedback-grid {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) 250px;
-  gap: 18px;
-  align-items: start;
-}
-
-.feedback-question-card {
-  display: grid;
-  gap: 18px;
-  padding: 32px;
-}
-
-.feedback-question-card h2 {
-  font-size: 1.55rem;
-}
-
-.feedback-question-card p,
-.feedback-side-card p,
-.feedback-side-card small {
-  color: var(--muted);
-}
-
-.choice-row {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 12px;
-}
-
-.choice-row button,
-.tri-choice button {
-  min-height: 56px;
-  border: 1px solid var(--border);
-  border-radius: 16px;
-  background: var(--card);
-  font-weight: 700;
-}
-
-.choice-row button.active,
-.tri-choice button.active {
-  color: var(--surface);
-  background: var(--green-700);
-  border-color: var(--green-700);
-}
-
-.choice-stack {
-  display: grid;
-  gap: 12px;
-}
-
-.toggle-choice,
-.tri-choice {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-}
-
-.tri-choice div {
-  display: flex;
-  gap: 8px;
-}
-
-.tri-choice button {
-  min-height: 34px;
-  padding-inline: 14px;
-}
-
-.toggle-choice input,
-.preference-row input {
-  width: 42px;
-  height: 24px;
-  accent-color: var(--green-700);
-}
-
-.success-note {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  color: var(--green-700);
-  font-weight: 700;
-}
-
-.feedback-side-card {
-  display: grid;
-  gap: 12px;
-  padding: 22px;
-}
-
+/* =========================================
+   Seções de Conta e Perfil
+   ========================================= */
 .account-grid {
   display: grid;
   grid-template-columns: minmax(0, 2fr) 1fr;
@@ -130,14 +50,33 @@
 }
 
 .profile-card,
-.plan-card,
+.team-card,
 .farms-card,
 .fields-management-card,
-.team-card,
 .preferences-card {
   display: grid;
   gap: 18px;
   padding: 22px;
+  background: var(--surface, #ffffff);
+  border-radius: var(--radius-card, 16px);
+  border: 1px solid var(--border, #e5e5e5);
+}
+
+.profile-card > span,
+.team-card > span,
+.farms-card .card-title-row > span,
+.fields-management-card .card-title-row > span,
+.preferences-card > span {
+  font-size: 0.8rem;
+  font-weight: 800;
+  color: var(--muted);
+  letter-spacing: 0.05em;
+}
+
+.card-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .profile-row {
@@ -151,10 +90,16 @@
   width: 64px;
   height: 64px;
   font-size: 1.4rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--green-50);
+  color: var(--green-700);
 }
 
 .profile-row p,
-.plan-card p {
+.team-card p {
   color: var(--muted);
 }
 
@@ -165,13 +110,21 @@
   grid-column: 1 / -1;
 }
 
-.farm-list-row {
+/* =========================================
+   Listas (Fazendas e Áreas)
+   ========================================= */
+.farm-list-row,
+.account-field-row {
   display: grid;
-  grid-template-columns: 36px minmax(0, 1fr);
   gap: 12px;
   align-items: center;
   padding: 12px 0;
   border-bottom: 1px solid var(--border);
+}
+
+.farm-list-row:last-child,
+.account-field-row:last-child {
+  border-bottom: none;
 }
 
 .farm-list-row.account-management-row,
@@ -179,35 +132,8 @@
   grid-template-columns: 36px minmax(0, 1fr) auto;
 }
 
-.farm-list-row svg {
-  padding: 9px;
-  width: 36px;
-  height: 36px;
-  border-radius: 13px;
-  color: var(--green-700);
-  background: var(--green-50);
-}
-
-.farm-list-row span {
-  display: block;
-  color: var(--muted);
-}
-
-.account-field-list,
-.account-edit-form,
-.preference-section {
-  display: grid;
-  gap: 12px;
-}
-
-.account-field-row {
-  display: grid;
-  gap: 12px;
-  align-items: center;
-  padding: 12px 0;
-  border-bottom: 1px solid var(--border);
-}
-
+/* O sinal de '>' garante que apenas o ícone principal tenha o fundo verde */
+.farm-list-row > svg,
 .account-field-row > svg {
   padding: 9px;
   width: 36px;
@@ -217,10 +143,14 @@
   background: var(--green-50);
 }
 
+.farm-list-row span,
 .account-field-row span,
 .fields-management-card > p,
 .farms-card > p {
+  display: block;
   color: var(--muted);
+  font-size: 0.9rem;
+  margin-top: 2px;
 }
 
 .row-actions,
@@ -231,25 +161,109 @@
   justify-content: flex-end;
 }
 
+/* =========================================
+   Formulários de Edição (Fazendas e Áreas)
+   ========================================= */
 .account-edit-form {
-  padding: 18px;
+  display: grid;
+  gap: 16px;
+  padding: 20px;
   border: 1px solid var(--border);
-  border-radius: 18px;
-  background: var(--surface);
+  border-radius: 16px;
+  background: var(--background, #fafafa);
+  margin-top: 8px;
 }
 
+.form-two-columns {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+/* Estilização base para campos gerados pelos componentes UI */
+.account-edit-form label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--muted);
+}
+
+.account-edit-form input:not([type="checkbox"]),
+.account-edit-form select,
+.account-edit-form textarea {
+  width: 100%;
+  min-height: 44px;
+  padding: 10px 14px;
+  border: 1px solid var(--border, #d1d5db);
+  border-radius: 10px;
+  background: var(--surface, #ffffff);
+  color: var(--text, #1f2937);
+  font-family: inherit;
+  font-size: 1rem;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.account-edit-form input:focus,
+.account-edit-form select:focus,
+.account-edit-form textarea:focus {
+  outline: none;
+  border-color: var(--green-700);
+  box-shadow: 0 0 0 3px var(--green-50);
+}
+
+.account-edit-form textarea {
+  min-height: 100px;
+  resize: vertical; /* Permite redimensionar apenas para baixo */
+}
+
+/* =========================================
+   Chips (Tags de Sensibilidades)
+   ========================================= */
 .account-chip-section {
   display: grid;
-  gap: 8px;
+  gap: 10px;
+  margin-top: 4px;
 }
 
 .account-chip-section > span {
   color: var(--muted);
-  font-size: 0.78rem;
-  font-weight: 800;
+  font-size: 0.85rem;
+  font-weight: 700;
   text-transform: uppercase;
 }
 
+.chip-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.chip-grid button {
+  padding: 8px 16px;
+  border: 1px solid var(--border);
+  border-radius: 24px; /* Formato de pílula */
+  background: var(--surface);
+  color: var(--text);
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.chip-grid button:hover {
+  border-color: var(--green-700);
+  background: var(--green-50);
+}
+
+.chip-grid button.selected {
+  background: var(--green-700);
+  border-color: var(--green-700);
+  color: #ffffff;
+}
+
+/* =========================================
+   Preferências, Equipe e Logout
+   ========================================= */
 .team-card p {
   display: flex;
   align-items: center;
@@ -257,12 +271,13 @@
 }
 
 .team-card em {
-  border-radius: var(--radius-pill);
+  border-radius: var(--radius-pill, 99px);
   padding: 2px 10px;
   color: var(--green-700);
   background: var(--green-50);
   font-style: normal;
   font-weight: 700;
+  font-size: 0.8rem;
 }
 
 .preference-section {
@@ -276,6 +291,7 @@
 
 .preference-section h2 {
   font-size: 1rem;
+  margin-bottom: 8px;
 }
 
 .preference-row {
@@ -285,12 +301,25 @@
   gap: 12px;
   min-height: 48px;
   border-bottom: 1px solid var(--border);
+  cursor: pointer;
+}
+
+.preference-row:last-child {
+  border-bottom: none;
 }
 
 .preference-row span {
   display: flex;
   align-items: center;
   gap: 10px;
+  font-weight: 500;
+}
+
+.preference-row input[type="checkbox"] {
+  width: 42px;
+  height: 24px;
+  accent-color: var(--green-700);
+  cursor: pointer;
 }
 
 .logout-button {
@@ -300,14 +329,23 @@
   gap: 8px;
   min-height: 48px;
   border: 1px solid #f1b8ad;
-  border-radius: var(--radius-card);
+  border-radius: var(--radius-card, 16px);
   color: #b42318;
-  background: #fff8f5;
+  background: transparent;
   font-weight: 700;
+  font-size: 1rem;
 }
 
+.logout-button:hover {
+  background: #fff8f5;
+  border-color: #b42318;
+}
+
+/* =========================================
+   Media Queries (Responsividade)
+   ========================================= */
+
 @media (max-width: 1120px) {
-  .feedback-grid,
   .account-grid {
     grid-template-columns: 1fr;
   }
@@ -323,16 +361,48 @@
   .account-field-row .row-actions {
     grid-column: 1 / -1;
     justify-content: stretch;
+    margin-top: 8px;
   }
 
-  .account-management-row .row-actions .btn,
-  .account-field-row .row-actions .btn {
+  .account-management-row .row-actions button,
+  .account-field-row .row-actions button {
     flex: 1;
   }
 }
 
-@media (max-width: 520px) {
+@media (max-width: 600px) {
+  .profile-card,
+  .team-card,
+  .farms-card,
+  .fields-management-card,
+  .preferences-card {
+    padding: 16px; 
+  }
+  
   .profile-row {
     grid-template-columns: 1fr;
+    text-align: center;
+    justify-items: center;
+  }
+  
+  .profile-row > auto {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+
+  /* Empilha as colunas de formulário no celular */
+  .form-two-columns {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  /* Os botões de salvar/cancelar ocupam toda a largura */
+  .inline-form-actions {
+    flex-direction: column;
+  }
+  
+  .inline-form-actions button {
+    width: 100%;
   }
 }

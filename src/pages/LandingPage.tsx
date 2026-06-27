@@ -185,10 +185,9 @@ export function LandingPage() {
           <h2>Comece com sua primeira fazenda em menos de 2 minutos</h2>
           <p>Cadastre uma área, cultura e pronto — você passa a receber recomendações do dia ainda hoje.</p>
           <div>
+            <br />
             <LinkButton to="/onboarding">Criar minha conta</LinkButton>
-            <LinkButton to="/login" variant="secondary">
-              Falar com agrônomo
-            </LinkButton>
+           
           </div>
         </section>
       </main>
