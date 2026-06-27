@@ -1,7 +1,6 @@
 import { useState } from 'react'
 import type { FormEvent } from 'react'
 import { ArrowLeft, Lock, Mail, ShieldCheck } from 'lucide-react'
-import { Link } from 'react-router-dom'
 import { FullLogo } from '../components/Brand'
 import { Button, LinkButton, TextField } from '../components/ui'
 import { useAuth } from '../hooks/useAuth'
