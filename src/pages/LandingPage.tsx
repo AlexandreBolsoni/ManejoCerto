@@ -47,7 +47,7 @@ export function LandingPage() {
             <Badge tone="green">• Funciona offline no campo</Badge>
             <h1>Inteligência climática para proteger sua safra</h1>
             <p>
-              Traduzimos dados de previsão em decisões práticas para propriedades capixabas. Responder oque realmente importa:
+              Traduzimos dados de previsão em decisões práticas para propriedades capixabas. Responder o que realmente importa:
               <em> irrigar agora ou adiar?
               <br /> qual a melhor janela para aplicar defensivos?</em>
             </p>
@@ -59,13 +59,21 @@ export function LandingPage() {
                 Como funciona o motor
               </a>
             </div>
+            
+            {/* HEROS STATS - Agora agrupados em divs para alinhar perfeitamente */}
             <div className="hero-stats">
-              <strong>3+</strong>
-              <span>fontes cruzadas</span>
-              <strong>FAO-56</strong>
-              <span>padrão ET₀</span>
-              <strong>24h</strong>
-              <span>nowcast</span>
+              <div className="stat-item">
+                <strong>3+</strong>
+                <span>fontes cruzadas</span>
+              </div>
+              <div className="stat-item">
+                <strong>FAO-56</strong>
+                <span>padrão ET₀</span>
+              </div>
+              <div className="stat-item">
+                <strong>24h</strong>
+                <span>nowcast local</span>
+              </div>
             </div>
           </div>
 
@@ -83,7 +91,7 @@ export function LandingPage() {
               <div className="decision-icon">
                 <Droplets size={24} aria-hidden="true" />
               </div>
-              <div>
+              <div className="decision-content">
                 <span>TALHÃO NORTE · SOJA</span>
                 <h2>Adiar irrigação para amanhã</h2>
                 <p>Chuva de 8–14 mm prevista nas próximas 6h · ET₀ 3.2 mm</p>
@@ -92,17 +100,34 @@ export function LandingPage() {
                   <Badge tone="soft">3 fontes ✓</Badge>
                 </div>
               </div>
-              <small>há 4 min</small>
+              <small className="decision-time">há 4 min</small>
             </div>
           </div>
         </section>
 
+        {/* SOURCE STRIP - Reestruturado para responsividade fluida */}
         <section className="source-strip" aria-label="Dados de alta confiança">
-          <span>DADOS DE ALTA CONFIANÇA</span>
-          <strong>Open-Meteo <small>previsão global</small></strong>
-          <strong>RainViewer <small>radar em tempo real</small></strong>
-          <strong>INMET <small>estações oficiais BR</small></strong>
-          <strong>FAO-56 <small>padrão ET₀</small></strong>
+          <div className="source-label">
+            <span>DADOS DE ALTA CONFIANÇA</span>
+          </div>
+          <div className="source-items">
+            <div className="source-card">
+              <strong>Open-Meteo</strong>
+              <small>previsão global</small>
+            </div>
+            <div className="source-card">
+              <strong>RainViewer</strong>
+              <small>radar em tempo real</small>
+            </div>
+            <div className="source-card">
+              <strong>INMET</strong>
+              <small>estações oficiais BR</small>
+            </div>
+            <div className="source-card">
+              <strong>FAO-56</strong>
+              <small>padrão ET₀</small>
+            </div>
+          </div>
         </section>
 
         <section className="landing-band" id="recursos">
@@ -152,15 +177,15 @@ export function LandingPage() {
             <CloudRain size={26} aria-hidden="true" />
             <h2>Choveu na sua lavoura agora?</h2>
             <p>Detectamos chuva na área principal às 14:32.</p>
-            <div>
+            <div className="feedback-actions">
               <button type="button">Sim, choveu</button>
-              <button type="button">Não choveu</button>
+              <button type="button" className="outline">Não choveu</button>
             </div>
-            <label>
+            <label className="feedback-pluviometer">
               Volume no pluviômetro (mm)
               <strong>12mm</strong>
             </label>
-            <small>Sem rede? Salvamos e sincronizamos depois.</small>
+            <small className="offline-note">Sem rede? Salvamos e sincronizamos depois.</small>
           </div>
           <div>
             <span>Calibração com humano no loop</span>
@@ -169,7 +194,7 @@ export function LandingPage() {
               A cada confirmação ou correção, o Manejo Certo limpa falsos positivos de radares e satélites e refina
               o modelo localmente — para o seu solo, sua microrregião e sua cultura.
             </p>
-            <ul>
+            <ul className="benefits-list">
               {['Pergunta binária rápida, sem fricção', 'Campo opcional de mm para quem tem pluviômetro', 'Fila offline com sincronização automática', 'Histórico por área com divergências marcadas'].map((item) => (
                 <li key={item}>
                   <CheckCircle2 size={17} aria-hidden="true" />
@@ -184,10 +209,9 @@ export function LandingPage() {
           <Leaf size={26} aria-hidden="true" />
           <h2>Comece com sua primeira fazenda em menos de 2 minutos</h2>
           <p>Cadastre uma área, cultura e pronto — você passa a receber recomendações do dia ainda hoje.</p>
-          <div>
+          <div className="cta-actions">
             <br />
             <LinkButton to="/onboarding">Criar minha conta</LinkButton>
-           
           </div>
         </section>
       </main>

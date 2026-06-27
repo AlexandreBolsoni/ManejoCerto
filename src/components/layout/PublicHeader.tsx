@@ -14,7 +14,7 @@ export function PublicHeader() {
       <div className="public-actions">
         <a href="/login"></a>
         <LinkButton to="/login">
-          Entrar <ArrowRight size={17} aria-hidden="true" />
+          Entrar 
         </LinkButton>
       </div>
     </header>

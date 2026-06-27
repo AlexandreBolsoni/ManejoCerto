@@ -138,9 +138,12 @@ export function NewFarmPage() {
   const navigate = useNavigate()
   const { requestUserLocation, saveFarm, userLocation } = useCurrentFarm()
   const { locationError, locationStatus } = useWeather()
-  const [selectedCrop, setSelectedCrop] = useState(() => marketService.productionTypesForState(APP_STATE)[0] ?? '')
+  
+  // Modificado: estado agora é um array de strings
+  const [selectedCrops, setSelectedCrops] = useState<string[]>([])
   const [customProduction, setCustomProduction] = useState('')
   const [productionError, setProductionError] = useState('')
+  
   const [placeQuery, setPlaceQuery] = useState('')
   const [placeResults, setPlaceResults] = useState<PlaceSearchResult[]>([])
   const [placeLoading, setPlaceLoading] = useState(false)
@@ -164,7 +167,18 @@ export function NewFarmPage() {
     if (!draft.coordinates) return ''
     return draft.locationLabel || coordinateLabel(draft.coordinates)
   }, [draft.coordinates, draft.locationLabel])
+  
   const productionTypes = useMemo(() => marketService.productionTypesForState(APP_STATE), [])
+
+  // Nova função para alternar seleção múltipla de culturas
+  const toggleCrop = (crop: string) => {
+    setSelectedCrops((prev) =>
+      prev.includes(crop)
+        ? prev.filter((c) => c !== crop)
+        : [...prev, crop]
+    )
+    setProductionError('')
+  }
 
   const applyCoordinates = useCallback((coordinates: Coordinates, label?: string) => {
     setDraft((current) => ({
@@ -264,12 +278,13 @@ export function NewFarmPage() {
   const submit = (event: FormEvent) => {
     event.preventDefault()
 
-    if (!selectedCrop) {
-      setProductionError('Escolha um tipo de produção para continuar.')
+    // Validação de seleção múltipla
+    if (selectedCrops.length === 0) {
+      setProductionError('Escolha pelo menos um tipo de produção para continuar.')
       return
     }
 
-    if (selectedCrop === 'Outros' && !customProduction.trim()) {
+    if (selectedCrops.includes('Outros') && !customProduction.trim()) {
       setProductionError('Descreva o tipo de produção para continuar.')
       return
     }
@@ -289,6 +304,12 @@ export function NewFarmPage() {
         .replace(/^-|-$/g, '') ||
       crypto.randomUUID()
 
+    // Formata o resultado final com todos os selecionados separados por vírgula
+    const finalProductionTypes = selectedCrops
+      .filter((c) => c !== 'Outros')
+      .concat(selectedCrops.includes('Outros') ? customProduction.trim() : [])
+      .join(', ')
+
     const nextFarm = {
       ...draft,
       areaHa: Number(draft.areaHa) || 0,
@@ -297,7 +318,7 @@ export function NewFarmPage() {
       locality: placeQuery.trim(),
       municipality: draft.municipality.trim(),
       name: draft.name.trim(),
-      productionType: selectedCrop === 'Outros' ? customProduction.trim() : selectedCrop,
+      productionType: finalProductionTypes, // String combinada
       state: APP_STATE,
     }
 
@@ -395,30 +416,23 @@ export function NewFarmPage() {
             <div className="chip-grid">
               {productionTypes.map((crop) => (
                 <button
-                  className={selectedCrop === crop ? 'selected' : ''}
+                  className={selectedCrops.includes(crop) ? 'selected' : ''}
                   key={crop}
-                  onClick={() => {
-                    setSelectedCrop(crop)
-                    setCustomProduction('')
-                    setProductionError('')
-                  }}
+                  onClick={() => toggleCrop(crop)}
                   type="button"
                 >
                   {crop}
                 </button>
               ))}
               <button
-                className={selectedCrop === 'Outros' ? 'selected' : ''}
-                onClick={() => {
-                  setSelectedCrop('Outros')
-                  setProductionError('')
-                }}
+                className={selectedCrops.includes('Outros') ? 'selected' : ''}
+                onClick={() => toggleCrop('Outros')}
                 type="button"
               >
                 Outros
               </button>
             </div>
-            {selectedCrop === 'Outros' ? (
+            {selectedCrops.includes('Outros') ? (
               <TextField
                 label="DESCREVA O TIPO DE PRODUÇÃO *"
                 onChange={(event) => {

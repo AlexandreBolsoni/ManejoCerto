@@ -1,4 +1,4 @@
-import { ArrowRight, Droplets, Plus, Sprout } from 'lucide-react'
+import { ArrowRight, Droplets, MapPin, Plus, Sprout, Target } from 'lucide-react'
 import { useEffect, useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Badge } from '../../components/ui'
@@ -15,11 +15,14 @@ export function FieldsPage() {
   const { fields, userCrops } = useFields()
   const [activeFilter, setActiveFilter] = useState('Todos')
   const [marketQuotes, setMarketQuotes] = useState<MarketQuote[]>([])
+  
   const farmState = useMemo(() => marketService.resolveState(farm?.state || farm?.locationLabel), [farm?.locationLabel, farm?.state])
   const marketProfile = useMemo(() => marketService.getStateProfile(farmState), [farmState])
   const marketRegion = farm ? marketProfile.stateName : 'Brasil'
   const effectiveMarketQuotes = farm ? marketQuotes : []
+  
   const filters = useMemo(() => ['Todos', ...Array.from(new Set(fields.map((field) => field.crop))), 'Irrigadas', 'Alto risco'], [fields])
+  
   const filteredFields = fields.filter((field) => {
     if (activeFilter === 'Todos') return true
     if (activeFilter === 'Irrigadas') return field.irrigation !== 'Sequeiro'
@@ -37,7 +40,7 @@ export function FieldsPage() {
   }, [farm, farmState, marketRegion, userCrops])
 
   return (
-    <section className="fields-page">
+    <section className="page-container">
       <PageHeader
         action={
           <LinkButton to={farm ? '/talhoes/novo' : '/fazenda/nova'}>
@@ -45,7 +48,7 @@ export function FieldsPage() {
             {farm ? 'Nova área' : 'Nova fazenda'}
           </LinkButton>
         }
-        subtitle="Gerencie glebas, pivôs, piquetes ou talhões com decisões por cultura."
+        subtitle="Gerencie glebas, pivôs, piquetes ou talhões."
         title="Áreas de cultivo"
       />
 
@@ -60,7 +63,7 @@ export function FieldsPage() {
       {!farm ? (
         <EmptyState
           action={<LinkButton to="/fazenda/nova">Cadastrar fazenda</LinkButton>}
-          body="A fazenda define a localização base para previsão, radar e alertas. Depois você cria áreas, glebas, pivôs ou talhões."
+          body="A fazenda define a localização base para previsão, radar e alertas."
           title="Nenhuma fazenda cadastrada"
         />
       ) : filteredFields.length === 0 ? (
@@ -73,32 +76,45 @@ export function FieldsPage() {
         <div className="field-card-list">
           {filteredFields.map((field) => (
             <Link className="field-row-card" key={field.id} to={`/talhoes/${field.id}`}>
-              <span className="drag-handle">⠿</span>
-              <span className="field-icon">
-                <Sprout size={24} aria-hidden="true" />
-              </span>
-              <div className="field-main">
-                <div>
-                  <h2>{field.name}</h2>
-                  <Badge tone={field.riskLevel}>{riskLabel(field.riskLevel)}</Badge>
+              
+              <div className="field-card-content">
+                <div className="field-header">
+                  <div className="field-icon">
+                    <Sprout size={24} color="var(--color-primary-dark)" />
+                  </div>
+                  <div className="field-title-group">
+                    <h2>{field.name}</h2>
+                    <p>{field.crop} · {field.stage} · {field.areaHa} ha</p>
+                  </div>
+                  <div>
+                    <Badge tone={field.riskLevel}>{riskLabel(field.riskLevel)}</Badge>
+                  </div>
                 </div>
-                <p>
-                  {field.crop} · {field.stage} · {field.areaHa} ha
-                </p>
-                <small>
-                  <Droplets size={14} aria-hidden="true" />
-                  {field.irrigation}
-                  <span>Pluviômetro: {field.rainGaugeMm ? `${field.rainGaugeMm} mm (hoje)` : '—'}</span>
-                  {field.coordinates ? <span>GPS ±{Math.round(field.coordinates.accuracyM ?? 0)} m</span> : null}
-                  <span>{marketLineForCrop(field.crop, effectiveMarketQuotes, marketRegion)}</span>
-                </small>
+
+                <div className="field-details">
+                  <small>
+                    <Droplets size={14} color="var(--color-text-muted)" />
+                    Irrigação: {field.irrigation}
+                  </small>
+                  <small>
+                    <Target size={14} color="var(--color-text-muted)" />
+                    Chuva hoje: {field.rainGaugeMm ? `${field.rainGaugeMm} mm` : 'Sem registro'}
+                  </small>
+                  <small>
+                    <MapPin size={14} color="var(--color-text-muted)" />
+                    {marketLineForCrop(field.crop, effectiveMarketQuotes, marketRegion)}
+                  </small>
+                </div>
               </div>
+
               <div className="field-decision">
-                <span>{field.climateStatus}</span>
-                <strong>{field.currentRecommendation}</strong>
-                <small>Atualizado {field.lastUpdate}</small>
+                <div className="decision-text">
+                  <span>{field.climateStatus}</span>
+                  <strong>{field.currentRecommendation}</strong>
+                </div>
+                <ArrowRight size={20} />
               </div>
-              <ArrowRight size={20} aria-hidden="true" />
+              
             </Link>
           ))}
         </div>

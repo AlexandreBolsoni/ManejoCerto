@@ -1,8 +1,7 @@
-import { ArrowLeft, CloudRain, Droplets, Sprout } from 'lucide-react'
+import { ArrowLeft, CloudRain, Droplets, Map, Sprout, TrendingUp } from 'lucide-react'
 import { Link, useParams } from 'react-router-dom'
 import { Badge } from '../../components/ui'
 import { LinkButton } from '../../components/ui'
-import { Card } from '../../components/ui'
 import { useFields } from '../../hooks/useFields'
 
 export function FieldDetailPage() {
@@ -12,23 +11,28 @@ export function FieldDetailPage() {
 
   if (!field) {
     return (
-      <Card className="empty-state">
-        <h1>Área não encontrada</h1>
-        <LinkButton to="/talhoes">Voltar para áreas</LinkButton>
-      </Card>
+      <section className="page-container">
+        <div className="detail-card" style={{ textAlign: 'center', marginTop: '2rem' }}>
+          <h2>Área não encontrada</h2>
+          <LinkButton to="/talhoes" className="action-btn">Voltar para áreas</LinkButton>
+        </div>
+      </section>
     )
   }
 
   return (
-    <section className="field-detail-page">
-      <Link className="back-link" to="/talhoes">
-        <ArrowLeft size={16} aria-hidden="true" />
-        Voltar
-      </Link>
+    <section className="page-container">
+      <div>
+        <Link className="back-link" to="/talhoes">
+          <ArrowLeft size={20} aria-hidden="true" />
+          Voltar
+        </Link>
+      </div>
+      
       <header className="field-detail-hero">
-        <span className="field-icon">
-          <Sprout size={28} aria-hidden="true" />
-        </span>
+        <div className="field-icon">
+          <Sprout size={32} aria-hidden="true" />
+        </div>
         <div>
           <h1>{field.name}</h1>
           <p>
@@ -37,45 +41,67 @@ export function FieldDetailPage() {
         </div>
         <Badge tone={field.riskLevel}>{field.riskLevel}</Badge>
       </header>
+      
       <div className="field-detail-grid">
-        <Card>
-          <span>RECOMENDAÇÃO ATUAL</span>
-          <h2>{field.currentRecommendation}</h2>
+        <div className="detail-card" style={{ borderLeft: '4px solid var(--color-primary)' }}>
+          <span>STATUS E RECOMENDAÇÃO</span>
+          <h2 style={{ color: 'var(--color-primary-dark)' }}>{field.currentRecommendation}</h2>
           <p>{field.climateStatus}</p>
-        </Card>
-        <Card>
-          <span>IRRIGAÇÃO</span>
-          <h2>{field.irrigation}</h2>
+        </div>
+        
+        <div className="detail-card">
+          <span>IRRIGAÇÃO E SOLO</span>
+          <h2>
+             <Droplets size={20} color="var(--color-primary)" /> 
+             {field.irrigation}
+          </h2>
           <p>Solo {field.soilType}. Sensível a {field.sensitivities.join(', ')}.</p>
-        </Card>
-        <Card>
-          <span>LOCALIZAÇÃO</span>
-          <h2>{field.coordinates ? `${field.coordinates.latitude.toFixed(5)}, ${field.coordinates.longitude.toFixed(5)}` : 'Sem GPS'}</h2>
-          <p>{field.coordinates ? `Precisão aproximada de ±${Math.round(field.coordinates.accuracyM ?? 0)} m.` : 'Use o cadastro da área para melhorar radar e alertas.'}</p>
-        </Card>
-        <Card>
+        </div>
+        
+        <div className="detail-card">
+          <span>LOCALIZAÇÃO GEOGRÁFICA</span>
+          <h2>
+            <Map size={20} color="var(--color-primary)" />
+            {field.coordinates ? 'GPS Ativo' : 'Sem GPS'}
+          </h2>
+          <p>
+            {field.coordinates 
+              ? `${field.coordinates.latitude.toFixed(5)}, ${field.coordinates.longitude.toFixed(5)} (Precisão: ±${Math.round(field.coordinates.accuracyM ?? 0)}m)` 
+              : 'Use o cadastro da área para melhorar o radar.'}
+          </p>
+        </div>
+        
+        <div className="detail-card">
           <span>OBSERVAÇÃO LOCAL</span>
           <h2>
-            <CloudRain size={22} aria-hidden="true" />
-            {field.rainGaugeMm ? `${field.rainGaugeMm} mm hoje` : 'Sem pluviômetro'}
+            <CloudRain size={20} color="var(--color-primary)" />
+            {field.rainGaugeMm ? `${field.rainGaugeMm} mm` : 'Sem dados hoje'}
           </h2>
-          <p>Última atualização {field.lastUpdate}.</p>
-        </Card>
-        <Card>
-          <span>PRÓXIMA AÇÃO</span>
-          <h2>
-            <Droplets size={22} aria-hidden="true" />
-            Validar evento
-          </h2>
-          <p>Use o feedback local para reduzir falsos positivos de radar.</p>
-          <LinkButton to="/feedback">Registrar feedback</LinkButton>
-        </Card>
-        <Card>
+          <p>Última atualização: {field.lastUpdate}.</p>
+        </div>
+        
+        <div className="detail-card">
+          <span>AÇÃO LOCAL</span>
+          <h2>Validar evento</h2>
+          <p>Reporte as condições da fazenda para calibrar nossa IA.</p>
+          <div className="action-btn">
+              <LinkButton to="/feedback">Registrar feedback</LinkButton>
+          </div>
+        </div>
+        
+        <div className="detail-card">
           <span>MERCADO</span>
-          <h2>{field.crop}</h2>
-          <p>Abra a tela de mercado já filtrada nesta cultura do talhão.</p>
-          <LinkButton to={`/mercado?cultura=${encodeURIComponent(field.crop)}`}>Abrir mercado</LinkButton>
-        </Card>
+          <h2>
+            <TrendingUp size={20} color="var(--color-primary)" />
+            Cotação: {field.crop}
+          </h2>
+          <p>Veja os preços atualizados para a sua região.</p>
+          <div className="action-btn">
+            <LinkButton variant="secondary" to={`/mercado?cultura=${encodeURIComponent(field.crop)}`}>
+              Abrir mercado
+            </LinkButton>
+          </div>
+        </div>
       </div>
     </section>
   )

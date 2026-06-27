@@ -12,6 +12,7 @@
 @import '_footer.css';
 
 /* 4. Páginas */
+@import 'fields.css';
 @import 'onboarding.css';
 @import '_alerts.css';
 @import '_auth.css';

@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom'
 import { Button, LinkButton } from '../../components/ui'
 import { SelectField, TextAreaField, TextField } from '../../components/ui'
 import { PageHeader } from '../../components/ui'
-import { Card, EmptyState } from '../../components/ui'
+import { EmptyState } from '../../components/ui'
 import { useCurrentFarm } from '../../hooks/useCurrentFarm'
 import { useFields } from '../../hooks/useFields'
 import { useWeather } from '../../hooks/useWeather'
@@ -70,11 +70,11 @@ export function NewFieldPage() {
 
   if (!farm) {
     return (
-      <section className="new-field-page">
+      <section className="page-container">
         <PageHeader subtitle="Cadastre a fazenda antes de criar áreas de cultivo." title="Nova área de cultivo" />
         <EmptyState
           action={<LinkButton to="/fazenda/nova">Cadastrar fazenda</LinkButton>}
-          body="A área usa a localização da fazenda como referência inicial. Depois você pode ajustar o pino da área com mais precisão."
+          body="A área usa a localização da fazenda como referência inicial."
           title="Nenhuma fazenda cadastrada"
         />
       </section>
@@ -82,29 +82,44 @@ export function NewFieldPage() {
   }
 
   return (
-    <section className="new-field-page">
+    <section className="page-container">
       <PageHeader
         action={
           <LinkButton to="/talhoes" variant="secondary">
-            <ArrowLeft size={17} aria-hidden="true" />
+            <ArrowLeft size={18} aria-hidden="true" />
             Voltar
           </LinkButton>
         }
-        subtitle="Defina cultura, área e riscos sensíveis para calibrar as recomendações."
-        title="Nova área de cultivo"
+        subtitle="Defina cultura, área e riscos sensíveis."
+        title="Nova área"
       />
+      
       <form className="new-field-grid" onSubmit={submit}>
-        <Card className="form-card">
+        <div className="form-card">
           <div className="field-form-title">
-            <Sprout size={24} aria-hidden="true" />
+            <div className="field-icon" style={{ width: '40px', height: '40px', borderRadius: '8px' }}>
+              <Sprout size={24} color="var(--color-primary-dark)" aria-hidden="true" />
+            </div>
             <div>
               <h2>Dados da área</h2>
-              <p>Essas informações viram parâmetros do motor de decisão.</p>
+              <p>Parâmetros do motor de decisão.</p>
             </div>
           </div>
-          <TextField label="NOME DA ÁREA *" onChange={(event) => setDraft({ ...draft, name: event.target.value })} value={draft.name} />
+          
+          <div style={{ marginBottom: '1rem' }}>
+            <TextField 
+              label="NOME DA ÁREA *" 
+              onChange={(event) => setDraft({ ...draft, name: event.target.value })} 
+              value={draft.name} 
+            />
+          </div>
+          
           <div className="form-two-columns">
-            <SelectField label="CULTURA *" onChange={(event) => setDraft({ ...draft, crop: event.target.value })} value={draft.crop}>
+            <SelectField 
+              label="CULTURA *" 
+              onChange={(event) => setDraft({ ...draft, crop: event.target.value })} 
+              value={draft.crop}
+            >
               {cropOptions.map((crop) => (
                 <option key={crop}>{crop}</option>
               ))}
@@ -117,60 +132,85 @@ export function NewFieldPage() {
               value={draft.areaHa}
             />
           </div>
-          <SelectField label="ESTÁGIO DA LAVOURA" onChange={(event) => setDraft({ ...draft, stage: event.target.value })} value={draft.stage}>
-            {stageOptions.map((stage) => (
-              <option key={stage}>{stage}</option>
-            ))}
-          </SelectField>
+          
+          <div style={{ marginBottom: '1rem' }}>
+            <SelectField 
+              label="ESTÁGIO DA LAVOURA" 
+              onChange={(event) => setDraft({ ...draft, stage: event.target.value })} 
+              value={draft.stage}
+            >
+              {stageOptions.map((stage) => (
+                <option key={stage}>{stage}</option>
+              ))}
+            </SelectField>
+          </div>
+          
           <div className="form-two-columns">
-            <SelectField label="TIPO DE SOLO" onChange={(event) => setDraft({ ...draft, soilType: event.target.value })} value={draft.soilType}>
+            <SelectField 
+              label="TIPO DE SOLO" 
+              onChange={(event) => setDraft({ ...draft, soilType: event.target.value })} 
+              value={draft.soilType}
+            >
               <option>Argiloso</option>
               <option>Médio</option>
               <option>Arenoso</option>
               <option>Hidromórfico</option>
             </SelectField>
-            <SelectField label="SISTEMA DE IRRIGAÇÃO" onChange={(event) => setDraft({ ...draft, irrigation: event.target.value })} value={draft.irrigation}>
+            <SelectField 
+              label="SISTEMA DE IRRIGAÇÃO" 
+              onChange={(event) => setDraft({ ...draft, irrigation: event.target.value })} 
+              value={draft.irrigation}
+            >
               <option>Pivô central</option>
               <option>Aspersão</option>
               <option>Gotejamento</option>
               <option>Sequeiro</option>
             </SelectField>
           </div>
+          
           <TextAreaField
             label="OBSERVAÇÕES"
             onChange={(event) => setDraft({ ...draft, notes: event.target.value })}
-            placeholder="Ex.: baixada com histórico de geada, solo compactado, pivô com restrição..."
+            placeholder="Ex.: baixada com histórico de geada..."
             value={draft.notes}
           />
+          
           <div className="location-capture">
             <Button onClick={() => void captureLocation()} type="button" variant="secondary">
               <LocateFixed size={18} aria-hidden="true" />
-              {locationStatus === 'requesting' ? 'Buscando localização...' : 'Usar localização nesta área'}
+              {locationStatus === 'requesting' ? 'Buscando...' : 'Capturar meu GPS'}
             </Button>
             <p>
               {userLocation
-                ? `Centro aproximado salvo com precisão de ±${Math.round(userLocation.accuracyM ?? 0)} m.`
-                : 'A localização melhora radar, chuva e alertas por área.'}
+                ? `GPS Salvo: ±${Math.round(userLocation.accuracyM ?? 0)} m.`
+                : 'A localização ajuda no radar meteorológico.'}
             </p>
-            {locationError ? <p className="form-hint danger">{locationError}</p> : null}
+            {locationError ? <p style={{ color: 'var(--color-danger)', textAlign: 'center', fontSize: '0.8125rem' }}>{locationError}</p> : null}
           </div>
-        </Card>
+        </div>
 
-        <Card className="sensitivity-card">
-          <h2>Sensibilidade climática</h2>
-          <p>Marque riscos que devem pesar mais nas recomendações.</p>
-          <div className="chip-grid vertical">
+        <div className="sensitivity-card">
+          <h2>Riscos Climáticos</h2>
+          <p style={{ fontSize: '0.875rem', color: 'var(--color-text-muted)' }}>Marque o que afeta sua lavoura hoje:</p>
+          
+          <div className="chip-grid">
             {sensitivityOptions.map((option) => (
-              <button className={sensitivities.includes(option) ? 'selected' : ''} key={option} onClick={() => toggleSensitivity(option)} type="button">
+              <button 
+                className={sensitivities.includes(option) ? 'selected' : ''} 
+                key={option} 
+                onClick={() => toggleSensitivity(option)} 
+                type="button"
+              >
                 {option}
               </button>
             ))}
           </div>
-          <Button className="full" type="submit">
-            <Save size={18} aria-hidden="true" />
+          
+          <Button type="submit" variant="primary">
+            <Save size={20} aria-hidden="true" />
             Salvar área
           </Button>
-        </Card>
+        </div>
       </form>
     </section>
   )

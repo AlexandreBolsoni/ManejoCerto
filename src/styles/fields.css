@@ -1,0 +1,490 @@
+/* =========================================
+   VARIÁVEIS GLOBAIS (Mobile-First & UI/UX)
+   ========================================= */
+:root {
+  --color-primary: #10b981;
+  --color-primary-dark: #059669;
+  --color-primary-light: #ecfdf5;
+  --color-bg-app: #f1f5f9;
+  --color-surface: #ffffff;
+  --color-text-main: #0f172a;
+  --color-text-muted: #64748b;
+  --color-border: #e2e8f0;
+  --color-danger: #ef4444;
+  
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-full: 9999px;
+  
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.1);
+  
+  --spacing-xs: 0.5rem;
+  --spacing-sm: 1rem;
+  --spacing-md: 1.5rem;
+  --spacing-lg: 2rem;
+
+  /* Ergonomia Mobile */
+  --touch-target: 48px; 
+}
+
+/* =========================================
+   BASE & RESET (Trava de Overflow Mobile)
+   ========================================= */
+* {
+  box-sizing: border-box;
+}
+
+body, html {
+  margin: 0;
+  padding: 0;
+  background-color: var(--color-bg-app);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden; /* Previne scroll horizontal acidental */
+  width: 100%;
+}
+
+.page-container {
+  padding: var(--spacing-sm);
+  max-width: 100%;
+  margin: 0 auto;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+  padding-bottom: 80px; 
+  overflow-x: hidden;
+}
+
+/* =========================================
+   FILTROS (Scroll Horizontal Suave)
+   ========================================= */
+.filter-row {
+  display: flex;
+  gap: 0.75rem;
+  overflow-x: auto;
+  padding: 0.25rem 0 0.75rem 0;
+  margin: 0 -var(--spacing-sm); 
+  padding-left: var(--spacing-sm);
+  padding-right: var(--spacing-sm);
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  width: 100vw; /* Garante que respeite a tela no mobile */
+}
+.filter-row::-webkit-scrollbar { display: none; }
+
+.filter-row button {
+  scroll-snap-align: start;
+  flex-shrink: 0;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  color: var(--color-text-muted);
+  height: 40px; 
+  padding: 0 1.25rem;
+  border-radius: var(--radius-full);
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: var(--shadow-sm);
+  transition: all 0.2s ease;
+}
+
+.filter-row button.active {
+  background: var(--color-text-main);
+  color: var(--color-surface);
+  border-color: var(--color-text-main);
+}
+
+/* =========================================
+   LISTA DE TALHÕES (Cards Mobile-First)
+   ========================================= */
+.field-card-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+  width: 100%;
+}
+
+.field-row-card {
+  display: flex;
+  flex-direction: column;
+  background: var(--color-surface);
+  border-radius: var(--radius-lg);
+  text-decoration: none;
+  color: inherit;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--color-border);
+  overflow: hidden; 
+  transition: transform 0.1s;
+  width: 100%;
+}
+
+.field-row-card:active {
+  transform: scale(0.98); 
+}
+
+.field-card-content {
+  padding: var(--spacing-sm);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+}
+
+.field-header {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--spacing-sm);
+  width: 100%;
+}
+
+.field-icon {
+  background: var(--color-bg-app);
+  border-radius: var(--radius-md);
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0; /* Impede amassar o ícone */
+}
+
+.field-title-group {
+  flex: 1;
+  min-width: 0; /* CRUCIAL: Permite que o texto dentro flex shrink quebre linha */
+}
+
+.field-title-group h2 {
+  font-size: 1.125rem;
+  margin: 0 0 0.25rem 0;
+  color: var(--color-text-main);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis; /* Corta nomes gigantes de fazendas */
+}
+
+.field-title-group p {
+  font-size: 0.8125rem;
+  color: var(--color-text-muted);
+  margin: 0;
+}
+
+.field-badge-container {
+  flex-shrink: 0;
+}
+
+.field-details {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  background: var(--color-bg-app);
+  padding: 0.75rem;
+  border-radius: var(--radius-sm);
+  width: 100%;
+}
+
+.field-details small {
+  display: flex;
+  align-items: flex-start; /* Alinha no topo se quebrar linha */
+  gap: 0.5rem;
+  font-size: 0.8125rem;
+  color: var(--color-text-muted);
+  word-wrap: break-word; 
+  white-space: normal; /* CRUCIAL: Permite que o texto do mercado quebre a linha */
+  line-height: 1.3;
+}
+
+.field-details small svg {
+  flex-shrink: 0; /* Impede amassar os mini-ícones */
+  margin-top: 2px;
+}
+
+/* Rodapé do Card (Decisão) */
+.field-decision {
+  background: var(--color-primary-light);
+  padding: 0.75rem var(--spacing-sm);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid #d1fae5;
+  gap: 0.5rem;
+}
+
+.decision-text {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0; /* CRUCIAL para não vazar a tela */
+}
+
+.decision-text span {
+  font-size: 0.6875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--color-primary-dark);
+  font-weight: 700;
+  word-wrap: break-word;
+  white-space: normal;
+  line-height: 1.2;
+  margin-bottom: 2px;
+}
+
+.decision-text strong {
+  font-size: 0.9375rem;
+  color: #064e3b;
+  word-wrap: break-word;
+  white-space: normal;
+}
+
+.field-decision svg {
+  color: var(--color-primary-dark);
+  flex-shrink: 0;
+}
+
+/* =========================================
+   FORMULÁRIOS & NOVA ÁREA
+   ========================================= */
+.new-field-grid {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+}
+
+.form-card, .sensitivity-card {
+  background: var(--color-surface);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-md) var(--spacing-sm);
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--color-border);
+  width: 100%;
+}
+
+.field-form-title {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  margin-bottom: var(--spacing-md);
+  padding-bottom: var(--spacing-sm);
+  border-bottom: 1px solid var(--color-bg-app);
+}
+
+.field-form-title h2 {
+  font-size: 1.25rem;
+  margin: 0;
+}
+
+.field-form-title p {
+  font-size: 0.875rem;
+  color: var(--color-text-muted);
+  margin: 0;
+}
+
+.form-two-columns {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.chip-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr; 
+  gap: 0.75rem;
+  margin: var(--spacing-sm) 0 var(--spacing-lg);
+}
+
+.chip-grid button {
+  background: var(--color-bg-app);
+  border: 1px solid var(--color-border);
+  min-height: var(--touch-target); 
+  border-radius: var(--radius-md);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--color-text-muted);
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 0.25rem;
+  text-align: center;
+}
+
+.chip-grid button.selected {
+  background: #fef2f2;
+  color: var(--color-danger);
+  border-color: #fca5a5;
+  font-weight: 600;
+}
+
+.location-capture button, .sensitivity-card button[type="submit"] {
+  width: 100%;
+  min-height: var(--touch-target);
+  border-radius: var(--radius-md);
+  font-weight: 600;
+  font-size: 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.location-capture {
+  background: var(--color-bg-app);
+  padding: var(--spacing-sm);
+  border-radius: var(--radius-md);
+  margin-top: 1rem;
+}
+
+.location-capture p {
+  font-size: 0.8125rem;
+  color: var(--color-text-muted);
+  margin: 0.75rem 0 0 0;
+  text-align: center;
+}
+
+/* =========================================
+   PÁGINA DE DETALHES
+   ========================================= */
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--color-text-main);
+  text-decoration: none;
+  font-weight: 600;
+  height: var(--touch-target);
+}
+
+.field-detail-hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 0.75rem;
+  padding: var(--spacing-sm) 0 var(--spacing-md);
+}
+
+.field-detail-hero .field-icon {
+  background: var(--color-surface);
+  color: var(--color-primary);
+  width: 64px;
+  height: 64px;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--color-border);
+}
+
+.field-detail-hero h1 {
+  font-size: 1.5rem;
+  margin: 0;
+}
+
+.field-detail-hero p {
+  color: var(--color-text-muted);
+  font-size: 0.9375rem;
+  margin: 0;
+}
+
+.field-detail-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--spacing-sm);
+}
+
+.detail-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-md);
+  box-shadow: var(--shadow-sm);
+  width: 100%;
+}
+
+.detail-card span {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--color-text-muted);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  margin-bottom: 0.5rem;
+  display: block;
+}
+
+.detail-card h2 {
+  font-size: 1.125rem;
+  margin: 0 0 0.25rem 0;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  color: var(--color-text-main);
+  word-wrap: break-word;
+}
+
+.detail-card p {
+  font-size: 0.875rem;
+  color: var(--color-text-muted);
+  margin: 0;
+  line-height: 1.4;
+}
+
+.detail-card .action-btn {
+  margin-top: 1rem;
+  display: block;
+  width: 100%;
+}
+
+/* =========================================
+   MEDIA QUERIES (TABLET & DESKTOP)
+   ========================================= */
+@media (min-width: 768px) {
+  .page-container {
+    padding: var(--spacing-lg);
+    max-width: 1200px; /* Restaura a largura em telas grandes */
+  }
+
+  .field-card-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+    gap: var(--spacing-md);
+  }
+  
+  .field-row-card {
+    height: 100%;
+    justify-content: space-between;
+  }
+
+  .new-field-grid {
+    flex-direction: row;
+    gap: var(--spacing-lg);
+    align-items: flex-start;
+  }
+
+  .form-card { flex: 2; }
+  .sensitivity-card { flex: 1; position: sticky; top: 2rem; }
+
+  .form-two-columns {
+    flex-direction: row;
+  }
+  .form-two-columns > * {
+    flex: 1;
+  }
+
+  .field-detail-hero {
+    flex-direction: row;
+    text-align: left;
+    background: var(--color-surface);
+    padding: var(--spacing-md);
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--color-border);
+  }
+
+  .field-detail-grid {
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: var(--spacing-md);
+  }
+}
