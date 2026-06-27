@@ -1,8 +1,9 @@
 import { useState } from 'react'
 import type { FormEvent } from 'react'
-import { Lock, Mail, ShieldCheck } from 'lucide-react'
+import { ArrowLeft, Lock, Mail, ShieldCheck } from 'lucide-react'
+import { Link } from 'react-router-dom'
 import { FullLogo } from '../components/Brand'
-import { Button, TextField } from '../components/ui'
+import { Button, LinkButton, TextField } from '../components/ui'
 import { useAuth } from '../hooks/useAuth'
 
 type LoginMode = 'magic-link' | 'password'
@@ -62,6 +63,13 @@ export function LoginPage() {
   return (
     <main className="auth-page auth-page-with-footer">
       <section className="auth-card">
+        <div className="auth-login-top">
+          <LinkButton size="sm" variant="ghost" className="auth-login-back" to="/">
+            <ArrowLeft size={18} aria-hidden="true" />
+            Voltar à página inicial
+          </LinkButton>
+        </div>
+
         {/* Adicionei uma classe para a logo para garantir o alinhamento */}
         <div className="auth-logo-wrapper">
           <FullLogo />

@@ -134,7 +134,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       async signOut() {
         await authService.signOut()
         setStoredUser(null)
-        navigate('/login')
+        navigate('/', { replace: true })
       },
     }),
     [loading, navigate, setStoredUser, storedUser],

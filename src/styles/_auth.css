@@ -411,6 +411,44 @@
     animation: auth-boot-spin 0.9s linear infinite;
 }
 
+.auth-logo-wrapper {
+    display: grid;
+    gap: 16px;
+}
+
+.auth-login-top {
+    display: flex;
+    justify-content: flex-start;
+    width: 100%;
+    margin-bottom: 16px;
+}
+
+.auth-login-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--muted);
+    font-size: 0.95rem;
+    font-weight: 700;
+    text-decoration: none;
+    padding: 10px 14px;
+    border-radius: 18px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+}
+
+.auth-login-back:hover,
+.auth-login-back:focus-visible {
+    color: var(--green-700);
+    outline: none;
+    background: rgba(124, 181, 92, 0.08);
+}
+
+.auth-login-back svg {
+    width: 18px;
+    height: 18px;
+}
+
 @keyframes auth-boot-spin {
     to {
         transform: rotate(360deg);
