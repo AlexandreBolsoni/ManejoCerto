@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest'
 import { demoFarm, demoWeather } from '../../lib/mockData'
 import type { ForecastHour } from '../../types'
 import type { ClimateDashboard } from '../climateService'
+import type { WeatherZone, WeatherZoneHour } from '../weatherZoneService'
 import { mapClimateToRadarWeather } from './weatherMapper'
 
 function hour(overrides: Partial<ForecastHour> = {}): ForecastHour {
@@ -83,5 +84,44 @@ describe('weatherMapper', () => {
     expect(result.current.windDirection).toBe('Sudoeste')
     expect(result.risks.fire).toBe('high')
     expect(result.recommendations.irrigation.status).toBe('high_need')
+  })
+
+  it('gera setas de vento a partir das zonas climáticas recebidas', () => {
+    const hours = Array.from({ length: 24 }, () => hour({ gustKmh: 38, precipMm: 2.2, precipProbabilityPct: 74, weatherCode: 51, windKmh: 24 }))
+    const zones: WeatherZone[] = [
+      {
+        id: 'zone-1',
+        kind: 'rain',
+        label: 'Chuva forte',
+        detail: 'chuva intensa',
+        latitude: -10,
+        longitude: -50,
+        radiusM: 260000,
+        color: '#2f73c6',
+        temperatureC: 24,
+        humidityPct: 82,
+        precipitationMm: 2.2,
+        rainProbabilityPct: 74,
+        weatherCode: 51,
+        windKmh: 24,
+        gustKmh: 38,
+        windDirectionDeg: 120,
+        forecastHours: Array.from({ length: 24 }, () => ({
+          temperatureC: 24,
+          humidityPct: 82,
+          precipitationMm: 2.2,
+          rainProbabilityPct: 74,
+          weatherCode: 51,
+          windKmh: 24,
+          gustKmh: 38,
+          windDirectionDeg: 120,
+        } satisfies WeatherZoneHour)),
+      },
+    ]
+
+    const result = mapClimateToRadarWeather({ climate: dashboard(hours), farm: demoFarm, zones })
+
+    expect(result.tvMap.arrows.some((arrow) => arrow.type === 'wind')).toBe(true)
+    expect(result.tvMap.arrows).toHaveLength(1)
   })
 })

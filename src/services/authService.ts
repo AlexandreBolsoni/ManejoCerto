@@ -19,6 +19,7 @@ import { localStorageAdapter } from './storage'
 
 const provider = new GoogleAuthProvider()
 const emailLinkStorageKey = 'nimbo:emailForSignIn'
+const persistedAuthKey = 'nimbo:authSession'
 
 function mapFirebaseUser(user: User): UserProfile {
   return {
@@ -37,6 +38,11 @@ function mapFirebaseUser(user: User): UserProfile {
 
 async function saveUserProfile(user: User) {
   const profile = mapFirebaseUser(user)
+
+  localStorageAdapter.setJson(persistedAuthKey, {
+    user: profile,
+    expiresAt: Date.now() + 1000 * 60 * 60 * 24 * 7,
+  })
 
   void userRepository
     .saveProfile(profile, {
@@ -123,6 +129,18 @@ export const authService = {
 
   async signOut() {
     if (firebaseAuth) await signOut(firebaseAuth)
+    localStorageAdapter.removeItem(persistedAuthKey)
+  },
+
+  getPersistedSession() {
+    const entry = localStorageAdapter.getJson<{ user: UserProfile; expiresAt: number } | null>(persistedAuthKey)
+    if (!entry) return null
+    if (entry.expiresAt <= Date.now()) {
+      localStorageAdapter.removeItem(persistedAuthKey)
+      return null
+    }
+
+    return entry.user
   },
 
   onAuthChange(callback: (user: UserProfile | null) => void) {

@@ -3,6 +3,7 @@
    ========================================================================== */
 
 .app-shell {
+  position: relative;
   display: grid;
   grid-template-columns: var(--sidebar-width, 182px) minmax(0, 1fr);
   align-items: start;
@@ -20,6 +21,7 @@
   align-self: start;
   display: flex;
   flex-direction: column;
+  width: var(--sidebar-width, 182px);
   min-height: 100dvh;
   max-height: 100dvh;
   overflow-y: auto;
@@ -217,6 +219,30 @@
   min-height: 100dvh;
   display: flex;
   flex-direction: column;
+}
+
+@media (min-width: 821px) {
+  .app-shell {
+    display: block;
+  }
+
+  .app-sidebar {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    width: var(--sidebar-width, 202px);
+    min-height: calc(100vh - 40px);
+    max-height: calc(100vh - 40px);
+    border-radius: 28px;
+    box-shadow: 0 28px 68px rgba(2, 11, 8, 0.18);
+    overflow: hidden;
+    z-index: 20;
+  }
+
+  .app-frame {
+    margin-left: calc(var(--sidebar-width, 202px) + 40px);
+    padding-top: 20px;
+  }
 }
 
 .app-content {

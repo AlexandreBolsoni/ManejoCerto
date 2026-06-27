@@ -1,4 +1,5 @@
 import { Navigate, Route, Routes } from 'react-router-dom'
+import { useAuth } from '../hooks/useAuth'
 import { AppShell } from '../components/AppShell'
 import { AccountPage } from '../pages/AccountPage'
 import { AlertsPage } from '../pages/AlertsPage'
@@ -17,10 +18,12 @@ import { OnboardingPage } from '../pages/OnboardingPage'
 import { RadarPage } from '../pages/RadarPage'
 
 export function AppRoutes() {
+  const { user } = useAuth()
+
   return (
     <Routes>
-      <Route element={<LandingPage />} path="/" />
-      <Route element={<LoginPage />} path="/login" />
+      <Route element={user ? <Navigate replace to="/dashboard" /> : <LandingPage />} path="/" />
+      <Route element={user ? <Navigate replace to="/dashboard" /> : <LoginPage />} path="/login" />
       <Route element={<OnboardingPage />} path="/onboarding" />
       <Route element={<NewFarmPage />} path="/fazenda/nova" />
       <Route element={<AppShell />}>

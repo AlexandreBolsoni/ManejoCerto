@@ -44,7 +44,22 @@ export function WeatherMapLayer({
         </defs>
         {zones.map((zone) => {
           const paths = regionShapes[zone.region]
-          const style = { '--radar-zone': zone.color } as CSSProperties
+          const precipitationOpacity = zone.type === 'rain' || zone.type === 'storm'
+            ? 0.24 + Math.min(zone.precipitationMm / 8, 0.24)
+            : zone.type === 'cloud'
+              ? 0.16
+              : zone.type === 'heat'
+                ? 0.2 + Math.min((zone.temperatureC - 24) / 90, 0.15)
+                : zone.type === 'cold'
+                  ? 0.2 + Math.min((24 - zone.temperatureC) / 90, 0.15)
+                  : 0.14
+          const style = {
+            '--radar-zone': zone.color,
+            '--radar-zone-opacity': precipitationOpacity.toFixed(2),
+            '--radar-zone-stroke-opacity': zone.intensity === 'high' ? '0.75' : zone.intensity === 'moderate' ? '0.6' : '0.45',
+            '--radar-zone-stroke-dash': zone.type === 'rain' || zone.type === 'storm' ? '10 8' : zone.type === 'cloud' ? '16 12' : '8 7',
+            '--radar-zone-stroke-width': zone.type === 'storm' || zone.type === 'rain' ? '2.8' : '2.2',
+          } as CSSProperties
           return (
             <g className={`radar2-zone ${zone.type} ${zone.intensity}`} key={zone.id} style={style}>
               <path className="radar2-zone-halo" d={paths.shape} />

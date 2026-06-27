@@ -167,6 +167,35 @@ function windDirection(degrees?: number) {
   return directions[Math.round(degrees / 45) % directions.length]
 }
 
+function buildWindArrows(zones: RadarWeatherZone[]) {
+  const regionAnchors: Record<WeatherRegion, { x: number; y: number }> = {
+    north: { x: 180, y: 190 },
+    northeast: { x: 760, y: 235 },
+    centerwest: { x: 400, y: 430 },
+    southeast: { x: 650, y: 650 },
+    south: { x: 500, y: 785 },
+  }
+
+  return zones
+    .filter((zone) => zone.windKmh >= 16 || zone.gustKmh >= 24)
+    .slice(0, 3)
+    .map((zone, index) => {
+      const anchor = regionAnchors[zone.region]
+      const radians = ((zone.windDirectionDeg - 90) * Math.PI) / 180
+      const length = 70 + Math.min(zone.windKmh * 2.4, 140)
+      const endX = anchor.x + Math.cos(radians) * length
+      const endY = anchor.y + Math.sin(radians) * length
+      const controlX = anchor.x + Math.cos(radians) * (length * 0.45)
+      const controlY = anchor.y + Math.sin(radians) * (length * 0.45)
+
+      return {
+        id: `wind:${zone.id}:${index}`,
+        type: 'wind' as const,
+        path: `M${anchor.x} ${anchor.y} C ${anchor.x + Math.cos(radians) * 24} ${anchor.y + Math.sin(radians) * 24}, ${controlX} ${controlY}, ${endX} ${endY}`,
+      }
+    })
+}
+
 function interpretation(
   status: RadarWeatherData['status'],
   rainChance: number,
@@ -237,6 +266,8 @@ export function mapClimateToRadarWeather({
   const mappedZones = zones.map(mapZone)
   const currentWindDirection = windDirection(first?.windDirectionDeg)
 
+  const windArrows = buildWindArrows(mappedZones)
+
   return {
     farm: {
       id: farm.id,
@@ -281,10 +312,9 @@ export function mapClimateToRadarWeather({
         detail: `${Math.round(zone.temperatureC)}°C · ${Math.round(zone.rainProbabilityPct)}% chuva`,
       })),
       zones: mappedZones,
-      arrows: [
-        { id: 'front-south', type: 'front', path: 'M690 860 C760 790 820 715 850 620' },
-        { id: 'system-center', type: 'system', path: 'M230 480 C330 425 430 430 520 485' },
-        { id: 'wind-coast', type: 'wind', path: 'M780 700 C845 640 870 555 880 470' },
+      arrows: windArrows.length > 0 ? windArrows : [
+        { id: 'front-south', type: 'front' as const, path: 'M690 860 C760 790 820 715 850 620' },
+        { id: 'system-center', type: 'system' as const, path: 'M230 480 C330 425 430 430 520 485' },
       ],
     },
   }

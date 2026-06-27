@@ -8,14 +8,40 @@ import { AuthContext, type AuthContextValue } from './authContextValue'
 export function AuthProvider({ children }: { children: ReactNode }) {
   const navigate = useNavigate()
   const location = useLocation()
-  const [storedUser, setStoredUser] = usePersistentState<UserProfile | null>('nimbo:user', null)
-  const [loading, setLoading] = useState(() => authService.isEmailLink(window.location.href))
+  const persistedSession = authService.getPersistedSession()
+  const [storedUser, setStoredUser] = usePersistentState<UserProfile | null>('nimbo:user', persistedSession)
+  const [loading, setLoading] = useState(() => Boolean(persistedSession) || authService.isEmailLink(window.location.href))
 
   useEffect(() => {
+    if (!persistedSession && !authService.isEmailLink(window.location.href)) {
+      setLoading(false)
+      return undefined
+    }
+
+    const timer = window.setTimeout(() => {
+      setLoading(false)
+    }, 320)
+
+    return () => {
+      window.clearTimeout(timer)
+    }
+  }, [persistedSession])
+
+  useEffect(() => {
+    if (storedUser) {
+      return undefined
+    }
+
     return authService.onAuthChange((nextUser) => {
       setStoredUser(nextUser)
     })
-  }, [setStoredUser])
+  }, [setStoredUser, storedUser])
+
+  useEffect(() => {
+    if (storedUser && (location.pathname === '/' || location.pathname === '/login')) {
+      navigate('/dashboard', { replace: true })
+    }
+  }, [location.pathname, navigate, storedUser])
 
   useEffect(() => {
     const url = window.location.href
@@ -41,6 +67,22 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       cancelled = true
     }
   }, [location.search, navigate, setStoredUser])
+
+  if (loading && (storedUser || authService.isEmailLink(window.location.href))) {
+    return (
+      <div className="auth-page auth-boot-screen" role="status" aria-live="polite">
+        <div className="auth-boot-card">
+          <div className="auth-boot-logo-wrap" aria-hidden="true">
+            <img className="auth-boot-logo" src="/assets/logo-nome.png" alt="" />
+            <span className="auth-boot-pulse" />
+          </div>
+          <div className="auth-boot-spinner" aria-hidden="true" />
+          <strong>Restaurando sua sessão…</strong>
+          <p>Estamos abrindo o Manejo Certo para você.</p>
+        </div>
+      </div>
+    )
+  }
 
   const value = useMemo<AuthContextValue>(
     () => ({

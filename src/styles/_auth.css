@@ -348,6 +348,105 @@
 }
 
 /* ==========================================================================
+   SPLASH / RESTAURAÇÃO DE SESSÃO
+   ========================================================================== */
+
+.auth-boot-screen {
+    background: radial-gradient(circle at top, rgba(124, 181, 92, 0.2), transparent 45%), linear-gradient(180deg, var(--surface), var(--green-50));
+}
+
+.auth-boot-card {
+    display: grid;
+    justify-items: center;
+    gap: 12px;
+    width: min(100%, 320px);
+    padding: 28px 24px;
+    border: 1px solid rgba(124, 181, 92, 0.2);
+    border-radius: 24px;
+    background: rgba(255, 255, 255, 0.92);
+    box-shadow: var(--shadow-lg);
+    text-align: center;
+}
+
+.auth-boot-card strong {
+    color: var(--green-950);
+    font-size: 1rem;
+}
+
+.auth-boot-logo-wrap {
+    position: relative;
+    display: grid;
+    place-items: center;
+    width: 180px;
+    height: 92px;
+}
+
+.auth-boot-logo {
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+    animation: auth-boot-logo 1.2s ease-in-out infinite alternate;
+}
+
+.auth-boot-pulse {
+    position: absolute;
+    inset: 8px;
+    border: 1px solid rgba(124, 181, 92, 0.28);
+    border-radius: 999px;
+    animation: auth-boot-pulse 1.6s ease-out infinite;
+}
+
+.auth-boot-card p {
+    margin: 0;
+    color: var(--muted);
+    font-size: 0.95rem;
+}
+
+.auth-boot-spinner {
+    width: 46px;
+    height: 46px;
+    border: 3px solid rgba(124, 181, 92, 0.2);
+    border-top-color: var(--green-700);
+    border-radius: 50%;
+    animation: auth-boot-spin 0.9s linear infinite;
+}
+
+@keyframes auth-boot-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes auth-boot-logo {
+    from {
+        transform: translateY(0px) scale(1);
+        filter: drop-shadow(0 0 0 rgba(80, 117, 60, 0));
+    }
+
+    to {
+        transform: translateY(-4px) scale(1.02);
+        filter: drop-shadow(0 10px 18px rgba(80, 117, 60, 0.18));
+    }
+}
+
+@keyframes auth-boot-pulse {
+    0% {
+        transform: scale(0.95);
+        opacity: 0.8;
+    }
+
+    70% {
+        transform: scale(1.06);
+        opacity: 0.25;
+    }
+
+    100% {
+        transform: scale(1.12);
+        opacity: 0;
+    }
+}
+
+/* ==========================================================================
    RESPONSIVIDADE MOBILE
    ========================================================================== */
 
